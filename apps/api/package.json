@@ -1,0 +1,31 @@
+{
+  "name": "poca-api",
+  "version": "0.0.1",
+  "description": "API for POCA project",
+  "main": "dist/src/server.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^18.11.18",
+    "nodemon": "^2.0.20",
+    "pino-pretty": "^9.1.1",
+    "prisma": "^4.8.1",
+    "typescript": "^4.9.4",
+    "vitest": "^0.26.3"
+  },
+  "dependencies": {
+    "@prisma/client": "4.8.1",
+    "fastify": "^4.11.0"
+  },
+  "prisma": {
+    "schema": "db/schema.prisma"
+  },
+  "scripts": {
+    "build": "tsc -p ./tsconfig.json",
+    "build-and-start": "yarn build && yarn start",
+    "db:migrate": "prisma migrate dev",
+    "db:start": "docker-compose up -d db",
+    "dev": "yarn build -w & nodemon dist/src/index.js",
+    "start": "node dist/src/server.js",
+    "test": "vitest"
+  }
+}
