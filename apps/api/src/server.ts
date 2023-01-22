@@ -1,6 +1,8 @@
 import fastify, {FastifyInstance} from "fastify";
 import {registerTrainerRoutes} from "./api/trainer.api";
+import {battleRoutes} from "./api/battle.api";
 import {initTrainerContainer} from "./domain/trainer.container";
+import {initBattleContainer} from "./domain/battle.container";
 
 const server: FastifyInstance = fastify({
     logger: {
@@ -17,7 +19,10 @@ const server: FastifyInstance = fastify({
 const start = async () => {
     try {
         const trainerContainer = initTrainerContainer()
+        const battleContainer = initBattleContainer()
+
         registerTrainerRoutes(server, trainerContainer);
+        battleRoutes(server, trainerContainer, battleContainer);
 
         await server.listen({
             host: process.env.HOST,

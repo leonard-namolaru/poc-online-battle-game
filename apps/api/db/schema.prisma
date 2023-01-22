@@ -15,3 +15,15 @@ model Trainer {
   name  String
   gender String
 }
+
+model Battle {
+  id    Int     @id @default(autoincrement())
+  attackingTrainerId Int
+  opposingTrainerId Int
+  attackerPokemonLifePoints Int
+  opponentPokemonLifePoints Int
+  winner Int
+}
+
+
+
