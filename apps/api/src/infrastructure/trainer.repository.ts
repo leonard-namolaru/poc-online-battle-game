@@ -20,4 +20,16 @@ export class TrainerRepository implements ITrainerRepository {
 
         return trainers;
     }
+
+    async find(trainerId : number) : Promise<Trainer> {
+        const trainer = await prisma.trainer.findUnique({
+            where: {
+                id: trainerId
+            }
+        })
+        if (trainer === null){
+            return Promise.reject("Trainer not in DB.")
+        }
+        return trainer
+    }
 }

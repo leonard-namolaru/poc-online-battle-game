@@ -54,4 +54,26 @@ export const battleRoutes = (server: FastifyInstance, trainerContainer: TrainerC
             reply.status(200).send(battle);        }
     });
 
+    server.route<{
+        Body: { attackedTrainerId: number, dammage: number },
+    }>({
+        method: 'POST',
+        url: '/battle/:trainerId', // ex: http post request to : http://localhost:3000/battle/7
+        schema: { // The format of the request body (in JSON):  {"attackedTrainerId":"Id","dammage":"10"}
+            body: {
+                type: 'object',
+                properties: {
+                    attackedTrainerId: { type: 'number' },
+                    dammage: { type: 'number' },
+                },
+                required: ['attackedTrainerId', 'dammage']
+            }
+        },
+        handler: async (request, reply) => {
+            const {attackedTrainerId, dammage} = request.body;
+            const battle = await battleContainer.battleUsecase.doDammage({attackedTrainerId, dammage});
+            reply.status(200).send(battle);
+        }
+    });
+
 }

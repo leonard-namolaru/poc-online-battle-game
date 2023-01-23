@@ -14,11 +14,15 @@ model Trainer {
   id    Int     @id @default(autoincrement())
   name  String
   gender String
+  battleAttacking Battle[] @relation("attacking")
+  battleOpposing Battle[] @relation("opposing")
 }
 
 model Battle {
   id    Int     @id @default(autoincrement())
+  attackingTrainer Trainer @relation("attacking" ,fields: [attackingTrainerId], references: [id])
   attackingTrainerId Int
+  opposingTrainer Trainer @relation("opposing" ,fields: [opposingTrainerId], references: [id])
   opposingTrainerId Int
   attackerPokemonLifePoints Int
   opponentPokemonLifePoints Int
