@@ -31,3 +31,8 @@ To prepare a build for deployment, you need to run `yarn build`.
 All compilation assets are located in `/dist`.
 
 After deploying `/dist`, you simply need to run `yarn start`
+
+
+## Installation of packages
+
+- `yarn add pokenode-ts` : Integrate the app with the PokéAPI (Source : https://github.com/Gabb-c/pokenode-ts)

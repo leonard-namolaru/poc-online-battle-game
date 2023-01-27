@@ -1,10 +1,17 @@
-import {Trainer, Battle} from "./entities";
+import {Trainer, Battle, Pokemon} from "./entities";
 
 export interface ITrainerRepository {
     create(trainer: { name: string, gender: string }): Promise<Trainer>;
 
     findAll(): Promise<Trainer[]>
     find(trainerId : number) : Promise<Trainer>
+}
+
+export interface IPokemonRepository {
+    create(pokemon: {pokedex: number,  name: string, exp:number, level:number}): Promise<Pokemon>;
+
+    findAll(): Promise<Pokemon[]>
+    find(pokemonId : number) : Promise<Pokemon>
 }
 
 export interface IBattleRepository {
