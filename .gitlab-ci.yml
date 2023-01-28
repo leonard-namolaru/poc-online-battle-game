@@ -1,0 +1,15 @@
+stages:
+  - deploy
+
+deploy-railway:
+  stage: deploy
+  image: node:latest
+  only:
+    - pushes
+    - main
+  script:
+    - cd apps/api
+    - apt-get update && apt-get install -y curl
+    - yarn global add prisma
+    - curl -fsSL https://railway.app/install.sh | sh
+    - RAILWAY_TOKEN=9d5ad1cb-b39d-4274-9790-6453cfeac5c8 railway up
