@@ -13,6 +13,7 @@
     "vitest": "^0.26.3"
   },
   "dependencies": {
+    "@fastify/cors": "^8.2.0",
     "@prisma/client": "4.8.1",
     "fastify": "^4.11.0",
     "pokenode-ts": "^1.17.0"
