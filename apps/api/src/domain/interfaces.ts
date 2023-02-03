@@ -1,4 +1,4 @@
-import {Trainer, Battle, Pokemon} from "./entities";
+import {Trainer, Battle, Pokemon,Item} from "./entities";
 
 export interface ITrainerRepository {
     create(trainer: { name: string, gender: string }): Promise<Trainer>;
@@ -25,4 +25,14 @@ export interface IBattleRepository {
     find(battleId: number):  Promise<Battle>
     findActiveBattleWithTrainerId(trainerId: number): Promise<Battle>
     update(battle: Battle): Promise<Battle>
+}
+
+
+export interface IItemRepository {
+    create(Item: { name: string, effect: number }): Promise<Item>;
+
+    findAll(): Promise<Item[]>
+    find(itemId : number) : Promise<Item>
+    update(item: Item) : Promise<Item>
+    delete(itemId: number) : Promise<Item>
 }
