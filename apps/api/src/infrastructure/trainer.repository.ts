@@ -8,10 +8,9 @@ export class TrainerRepository implements ITrainerRepository {
         const newTrainer = await prisma.trainer.create({
             data: {
                 name: trainer.name,
-                gender: trainer.gender,
+                gender: trainer.gender
             },
         });
-
         return newTrainer;
     }
 

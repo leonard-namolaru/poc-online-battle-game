@@ -11,29 +11,49 @@ datasource db {
 }
 
 model Trainer {
-  id    Int     @id @default(autoincrement())
-  name  String
-  gender String
+  id              Int     @id @default(autoincrement())
+  name            String
+  gender          String
+  activeTeam      PokemonTeam[] @relation("pokemonTeams")
   battleAttacking Battle[] @relation("attacking")
-  battleOpposing Battle[] @relation("opposing")
+  battleOpposing  Battle[] @relation("opposing")
 }
 
 model Battle {
-  id    Int     @id @default(autoincrement())
-  attackingTrainer Trainer @relation("attacking" ,fields: [attackingTrainerId], references: [id],onDelete: Cascade)
-  attackingTrainerId Int
-  opposingTrainer Trainer @relation("opposing" ,fields: [opposingTrainerId], references: [id],onDelete: Cascade)
-  opposingTrainerId Int
+  id                        Int     @id @default(autoincrement())
+  attackingTrainer          Trainer @relation("attacking" ,fields: [attackingTrainerId], references: [id], onDelete: Cascade)
+  attackingTrainerId        Int
+  opposingTrainer           Trainer @relation("opposing" ,fields: [opposingTrainerId], references: [id], onDelete: Cascade)
+  opposingTrainerId         Int
   attackerPokemonLifePoints Int
   opponentPokemonLifePoints Int
-  winner Int
+  winner                    Int
 }
 
 model Pokemon {
-    id    Int   @id @default(autoincrement())
-    pokedex Int
-    name String
-    exp Int
-    level Int
+    id       Int   @id @default(autoincrement())
+    pokedex  Int 
+    name     String 
+    exp      Int
+    level    Int
+    team     PokemonOnPokemonTeams[]
+    //team     PokemonTeam @relation(fields: [teamid], references: [teamId])
+    //teamid   Int
 }
 
+model PokemonOnPokemonTeams {
+    pokemon Pokemon @relation(fields: [pid], references: [id])
+    pid Int
+    pokemonTeam PokemonTeam @relation(fields: [pokemonTeamId], references: [teamId])
+    pokemonTeamId Int
+
+    @@id([pid, pokemonTeamId])
+}
+
+model PokemonTeam {
+    teamId      Int @id @default(autoincrement())
+    trainer     Trainer @relation("pokemonTeams" ,fields: [trainerId], references: [id])
+    trainerId   Int
+    pokemonList PokemonOnPokemonTeams[]
+    //pokemonList Pokemon[]
+}
