@@ -5,6 +5,8 @@ export interface ITrainerRepository {
 
     findAll(): Promise<Trainer[]>
     find(trainerId : number) : Promise<Trainer>
+    update(trainer:Trainer): Promise<Trainer>
+    delete(trainerId : number): Promise<Trainer>
 }
 
 export interface IPokemonRepository {
