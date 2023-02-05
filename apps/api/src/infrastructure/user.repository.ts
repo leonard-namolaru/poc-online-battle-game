@@ -41,7 +41,7 @@ export class UserRepository implements IUserRepository {
             },
         })
         if (user === null){
-            return Promise.reject("User not in DB.")
+            return Promise.reject("this user is not in DB.")
         }
         return user
     }
