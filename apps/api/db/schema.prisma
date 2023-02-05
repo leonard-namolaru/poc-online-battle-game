@@ -59,6 +59,16 @@ model User {
 
   @@unique([email, pwd], name: "emailpwd")
 }
+model PokemonOnPokemonTeams {
+    pokemon Pokemon @relation(fields: [pid], references: [id])
+    pid Int
+    pokemonTeam PokemonTeam @relation(fields: [pokemonTeamId], references: [teamId])
+    pokemonTeamId Int
+
+    @@id([pid, pokemonTeamId])
+}
+
+
 
 model PokemonTeam {
     teamId      Int @id @default(autoincrement())
