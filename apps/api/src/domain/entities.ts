@@ -1,3 +1,13 @@
+export type User = {
+    id: number;
+    name: string;
+    pwd: string;
+    email: string;
+    inscriptionDate: Date;
+    Itemlist?: Item[];
+    myTrainer?: number; //should probably be an array //id of trainer
+    AllMyPokemon?: Pokemon[];
+};
 export type Trainer = {
     id: number;
     name: string;
