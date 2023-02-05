@@ -2,10 +2,12 @@ import fastify, {FastifyInstance} from "fastify";
 import {registerTrainerRoutes} from "./api/trainer.api";
 import {battleRoutes} from "./api/battle.api";
 import {pokemonRoutes} from "./api/pokemon.api";
+import {registerUserRoutes} from "./api/user.api";
 import {registerPokemonTeamRoutes} from "./api/pokemon-team.api";
 import {initTrainerContainer} from "./domain/trainer.container";
 import {initBattleContainer} from "./domain/battle.container";
 import {initPokemonContainer} from "./domain/pokemon.container";
+import { initUserContainer } from "./domain/user.container";
 import {initPokemonTeamContainer} from "./domain/pokemon-team.container";
 import cors from "@fastify/cors";
 
@@ -31,11 +33,13 @@ const start = async () => {
         const trainerContainer = initTrainerContainer()
         const battleContainer = initBattleContainer()
         const pokemonContainer = initPokemonContainer()
+        const userContainer = initUserContainer()
         const pokemonTeamContainer = initPokemonTeamContainer();
 
         registerTrainerRoutes(server, trainerContainer);
         pokemonRoutes(server, pokemonContainer);
         battleRoutes(server, trainerContainer, battleContainer);
+        registerUserRoutes(server,userContainer);
         registerPokemonTeamRoutes(server, pokemonTeamContainer);
 
         await server.listen({

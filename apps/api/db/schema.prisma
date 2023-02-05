@@ -17,13 +17,14 @@ model Trainer {
   activeTeam      PokemonTeam[] @relation("pokemonTeams")
   battleAttacking Battle[] @relation("attacking")
   battleOpposing  Battle[] @relation("opposing")
+  User            User[]
 }
 
 model Battle {
   id                        Int     @id @default(autoincrement())
-  attackingTrainer          Trainer @relation("attacking" ,fields: [attackingTrainerId], references: [id], onDelete: Cascade)
+  attackingTrainer          Trainer @relation("attacking", fields: [attackingTrainerId], references: [id])
   attackingTrainerId        Int
-  opposingTrainer           Trainer @relation("opposing" ,fields: [opposingTrainerId], references: [id], onDelete: Cascade)
+  opposingTrainer           Trainer @relation("opposing", fields: [opposingTrainerId], references: [id])
   opposingTrainerId         Int
   attackerPokemonLifePoints Int
   opponentPokemonLifePoints Int
@@ -31,16 +32,34 @@ model Battle {
 }
 
 model Pokemon {
-    id       Int   @id @default(autoincrement())
-    pokedex  Int 
-    name     String 
-    exp      Int
-    level    Int
-    team     PokemonOnPokemonTeams[]
-    //team     PokemonTeam @relation(fields: [teamid], references: [teamId])
-    //teamid   Int
+  id      Int    @id @default(autoincrement())
+  pokedex Int
+  name    String
+  exp     Int
+  level   Int
+  //user    User   @relation(fields: [userId], references: [id])
+  //userId  Int
+  User    User?  @relation(fields: [userId], references: [id])
+  userId  Int?
+  team     PokemonOnPokemonTeams[]
 }
 
+model User {
+  id              Int       @id @default(autoincrement())
+  name            String
+  pwd             String
+  email           String
+  inscriptionDate DateTime  @default(now())
+  itemlist        Int?
+  // trainer         Trainer   @relation(fields: [myTrainerId], references: [id])
+  //myTrainerId     Int //id of trainer
+  // Pokemon         Pokemon[]
+  Trainer         Trainer?  @relation(fields: [trainerId], references: [id])
+  trainerId       Int?
+  Pokemon         Pokemon[]
+
+  @@unique([email, pwd], name: "emailpwd")
+}
 model PokemonOnPokemonTeams {
     pokemon Pokemon @relation(fields: [pid], references: [id])
     pid Int
@@ -49,6 +68,8 @@ model PokemonOnPokemonTeams {
 
     @@id([pid, pokemonTeamId])
 }
+
+
 
 model PokemonTeam {
     teamId      Int @id @default(autoincrement())

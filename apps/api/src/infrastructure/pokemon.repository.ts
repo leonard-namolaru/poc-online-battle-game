@@ -17,6 +17,8 @@ export class PokemonRepository implements IPokemonRepository {
         return newPokemon;
     }
 
+
+
     async findAll(): Promise<Pokemon[]> {
         const pokemons: Pokemon[] = await prisma.pokemon.findMany();
 
