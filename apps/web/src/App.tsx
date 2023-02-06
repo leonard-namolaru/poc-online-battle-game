@@ -1,10 +1,12 @@
-import React, {StrictMode} from "react";
+import React, {StrictMode, useEffect, useState} from "react";
 import ReactDOM from "react-dom"
 import {BrowserRouter, Routes , Route, Outlet, Link} from "react-router-dom"
-import Home from "./pages/Home";
+import Home, { ListeTrainerForme } from "./pages/Home";
 import Pokemon from "./pages/Pokemon";
 
 import "./index.scss";
+import axios from "axios";
+import { Trainer } from "../../api/src/domain/entities";
 
 // const urlTrainerPost = "http://localhost:3000/trainers";
 // type Trainer = {
