@@ -1,3 +1,11 @@
+services: 
+  - postgres:15.1-alpine
+
+variables:
+  POSTGRES_USER: admin
+  POSTGRES_PASSWORD: password
+  POSTGRES_DB: poca-db
+
 stages:
   - deploy
 
@@ -8,8 +16,22 @@ deploy-railway:
     - pushes
     - main
   script:
+    # Build API
     - cd apps/api
+    - rm .env # Needed for gitlab runner (see https://docs.gitlab.com/ee/ci/services/index.html#how-services-are-linked-to-the-job).
+    - mv .env_gitlab-ci .env # Same as above.
     - apt-get update && apt-get install -y curl
-    - yarn global add prisma
+    - yarn install
+    #- yarn db:start
+    - yarn prisma generate
+    - yarn prisma db push
+    - yarn build
+    - yarn test
+    # Build web interface
+    - cd ../web
+    - yarn install
+    - yarn build
+    # Deploy app to railway
+    - cd ../api
     - curl -fsSL https://railway.app/install.sh | sh
     - RAILWAY_TOKEN=9d5ad1cb-b39d-4274-9790-6453cfeac5c8 railway up
