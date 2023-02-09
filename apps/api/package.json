@@ -6,7 +6,6 @@
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^18.11.18",
-    "@types/nodemailer": "^6.4.7",
     "nodemon": "^2.0.20",
     "pino-pretty": "^9.1.1",
     "prisma": "^4.8.1",
@@ -17,7 +16,6 @@
     "@fastify/cors": "^8.2.0",
     "@prisma/client": "4.8.1",
     "fastify": "^4.11.0",
-    "nodemailer": "^6.9.1",
     "pokenode-ts": "^1.17.0"
   },
   "prisma": {
