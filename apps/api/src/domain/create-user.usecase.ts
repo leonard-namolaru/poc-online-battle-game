@@ -39,6 +39,7 @@ export class CreateUserUsecase {
         console.log(error);
         } else {
             console.log('Email sent: ' + info.response);
+            // do something useful
         }
         });
 
