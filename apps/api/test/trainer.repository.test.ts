@@ -1,6 +1,5 @@
 import {describe, expect, expectTypeOf, test} from 'vitest'
 import {TrainerRepository} from "../src/infrastructure/trainer.repository";
-
 describe('Train Repository - test', () => {
     const trainerRepository = new TrainerRepository()
 

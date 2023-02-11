@@ -6,6 +6,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^18.11.18",
+    "@vitest/coverage-c8": "^0.28.4",
     "nodemon": "^2.0.20",
     "pino-pretty": "^9.1.1",
     "prisma": "^4.8.1",
