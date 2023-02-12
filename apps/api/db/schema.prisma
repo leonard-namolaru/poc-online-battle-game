@@ -57,7 +57,8 @@ model User {
   Trainer         Trainer?  @relation(fields: [trainerId], references: [id])
   trainerId       Int?
   Pokemon         Pokemon[]
-
+  uniqueToken     String
+  isValid         Boolean
   @@unique([email, pwd], name: "emailpwd")
 }
 model PokemonOnPokemonTeams {

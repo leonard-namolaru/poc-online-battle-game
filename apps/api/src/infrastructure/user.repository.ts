@@ -5,13 +5,15 @@ import {prisma} from "../../db";
 
 export class UserRepository implements IUserRepository {
     async create(user: {name: string, pwd: string, email: string,
-        inscriptionDate: Date, myTrainer: number}): Promise<User> {
+        inscriptionDate: Date, myTrainer: number, uniqueToken: string, isValid: boolean}): Promise<User> {
         const newUser = await prisma.user.create({
             data: {
                 name: user.name,
                 pwd: user.pwd,
                 email: user.email,
                 inscriptionDate: user.inscriptionDate,
+                uniqueToken: user.uniqueToken,
+                isValid: user.isValid                
             },
         });
         return newUser;
@@ -44,5 +46,28 @@ export class UserRepository implements IUserRepository {
             return Promise.reject("this user is not in DB.")
         }
         return user
+    }
+
+    async findUserToken(uniqueToken: string): Promise<User>{
+        const user = await prisma.user.findFirst({
+            where:{
+                uniqueToken: uniqueToken
+            }
+        })
+        if (user === null){
+            return Promise.reject("this user is not in DB.")
+        }
+        return user
+    }
+    async update(user: User): Promise<User>{
+        const ret = await prisma.user.update({
+            where:{
+                id: user.id
+            },
+            data: {
+                isValid:user.isValid
+            }
+        });
+        return ret;
     }
 }

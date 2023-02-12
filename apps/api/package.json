@@ -5,7 +5,9 @@
   "main": "dist/src/server.js",
   "license": "MIT",
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/node": "^18.11.18",
+    "@types/nodemailer": "^6.4.7",
     "@vitest/coverage-c8": "^0.28.4",
     "nodemon": "^2.0.20",
     "pino-pretty": "^9.1.1",
@@ -16,7 +18,9 @@
   "dependencies": {
     "@fastify/cors": "^8.2.0",
     "@prisma/client": "4.8.1",
+    "bcrypt": "^5.1.0",
     "fastify": "^4.11.0",
+    "nodemailer": "^6.9.1",
     "pokenode-ts": "^1.17.0"
   },
   "prisma": {

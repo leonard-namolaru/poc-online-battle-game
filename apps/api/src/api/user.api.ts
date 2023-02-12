@@ -10,10 +10,30 @@ export const registerUserRoutes = (server: FastifyInstance, container: UserConta
             console.log("jrjrrjrrj")
             //page ou on doit pouvoir donner son email + pwd et bam recherche dans la bd 
             const users = await container.getAllUsersUsecase.execute();
-            console.log(users[0])
             reply.status(200).send(users);
         }
     });
+    server.get('/verify/:uniqueToken', async function (req, repl){   
+       var tokenlist= Object.values(req.params as object)
+        var token = tokenlist.at(0)
+
+       if (typeof token == "string"){
+            var user =await container.userUsecase.getToken(token)
+            if(user){
+                user.isValid = true
+                await container.userUsecase.updateToken(user)
+                repl.redirect("/trainers")
+            }else{
+                console.log("INTROUVALBE")
+            }
+
+       }else{
+        console.log("PAS UN STRING")
+        console.log("type of ", typeof token)
+        console.log(token)
+       }
+    //    return user       
+    })
 
     server.route<{
         Body: { email: string, pwd: string },
@@ -39,7 +59,7 @@ export const registerUserRoutes = (server: FastifyInstance, container: UserConta
                 name: "",
                 inscriptionDate: new Date,
                 myTrainer: 0,
-                AllMyPokemon: []
+                AllMyPokemon: [],
             });
 
             reply.status(200).send(user);

@@ -2,11 +2,13 @@ import {User ,Trainer, Battle, Pokemon, PokemonTeam} from "./entities";
 
 export interface IUserRepository {
     create(User: {name: string, pwd: string, email: string,
-    inscriptionDate: Date, myTrainer: number, AllMyPokemon: Pokemon[]}): Promise<User>;
+    inscriptionDate: Date, myTrainer: number, AllMyPokemon: Pokemon[], uniqueToken: string, isValid: boolean}): Promise<User>;
 
     findAll(): Promise<User[]>
     find(UserId : number) : Promise<User>
     findMyUserwithLogin(email:string ,pwd:string): Promise<User>
+    findUserToken(uniqueToken: string): User | PromiseLike<User>
+    update(user: User): User | PromiseLike<User>;
 }
 
 export interface ITrainerRepository {

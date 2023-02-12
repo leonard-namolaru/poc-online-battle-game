@@ -7,6 +7,8 @@ export type User = {
     Itemlist?: Item[];
     myTrainer?: number; //should probably be an array //id of trainer
     AllMyPokemon?: Pokemon[];
+    uniqueToken: string;
+    isValid: boolean;
 };
 export type Trainer = {
     id: number;
