@@ -12,5 +12,13 @@ export class UserUsecase {
   
         return this.userRepository.findMyUserwithLogin(email,pwd);
     }
+
+    async getToken(uniqueToken:string): Promise<User>{
+        return this.userRepository.findUserToken(uniqueToken)
+    }
+    async updateToken(user :User): Promise<User>{
+        return this.userRepository.update(user)
+    }
+   
 }
 

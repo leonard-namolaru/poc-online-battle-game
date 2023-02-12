@@ -7,6 +7,7 @@ export type UserContainer = {
     createUserUsecase: CreateUserUsecase;
     getAllUsersUsecase: GetAllUsersUsecase;
     userUsecase: UserUsecase;
+    
 }
 
 export const initUserContainer = (): UserContainer => {
