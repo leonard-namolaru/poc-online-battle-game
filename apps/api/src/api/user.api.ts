@@ -22,7 +22,8 @@ export const registerUserRoutes = (server: FastifyInstance, container: UserConta
             if(user){
                 user.isValid = true
                 await container.userUsecase.updateToken(user)
-                repl.redirect("/trainers")
+                repl.redirect("http://localhost:9000/trainer")
+                // repl.status(200).send("/trainer")
             }else{
                 console.log("INTROUVALBE")
             }
