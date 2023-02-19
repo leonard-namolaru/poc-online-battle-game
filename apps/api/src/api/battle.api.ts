@@ -1,14 +1,11 @@
 import { FastifyInstance } from "fastify";
 import { BattleContainer } from "../domain/battle.container";
 import { TrainerContainer } from "../domain/trainer.container";
-import {PokemonTeamContainer} from "../domain/pokemon-team.container";
-import {hpPointsPokemonsDuringBattle} from "../server"
 
 export const battleRoutes = (
   server: FastifyInstance,
   trainerContainer: TrainerContainer,
-  battleContainer: BattleContainer,
-  pokemonTeamContainer: PokemonTeamContainer
+  battleContainer: BattleContainer
 ) => {
   server.route({
     method: "GET",
@@ -19,15 +16,15 @@ export const battleRoutes = (
     },
   });
 
-  server.route<{ Body: { trainerId: string} }>({
+  server.route<{ Body: { trainerId: string } }>({
     method: "POST",
-    url: "/CreatBattle", // http post request to (for example) : http://localhost:3000/CreatBattle
+    url: "/CreatBattle", // http get request to (for example) : http://localhost:3000/CreatBattle
     schema: {
-      // The format of the request body (in JSON):  {"trainerId": "id"}
+      // The format of the request body (in JSON):  {"trainerId":"id"}
       body: {
         type: "object",
         properties: {
-          trainerId: { type: "string" }
+          trainerId: { type: "string" },
         },
         required: ["trainerId"],
       },
@@ -38,7 +35,6 @@ export const battleRoutes = (
       const trainers = await trainerContainer.getAllTrainersUsecase.execute();
       // The id of the attacking trainer as passed in the URL
       const attackingTrainerId = parseInt(trainerId);
-
       // The index of the attacking trainer in the list of all trainers
       let attackingTrainerIndex = -1;
 
@@ -51,25 +47,10 @@ export const battleRoutes = (
         return;
       }
 
-      const pokemonsTeams = await pokemonTeamContainer.getAllPokemonTeamsUsecase.execute();
-
-      pokemonsTeams.forEach(element => {
-          if (element.trainerId == attackingTrainerId)
-            trainers[attackingTrainerIndex].activeTeam = element;
-        });
-
-      if (!trainers[attackingTrainerIndex].activeTeam || !trainers[attackingTrainerIndex].activeTeam!.pokemonList || trainers[attackingTrainerIndex].activeTeam!.pokemonList!.length == 0) {
-        reply
-            .status(404)
-            .send("The attacking trainer does not have a Pokemon team or this team is empty.");
-        return;
-      }
-      const attackerPokemonIdInt = trainers[attackingTrainerIndex].activeTeam!.pokemonList![0].id;
-
       if (trainers.length < 2) {
         reply
-            .status(404)
-            .send("The list of trainers does not contains at least 2 trainers.");
+          .status(204)
+          .send("The list of trainers does not include at least 2 trainers.");
         return;
       }
 
@@ -78,24 +59,11 @@ export const battleRoutes = (
         randomRivalTrainerIndex = Math.floor(Math.random() * trainers.length);
       } while (randomRivalTrainerIndex == attackingTrainerIndex); // The attacker's opponent cannot be the attacker himself
 
-      pokemonsTeams.forEach(element => {
-        if (element.trainerId == trainers[randomRivalTrainerIndex].id)
-          trainers[randomRivalTrainerIndex].activeTeam = element;
-      });
-
-      if (typeof trainers[randomRivalTrainerIndex].activeTeam == "undefined" || typeof trainers[randomRivalTrainerIndex].activeTeam!.pokemonList == "undefined"  || trainers[randomRivalTrainerIndex].activeTeam!.pokemonList!.length == 0) {
-        reply
-            .status(404)
-            .send("The opposing trainer does not have a Pokemon team or this team is empty.");
-        return;
-      }
-      const opponentPokemonIdInt = trainers[randomRivalTrainerIndex].activeTeam!.pokemonList![0].id;
-
       const battle = await battleContainer.createBattleUsecase.execute({
         attackingTrainerId: attackingTrainerId,
         opposingTrainerId: trainers[randomRivalTrainerIndex].id,
-        attackerPokemonId: attackerPokemonIdInt,
-        opponentPokemonId: opponentPokemonIdInt,
+        attackerPokemonLifePoints: 100,
+        opponentPokemonLifePoints: 100,
         winner: -1,
       });
 
@@ -124,9 +92,8 @@ export const battleRoutes = (
       const battle = await battleContainer.battleUsecase.doDammage({
         attackedTrainerId,
         dammage,
-      })
-      .catch((error) => reply.status(404).send(error));
-      reply.status(200).send({battle : battle, hpPointsPokemonsDuringBattle : hpPointsPokemonsDuringBattle})
+      });
+      reply.status(200).send(battle);
     },
   });
 };

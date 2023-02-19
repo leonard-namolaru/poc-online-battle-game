@@ -12,7 +12,6 @@ import {initPokemonTeamContainer} from "./domain/pokemon-team.container";
 import cors from "@fastify/cors";
 
 
-export let hpPointsPokemonsDuringBattle : {pokemonId : number, hp : number}[] = new Array();
 
 
 const server: FastifyInstance = fastify({
@@ -37,9 +36,9 @@ const start = async () => {
         const userContainer = initUserContainer()
         const pokemonTeamContainer = initPokemonTeamContainer();
 
-        registerTrainerRoutes(server, trainerContainer, pokemonTeamContainer);
+        registerTrainerRoutes(server, trainerContainer);
         pokemonRoutes(server, pokemonContainer);
-        battleRoutes(server, trainerContainer, battleContainer, pokemonTeamContainer);
+        battleRoutes(server, trainerContainer, battleContainer);
         registerUserRoutes(server,userContainer);
         registerPokemonTeamRoutes(server, pokemonTeamContainer);
 

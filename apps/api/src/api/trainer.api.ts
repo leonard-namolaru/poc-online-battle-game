@@ -1,43 +1,31 @@
 import { FastifyInstance } from "fastify";
 import { TrainerContainer } from "../domain/trainer.container";
-import {Pokemon} from "../domain/entities";
-import {PokemonTeamContainer} from "../domain/pokemon-team.container";
 
 export const registerTrainerRoutes = (
   server: FastifyInstance,
-  container: TrainerContainer,
-  pokemonTeamContainer: PokemonTeamContainer
+  container: TrainerContainer
 ) => {
   server.route({
     method: "GET",
     url: "/trainers", // http get request to : http://localhost:3000/trainers
     handler: async (_request, reply) => {
       const trainers = await container.getAllTrainersUsecase.execute();
-      const pokemonsTeams = await pokemonTeamContainer.getAllPokemonTeamsUsecase.execute();
-
-      for(let i = 0 ; i < trainers.length ; i++) {
-        pokemonsTeams.forEach(element => {
-          if (element.trainerId == trainers[i].id)
-            trainers[i].activeTeam = element;
-        });
-      }
-
       reply.status(200).send(trainers);
     },
   });
 
   server.route<{
-    Body: { name: string , gender: string };
+    Body: { name: string; gender: string };
   }>({
     method: "POST",
     url: "/trainers", // http post request to : http://localhost:3000/trainers
     schema: {
-      // The format of the request body (in JSON):  { "name":"Name","gender":"f"}
+      // The format of the request body (in JSON):  {"name":"Name","gender":"f"}
       body: {
         type: "object",
         properties: {
           name: { type: "string" },
-          gender: { type: "string" }
+          gender: { type: "string" },
         },
         required: ["name", "gender"],
       },
@@ -45,21 +33,16 @@ export const registerTrainerRoutes = (
     handler: async (request, reply) => {
       const { name, gender } = request.body;
       const trainer = await container.createTrainerUsecase.execute({
-        name: name,
-        gender: gender
+        name,
+        gender,
       });
 
-      const pokemonsTeam = await pokemonTeamContainer.createPokemonTeamUsecase.create(trainer.id)
-          .catch((error) => reply.status(404).send(error));
-
-      trainer.activeTeam = pokemonsTeam;
       reply.status(200).send(trainer);
     },
   });
 
-
   server.route<{
-    Body: { id: number, name: string, gender: string };
+    Body: { id:number; name: string; gender: string };
   }>({
     method: "PUT",
     url: "/UpdateTrainer", // http post request to : http://localhost:3000/UpdateTrainer
@@ -72,19 +55,15 @@ export const registerTrainerRoutes = (
           name: { type: "string" },
           gender: { type: "string" },
         },
-        required: ["id", "name", "gender"],
+        required: ["name", "gender"],
       },
     },
     handler: async (request, reply) => {
-      const { id, name, gender } = request.body;
-      const emeptyPokemonList : Pokemon[] = new Array();
-      const initialTeam = {teamId: 3,  trainerId :  2, pokemonList : emeptyPokemonList};
-
+      const { id,name, gender } = request.body;
       const trainer = await container.updateTrainerUsecase.execute({
-        id :id,
-        name : name,
-        gender : gender,
-        activeTeam : initialTeam
+        id,
+        name,
+        gender,
       });
 
       reply.status(200).send(trainer);

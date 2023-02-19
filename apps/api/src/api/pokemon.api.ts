@@ -3,7 +3,7 @@ import {PokemonContainer} from "../domain/pokemon.container";
 import {PokemonClient, MoveClient} from "pokenode-ts";
 import {Move, Stats} from "../domain/entities";
 
-export async function getPokemonStatsAndMoves(pokemonName: string): Promise<{ stats: Stats, moves: Move[] }> {
+async function getPokemonStatsAndMoves(pokemonName: string): Promise<{ stats: Stats, moves: Move[] }> {
     const pokemonApi = new PokemonClient();
     const moveApi = new MoveClient();
 
