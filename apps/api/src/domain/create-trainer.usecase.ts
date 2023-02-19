@@ -1,4 +1,4 @@
-import { Trainer} from "./entities";
+import { Trainer } from "./entities";
 import { ITrainerRepository } from "./interfaces";
 
 export class CreateTrainerUsecase {
@@ -12,7 +12,7 @@ export class CreateTrainerUsecase {
         // create a new trainer in db
         const newTrainer = await this.trainerRepository.create({
             name: command.name,
-            gender: command.gender,
+            gender: command.gender
         });
         return newTrainer;
     }

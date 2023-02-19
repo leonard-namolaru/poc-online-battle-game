@@ -15,7 +15,7 @@ export class UpdatePokemonTeamUsecase {
     async addPokemon(teamId: number, pokemonIdToAdd: number): Promise<PokemonTeam> {
         const pokemonTeam: PokemonTeam = await this.pokemonTeamRepository.find(teamId);
         
-        if(pokemonTeam.pokemonList.length >= 6){
+        if(pokemonTeam.pokemonList!.length >= 6){
             return Promise.reject("This team is full. Maximum 6 pokemons per team are allowed.");
         }
         const pokemon: Pokemon = await this.pokemonRepository.find(pokemonIdToAdd);
@@ -23,8 +23,8 @@ export class UpdatePokemonTeamUsecase {
         // Check if the pokemon is already added to this team.
         // For loop because indexOf and include does not work.
         let index = -1;
-        for (let i = 0; i < pokemonTeam.pokemonList.length; i++) {
-            if(pokemonTeam.pokemonList[i].id === pokemon.id){
+        for (let i = 0; i < pokemonTeam.pokemonList!.length; i++) {
+            if(pokemonTeam.pokemonList![i].id === pokemon.id){
                 index = i;
                 break;
             }
@@ -34,7 +34,7 @@ export class UpdatePokemonTeamUsecase {
         }
         // Must check if the given pokemon belongs to the owner of the team (trainer).
         // TODO when implemneted in the model.
-        pokemonTeam.pokemonList.push(pokemon);
+        pokemonTeam.pokemonList!.push(pokemon);
         const updatedPokemonTeam = await this.pokemonTeamRepository.addToTeam(pokemonTeam, pokemon.id);
         return updatedPokemonTeam;
     }
@@ -46,8 +46,8 @@ export class UpdatePokemonTeamUsecase {
         
         // For loop because indexOf and include does not work.
         let index = -1;
-        for (let i = 0; i < pokemonTeam.pokemonList.length; i++) {
-            if(pokemonTeam.pokemonList[i].id === pokemon.id){
+        for (let i = 0; i < pokemonTeam.pokemonList!.length; i++) {
+            if(pokemonTeam.pokemonList![i].id === pokemon.id){
                 index = i;
                 break;
             }
@@ -57,7 +57,7 @@ export class UpdatePokemonTeamUsecase {
         //TODO when implemneted in the model.
         
         if (index > -1) { // only splice array when item is found
-            pokemonTeam.pokemonList.splice(index, 1); // 2nd parameter means remove one item only
+            pokemonTeam.pokemonList!.splice(index, 1); // 2nd parameter means remove one item only
         }else{
             return Promise.reject("This team does not contain the given pokemon.");
         }

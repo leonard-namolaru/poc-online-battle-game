@@ -1,6 +1,6 @@
 import {afterEach, describe, expect, test, vi} from 'vitest'
 import {CreateBattleUsecase} from "../src/domain/create-battle.usecase";
-import {Battle} from '../src/domain/entities';
+import {Battle, PokemonTeam} from '../src/domain/entities';
 import {generateRandomAttackerAndOpponentForTest} from "./battle.repository.test"
 describe('Create Battle Usecase - test', () => {
     const battleRepositoryMock = {
@@ -18,16 +18,16 @@ describe('Create Battle Usecase - test', () => {
     })
 
     test('should create ', async () => {
-        const {attackingTrainerId, opposingTrainerId} = await generateRandomAttackerAndOpponentForTest();
+        const {attackingTrainerId, opposingTrainerId, attackerPokemonId, opponentPokemonId, winner} = await generateRandomAttackerAndOpponentForTest();
 
         // GIVEN
         const expectedBattle: Battle = {
             id: 1,
-            attackingTrainerId:         attackingTrainerId,
-            opposingTrainerId:          opposingTrainerId,
-            attackerPokemonLifePoints:  100,
-            opponentPokemonLifePoints:  100,
-            winner:                     -1
+            attackingTrainerId:       attackingTrainerId,
+            opposingTrainerId:        opposingTrainerId,
+            attackerPokemonId:        attackerPokemonId,
+            opponentPokemonId:        opponentPokemonId,
+            winner:                   winner
         }
 
         battleRepositoryMock.create.mockImplementation(() => expectedBattle)
@@ -35,8 +35,8 @@ describe('Create Battle Usecase - test', () => {
         // WHEN
         const battle = await createBattleUsecase.execute({ attackingTrainerId: expectedBattle.attackingTrainerId,
                                                                  opposingTrainerId: expectedBattle.opposingTrainerId,
-                                                                 attackerPokemonLifePoints: expectedBattle.attackerPokemonLifePoints,
-                                                                 opponentPokemonLifePoints: expectedBattle.opponentPokemonLifePoints,
+                                                                 attackerPokemonId: expectedBattle.attackerPokemonId,
+                                                                 opponentPokemonId: expectedBattle.opponentPokemonId,
                                                                  winner: expectedBattle.winner });
 
         // THEN
@@ -44,8 +44,8 @@ describe('Create Battle Usecase - test', () => {
         expect(battleRepositoryMock.create).toBeCalledWith({
             attackingTrainerId: expectedBattle.attackingTrainerId,
             opposingTrainerId: expectedBattle.opposingTrainerId,
-            attackerPokemonLifePoints: expectedBattle.attackerPokemonLifePoints,
-            opponentPokemonLifePoints: expectedBattle.opponentPokemonLifePoints,
+            attackerPokemonId: expectedBattle.attackerPokemonId,
+            opponentPokemonId: expectedBattle.opponentPokemonId,
             winner: expectedBattle.winner
         })
         expect(expectedBattle).toStrictEqual(battle);
