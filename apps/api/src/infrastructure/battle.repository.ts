@@ -6,16 +6,16 @@ import {prisma} from "../../db";
 export class BattleRepository implements IBattleRepository {
     async create(battle: { attackingTrainerId: number,
                            opposingTrainerId: number,
-                           attackerPokemonId : number,
-                           opponentPokemonId : number,
+                           attackerPokemonLifePoints: number,
+                           opponentPokemonLifePoints: number,
                            winner: number }): Promise<Battle> {
 
         const newBattle = await prisma.battle.create({
-            data : {
+            data: {
                 attackingTrainerId:         battle.attackingTrainerId,
                 opposingTrainerId:          battle.opposingTrainerId,
-                attackerPokemonId :         battle.attackerPokemonId,
-                opponentPokemonId :         battle.opponentPokemonId,
+                attackerPokemonLifePoints:  battle.attackerPokemonLifePoints,
+                opponentPokemonLifePoints:  battle.opponentPokemonLifePoints,
                 winner:                     battle.winner
             },
         });
@@ -53,7 +53,7 @@ export class BattleRepository implements IBattleRepository {
             }
         });
         if (battle === null){
-            return Promise.reject("The battle does not exist or is already over.");
+            return Promise.reject("Battle was not in DB or is finished.");
         }
         return battle
     }
@@ -66,8 +66,8 @@ export class BattleRepository implements IBattleRepository {
             data: {
                 attackingTrainerId:         battle.attackingTrainerId,
                 opposingTrainerId:          battle.opposingTrainerId,
-                attackerPokemonId :         battle.attackerPokemonId,
-                opponentPokemonId :         battle.opponentPokemonId,
+                attackerPokemonLifePoints:  battle.attackerPokemonLifePoints,
+                opponentPokemonLifePoints:  battle.opponentPokemonLifePoints,
                 winner:                     battle.winner
             }
         });

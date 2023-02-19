@@ -10,28 +10,26 @@ export type User = {
     uniqueToken: string;
     isValid: boolean;
 };
-
 export type Trainer = {
     id: number;
     name: string;
     gender: string;
-    activeTeam?: PokemonTeam;
+    //activeTeam: PokemonTeam[]; // List of all teams. ONCE USERS ARE IMPLEMENTED SHOULD BE ONLY ONE TEAM.
 };
 
 export type PokemonTeam = {
     teamId: number;
-    //trainer: Trainer; // WILL CHANGE WHEN USERS WILL BE IMPLEMENTED !
-    trainerId: number;
-    pokemonList?: Pokemon[]; // Max 6 pokemons. Can be empty but cannot battle with it in that case.
-    trainer? : Trainer;
+    trainer: Trainer; // WILL CHANGE WHEN USERS WILL BE IMPLEMENTED !
+    //trainerId: number
+    pokemonList: Pokemon[]; // Max 6 pokemons. Can be empty but cannot battle with it in that case.
 };
 
 export type Battle = {
     id: number;
     attackingTrainerId: number;
     opposingTrainerId: number;
-    attackerPokemonId : number;
-    opponentPokemonId : number;
+    attackerPokemonLifePoints: number;
+    opponentPokemonLifePoints: number;
     winner: number;
 };
 

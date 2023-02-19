@@ -10,15 +10,15 @@ export class CreateBattleUsecase {
 
     async execute(battle: { attackingTrainerId: number,
                             opposingTrainerId: number,
-                            attackerPokemonId : number,
-                            opponentPokemonId : number,
+                            attackerPokemonLifePoints: number,
+                            opponentPokemonLifePoints: number,
                             winner: number }): Promise<Battle> {
         // create a new battle in db
         const newBattle = await this.battleRepository.create({
             attackingTrainerId:  battle.attackingTrainerId,
             opposingTrainerId:  battle.opposingTrainerId,
-            attackerPokemonId : battle.attackerPokemonId,
-            opponentPokemonId : battle.opponentPokemonId,
+            attackerPokemonLifePoints:  battle.attackerPokemonLifePoints,
+            opponentPokemonLifePoints:  battle.opponentPokemonLifePoints,
             winner:  battle.winner
         });
         return newBattle;

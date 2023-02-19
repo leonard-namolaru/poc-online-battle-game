@@ -1,6 +1,5 @@
 import {FastifyInstance} from "fastify";
 import {PokemonTeamContainer} from "../domain/pokemon-team.container";
-import {getPokemonStatsAndMoves} from "../api/pokemon.api";
 
 export const registerPokemonTeamRoutes = (server: FastifyInstance, container: PokemonTeamContainer) => {
 
@@ -31,7 +30,7 @@ export const registerPokemonTeamRoutes = (server: FastifyInstance, container: Po
         handler: async (_request, reply) => {
             const {trainerId} = _request.body;
             const pokemonsTeam = await container.createPokemonTeamUsecase.create(trainerId)
-        .catch((error) => reply.status(404).send(error));
+            .catch((error) => reply.status(404).send(error));
             reply.status(200).send(pokemonsTeam);
         }
     });
@@ -55,13 +54,6 @@ export const registerPokemonTeamRoutes = (server: FastifyInstance, container: Po
             const {teamId, pokemonId} = _request.body;
             const pokemonsTeam = await container.updatePokemonTeamUsecase.addPokemon(teamId, pokemonId)
             .catch((error) => reply.status(404).send(error));
-
-            for(let i = 0 ; pokemonsTeam.pokemonList && i < pokemonsTeam.pokemonList.length ; i++) {
-                let {stats, moves} = await getPokemonStatsAndMoves(pokemonsTeam.pokemonList[i].name);
-                pokemonsTeam.pokemonList[i].stats = stats;
-                pokemonsTeam.pokemonList[i].moves = moves;
-            }
-
             reply.status(200).send(pokemonsTeam);
         }
     });

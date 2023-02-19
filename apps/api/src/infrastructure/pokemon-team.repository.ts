@@ -45,7 +45,7 @@ export class PokemonTeamRepository implements IPokemonTeamRepository {
                 }
             }
         }
-        return { teamId: teamId, trainerId : trainerId, trainer : trainer , pokemonList: pkmnList };
+        return { teamId: teamId, trainer: trainer, pokemonList: pkmnList };
     }
 
     async create(trainerId: number): Promise<PokemonTeam> {
@@ -96,7 +96,7 @@ export class PokemonTeamRepository implements IPokemonTeamRepository {
         if (add === null) {
             return Promise.reject("Error while adding pokemon in team");
         }
-        return await this.buildPokemonTeamEntity(pokemonTeam.teamId, pokemonTeam.trainer!.id);
+        return await this.buildPokemonTeamEntity(pokemonTeam.teamId, pokemonTeam.trainer.id);
     }
 
     async removeFromTeam(pokemonTeam: PokemonTeam, pid: number): Promise<PokemonTeam> {
@@ -108,6 +108,6 @@ export class PokemonTeamRepository implements IPokemonTeamRepository {
         if (remove === null) {
             return Promise.reject("Error while removing pokemon in team");
         }
-        return await this.buildPokemonTeamEntity(pokemonTeam.teamId, pokemonTeam.trainer!.id);
+        return await this.buildPokemonTeamEntity(pokemonTeam.teamId, pokemonTeam.trainer.id);
     }
 }

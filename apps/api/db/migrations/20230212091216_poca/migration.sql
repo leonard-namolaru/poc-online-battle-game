@@ -12,8 +12,8 @@ CREATE TABLE "Battle" (
     "id" SERIAL NOT NULL,
     "attackingTrainerId" INTEGER NOT NULL,
     "opposingTrainerId" INTEGER NOT NULL,
-    "attackerPokemonId" INTEGER NOT NULL,
-    "opponentPokemonId" INTEGER NOT NULL,
+    "attackerPokemonLifePoints" INTEGER NOT NULL,
+    "opponentPokemonLifePoints" INTEGER NOT NULL,
     "winner" INTEGER NOT NULL,
 
     CONSTRAINT "Battle_pkey" PRIMARY KEY ("id")
@@ -85,9 +85,3 @@ ALTER TABLE "PokemonOnPokemonTeams" ADD CONSTRAINT "PokemonOnPokemonTeams_pokemo
 
 -- AddForeignKey
 ALTER TABLE "PokemonTeam" ADD CONSTRAINT "PokemonTeam_trainerId_fkey" FOREIGN KEY ("trainerId") REFERENCES "Trainer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Battle" ADD CONSTRAINT "Battle_attackingPokemonId_fkey" FOREIGN KEY ("attackerPokemonId") REFERENCES "Pokemon"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Battle" ADD CONSTRAINT "Battle_opposingPokemonId_fkey" FOREIGN KEY ("opponentPokemonId") REFERENCES "Pokemon"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
