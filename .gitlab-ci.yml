@@ -24,7 +24,7 @@ deploy-railway:
     - yarn install
     #- yarn db:start
     - yarn prisma generate
-    - yarn prisma db push
+    - yarn prisma db push --force-reset
     - yarn build
     - yarn test
     # Build web interface
