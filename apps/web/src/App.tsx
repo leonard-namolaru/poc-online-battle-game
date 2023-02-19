@@ -1,23 +1,30 @@
 import React, {StrictMode, useEffect, useState} from "react";
 import ReactDOM from "react-dom"
-import {BrowserRouter, Routes , Route, Outlet, Link} from "react-router-dom"
+import {BrowserRouter , Routes , Route,  Outlet, Link} from "react-router-dom"
 import Home, { ListeTrainerForme } from "./pages/Home";
 import Pokemon from "./pages/Pokemon";
 import Login from "./pages/Login";
 import UserPage from "./pages/user/userPage"
+import   ResponsiveMenu from "./pages/menu/menu";
 
 function AppLayout() {
+    const menuItems = [
+        { label: 'Accueil', path: '/' },
+        { label: 'Création de pokemon', path: '/pokemon' },
+        { label: 'Dresseurs', path: '/trainer' },
+      ];
     return (
+       
         <>
-            <nav>
-                <ul>
-                    <li> <Link to="/">Accueil</Link> </li>
-                    <li> <Link to="/pokemon">Création de pokemon</Link> </li>
-                    <li> <Link to="/trainer">Dresseurs</Link> </li>
-                </ul>
-            </nav>
+            {/* <nav> */}
+                {/* //<ul> */}
+                <ResponsiveMenu menuItems={menuItems} />
+                {/* //</ul> */}
+            {/* </nav> */}
             <Outlet />
         </>
+
+            
     )
 }
 

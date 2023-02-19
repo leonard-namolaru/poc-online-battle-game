@@ -3,8 +3,14 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
+import { Container, Grid, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { List, ListItemText, ListItemAvatar, Avatar } from '@material-ui/core';
+
 
 import "./user.scss"
+
+
 
 
 interface Trainer {
@@ -14,55 +20,128 @@ interface Trainer {
 }
 
 
-interface pokemon {
+interface Pokemon {
   id: number;
   name: string;
   image: string;
 };
 
 interface TrainerProps {
-  trainer : Trainer
-  deleteTrainer: (id: string) => void;
+  trainer : Trainer[] | null
+  setTrainer: (trainer: Trainer[] | null) => void;
 }
 
 interface PokemonProps {
-  pokemons: pokemon[] ;
-  setPokemons: (pokemons: pokemon[]) => void;
+  pokemons: Pokemon[] | null;
+  setPokemons: (pokemons: Pokemon[] | null) => void;
 }
+const useStyles = makeStyles({
+  image: {
+    maxWidth: '100%',
+    maxHeight: '100%',
+  },
+});
 
-const Trainer: React.FC<TrainerProps> = ({ trainer, deleteTrainer }) => {
+const Trainer: React.FC<TrainerProps> = ({ trainer, setTrainer }) => {
+  const classes = useStyles();
+  const removeSelected = (id: number) => {
+    if(trainer){
+      setTrainer(trainer.filter((item) => item.id !== id));
+    }
+  };
   return (
-    <div>
-      <h2>{trainer.name}</h2>
-      <img src={trainer.image} alt={trainer.name} />
-      <button onClick={() => deleteTrainer(trainer.id)}>Supprimer</button>
-    </div>
+  <div>
+  <ul style={{ listStyleType: 'none', margin: 0, padding: 0 }}>
+    {trainer?.map( item  => ( 
+    <li style={{ 
+        display: 'flex', 
+        alignItems: 'center',
+        backgroundColor: 'white',
+        boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.1)',
+        borderRadius: '5px',
+        height: '60px',
+        paddingLeft: '20px',
+        paddingRight: '20px',
+        margin: '10px'
+      }}>
+      <div style={{ flex: 1 }}>
+        <h2 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 'bold' }}>{item?.name}</h2>
+        <p style={{ margin: 0, fontSize: '0.8rem', color: '#999' }}>Trainer</p>
+      </div>
+      <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+        <Avatar className={classes.image} style={{ marginRight: '10px' }}>
+          <img src={item?.image} alt={item?.name} />
+        </Avatar>
+        <button style={{ 
+            backgroundColor: '#ff6666', 
+            border: 'none', 
+            color: 'white', 
+            padding: '10px 20px', 
+            borderRadius: '5px',
+            fontWeight: 'bold',
+            fontSize: '0.8rem',
+            cursor: 'pointer'
+          }} onClick={() => removeSelected(item.id)}>Supprimer</button>
+      </div>
+    </li>))}
+  </ul>
+</div>
+
   );
 };
 
 const PokemonList: React.FC<PokemonProps> = ({ pokemons, setPokemons }) => {
-  const [selectedPokemons, setselectedPokemons] = useState<pokemon | null>(null);
-  const toggleSelection = (id: number) => {
-    setselectedPokemons(pokemons?.find((item) => item?.id === id));
+  const removeSelected = (id: number) => {
+    if(pokemons){
+      setPokemons(pokemons.filter((item) => item.id !== id));
+    }
   };
+  const classes = useStyles();
   return (
-    <ul>
-      {pokemons.map(pokemon => (
-        <li key={pokemon.id}>
-          <h3>{pokemon.name}</h3>
-          <img src={pokemon.image} alt={pokemon.name} />
-          <button onClick={() => deletePokemon(pokemon.id)}>Supprimer</button>
-        </li>
-      ))}
+    <div style={{border: "1px solid #ccc", borderRadius: "10px"}}>
+    <ul style={{ listStyleType: 'none', margin: 0, padding: 0, height: '200px', overflow: 'auto' }} >
+    {pokemons?.map(pokemon => (
+      <li key={pokemon.id} style={{ 
+          display: 'flex', 
+          alignItems: 'center',
+          backgroundColor: pokemon.id % 2 === 0 ? 'lightgray': 'white',
+          boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.1)',
+          borderRadius: '5px',
+          height: '60px',
+          paddingLeft: '20px',
+          paddingRight: '20px',
+          margin: '10px'
+        }}>
+        <div style={{ flex: 1 }}>
+          <h2 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 'bold' }}>{pokemon?.name}</h2>
+          <p style={{ margin: 0, fontSize: '0.8rem', color: '#999' }}>pokemon</p>
+        </div>
+        <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+          <Avatar className={classes.image} style={{ marginRight: '10px' }}>
+            <img src={pokemon?.image} alt={pokemon?.name} />
+          </Avatar>
+          <button style={{ 
+              backgroundColor: '#ff6666', 
+              border: 'none', 
+              color: 'white', 
+              padding: '10px 20px', 
+              borderRadius: '5px',
+              fontWeight: 'bold',
+              fontSize: '0.8rem',
+              cursor: 'pointer'
+            }} onClick={() => removeSelected(pokemon.id)}>Supprimer</button>
+        </div>
+      </li> ))}
     </ul>
+  </div>
   );
 };
 
-const TrainerAndPokemon: React.FC<{trainer: TrainerProps; pokemonList: PokemonProps[]; deletePokemon: (id: string) => void;deleteTrainer: (id: string) => void;}> = ({ trainer, pokemonList, deletePokemon, deleteTrainer }) => {
+const TrainerAndPokemon: React.FC<TrainerProps & PokemonProps> = ({ trainer, pokemons, setPokemons, setTrainer }) => {
   return (
     <div>
-      <Trainer trainer={trainer} deleteTrainer={deleteTrainer} />
-      <PokemonList pokemonList={pokemonList} deletePokemon={deletePokemon} />
+      <Trainer trainer={trainer} setTrainer={setTrainer} />
+      <PokemonList pokemons={pokemons} setPokemons={setPokemons} />
     </div>
   );
 };
@@ -81,15 +160,13 @@ interface Item {
 interface GereLaListe {
   items: Item[] ;
   setItems: (item: Item[]) => void;
+  itemsPokemon?: Pokemon[] | null;
+  itemsTrainers?: Trainer[] | null;
+  setitemsPokemon?: (itemsPokemon: Pokemon[] | null) => void;
+  setitemsTrainers?: (itemsTrainers: Trainer[] | null ) => void;
 }
-const ItemList: React.FC<GereLaListe> = ({items, setItems}) => {
-  // const [items, setItems] = useState<Item[]>([
-  //   { id: 1, value: 'Pikachu  ', selected: false, image: 'https://imagespocauniversitepariscite.s3.eu-central-1.amazonaws.com/pikachu-3865521_960_720.png', description: 'Pikachu de ' },
-  //   { id: 2, value: 'Rattatac  ', selected: false, image: 'https://imagespocauniversitepariscite.s3.eu-central-1.amazonaws.com/Rattatac.png', description: 'Rattatac de ' },
-  //   { id: 3, value: 'Pulpizarre  ', selected: false, image: 'https://imagespocauniversitepariscite.s3.eu-central-1.amazonaws.com/pulpizarre.png', description: 'Pulpizarre de ' },
-  //   { id: 4, value: 'Salmeche  ', selected: false, image: 'https://imagespocauniversitepariscite.s3.eu-central-1.amazonaws.com/salmeche.png', description: 'Salmeche de ' },
-  // ]);
-
+const ItemList: React.FC<GereLaListe> = ({items, setItems, itemsPokemon, itemsTrainers, setitemsPokemon,setitemsTrainers}) => {
+ 
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
   const [background, setBacground] = useState<string>("");
   const [backgroundPosition, setBackgroundPosition] = useState<string>('0 0');
@@ -115,14 +192,55 @@ const ItemList: React.FC<GereLaListe> = ({items, setItems}) => {
       })
     );
     setSelectedItem(items.find((item) => item.id === id));
-
     let concat : string = "url('"+items.find((item) => item.id ===id)?.image+"')"
     console.log("concat vaut "+concat)
     setBacground(concat);
   };
 
   const removeSelected = () => {
-    setItems(items.filter((item) => !item.selected));
+    //setItems(items.filter((item) => !item.selected));
+    
+    if (itemsTrainers && setitemsTrainers ){
+      if(selectedItem){
+        
+         if (itemsTrainers.length === 1){
+          const myTrainer = itemsTrainers.slice();
+          myTrainer [0] = {
+            id : selectedItem.id,
+            name: selectedItem.value,
+            image: selectedItem.image
+          };
+          setitemsTrainers(myTrainer);
+         }else{
+          const trainer: Trainer = {
+            id : selectedItem.id,
+            name: selectedItem.value,
+            image: selectedItem.image
+          }
+          setitemsTrainers([...itemsTrainers, trainer]);
+         }   
+      }
+      
+    }else if (itemsPokemon && setitemsPokemon){
+     
+      if(selectedItem){
+        const isExists = itemsPokemon.find((item) => item.id === selectedItem.id);
+        if(isExists){
+           alert( "Vous avez déjà choisi le Pokémon "+selectedItem.value)
+        }else{
+          const mypokemon: Pokemon ={
+            id : selectedItem.id,
+            name: selectedItem.value,
+            image: selectedItem.image
+          };
+
+          setitemsPokemon([...itemsPokemon, mypokemon]);
+          console.log(itemsPokemon);
+      }
+      }
+
+    }
+
     setSelectedItem(null);
   };
 
@@ -298,23 +416,16 @@ const userPage = () => {
     { id: 4, value: 'Atteyeh  ', selected: false, image: 'https://imagespocauniversitepariscite.s3.eu-central-1.amazonaws.com/omar.png', description: '5 ans expérience ' },
   ]);
 
-  const [pokemonsChoised, setPokemonsChoised] = useState<pokemon[]>([
-    { id: 1, name: 'Pikachu  ',  image: 'https://imagespocauniversitepariscite.s3.eu-central-1.amazonaws.com/pikachu-3865521_960_720.png' },
-    { id: 2, name: 'Rattatac  ',  image: 'https://imagespocauniversitepariscite.s3.eu-central-1.amazonaws.com/Rattatac.png'  },
-    { id: 3, name: 'Pulpizarre  ',  image: 'https://imagespocauniversitepariscite.s3.eu-central-1.amazonaws.com/pulpizarre.png'  },
-    { id: 4, name: 'Salmeche  ',  image: 'https://imagespocauniversitepariscite.s3.eu-central-1.amazonaws.com/salmeche.png'  },
-  ]);
-  const [TrainerChoisied, setTrainerChoised] = useState<Trainer>(
-    { id: 1, name: 'Ismail  ', image: 'https://imagespocauniversitepariscite.s3.eu-central-1.amazonaws.com/ali.jpg' }
-  );
+  const [pokemonsChoised, setPokemonsChoised] = useState<Pokemon[] | null>([]);
+  const [TrainerChoisied, setTrainerChoised] = useState<Trainer[] | null >([]);
 
 
      //fin de bouton 
      const styles = {
       page:{
         backgroundColor: "#807272",
-        marginLeft: "20px",
-        marginRight: "20px",
+        marginLeft: "auto",
+        marginRight: "auto",
         border: "1px solid #ccc",
         borderRadius: "10px",
         boxShadow: "0px 0px 10px 0px #ccc",
@@ -329,35 +440,27 @@ const userPage = () => {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        //width: "100%",
-        height: "60vh",
-        border: "1px solid #ccc",
-        borderRadius: "10px",
-        boxShadow: "0px 0px 10px 0px #ccc",
         padding: "20px",
-        backgroundColor: "#a09898",
-        marginLeft: "20px",
-        marginRight: "20px",
         marginTop: "40px",
-        overflow:"auto",
-        background: `url('https://imagespocauniversitepariscite.s3.eu-central-1.amazonaws.com/image1.gif')`,
-        
+        marginLeft: "auto",
+        marginRight: "auto",
       },
       box: {
-
         maxHeight: "50vh",
         minHeight: "50vh",
+        marginRight: "5px",
         backgroundColor: "#f2f2f2",
-        minWidth: "50vh",
+        //minWidth: "50vh",
         padding: "20px",
-        border: "1px solid #ccc",
-        borderRadius: "10px",
+        border: "1px solid #333",
+        borderRadius: "15px",
         textAlign: "center",
-        boxShadow: "0px 0px 10px 0px #ccc",
+        boxShadow: "0px 10px 20px 2px rgba(0,255,255,0.7)",
         marginBottom: "20px",
         overflow: "auto",
-        marginLeft: "20px",
-        
+        marginLeft: "5px",
+        transition: "all ease 0.2s",
+        transform: "translateY(-5px)",
       },
       h3: {
         fontSize: "18px",
@@ -402,39 +505,53 @@ const userPage = () => {
     
      console.log("valeur user "+user);
     return (
-        
-        <div>
-         {/* {user == null ?(
-              <h3>L'utilisateur n'est pas identifié où il y a une erreur de connexion</h3> 
-         ) : ( */}
-            <div style={styles.page}>
-              {/* <h1  style={styles.h1}>Bonjour { user.name }, Merci de créez votre équipe en fonction de vos préférences.</h1> */}
-              <h1  style={styles.h1}>Bonjour , Merci de créez votre équipe en fonction de vos préférences.</h1>
-
-              <div style={styles.container}>
-                {/* <TrainerList trainers={trainers} /> */}
+        <Container maxWidth="70%" style={styles.page}>
+            <Typography variant="h1" style={styles.h1}>
+              Bonjour , Merci de créez votre équipe en fonction de vos préférences.
+            </Typography>
+            <Grid container spacing={3} style={styles.container} >
+              <Grid item xs={12} md={4}>
                 <div style={styles.box}>
-                  <h3 style={styles.h3}>Sélectionner un Dresseur</h3>
-                  <ItemList items={Trainer} setItems={setTrainer} />
+                  <Typography variant="h3" style={styles.h3}>
+                    Sélectionner un Dresseur
+                  </Typography>
+                  <ItemList items={Trainer} setItems={setTrainer} itemsTrainers={TrainerChoisied} setitemsTrainers={setTrainerChoised}/>
                 </div>
+              </Grid>
+              <Grid item xs={12} md={4}>
                 <div style={styles.box}>
-                  <h3 style={styles.h3}>Choisir des pokémons</h3>
-                  <ItemList items={pokemons} setItems={setPokemons} />
+                  <Typography variant="h3" style={styles.h3}>
+                    Choisir des pokémons
+                  </Typography>
+                  <ItemList items={pokemons} setItems={setPokemons} itemsPokemon={pokemonsChoised} setitemsPokemon={setPokemonsChoised}/>
                 </div>
+              </Grid>
+              <Grid item xs={12} md={4}>
                 <div style={styles.box}>
-                    <h3 style={styles.h3}>Votre Équipe</h3>
-                    {/* <TrainerAndPokemon trainer={TrainerChoisied} pokemonList={pokemonsChoised} /> */}
-                </div>
-              </div>
-                   
-              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '10vh' }}>
-                <ColorfulButton backgroundSize='cover' border='2px solid red' fontFamily ='Verdana, sans-serif' animation = "change-image 3s ease-in-out infinite" background = "url('https://imagespocauniversitepariscite.s3.eu-central-1.amazonaws.com/image3.gif')" text="Créez votre équipe." backgroundColor="#0e0d0d" textColor="#fff" onClick={handleClick} />
-                {/* <div style={{ marginLeft: '20px' }}>Clicks: {counter}</div> */}
-              </div>
-             </div>
-         {/* )} */}
+                  <Typography variant="h3" style={styles.h3}>
+                    Votre Équipe
+                    { <TrainerAndPokemon trainer={TrainerChoisied} pokemons={pokemonsChoised} setPokemons={setPokemonsChoised} setTrainer={setTrainerChoised} /> }
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '10vh' }}>
+                      <ColorfulButton
+                        backgroundSize='cover'
+                        border='2px solid red'
+                        fontFamily ='Verdana, sans-serif'
+                        animation = "change-image 3s ease-in-out infinite"
+                        background = "url('https://imagespocauniversitepariscite.s3.eu-central-1.amazonaws.com/image3.gif')"
+                        text="Créez votre équipe."
+                        backgroundColor="#0e0d0d"
+                        textColor="#fff"
+                        onClick={handleClick}
+                      />
+                    </div>
+                  </Typography>
                   
-        </div>
+                </div>
+              </Grid>
+            </Grid>
+            
+          </Container>
+
       
     );
 };
