@@ -27,7 +27,11 @@ describe('Create Trainer Usecase - test', () => {
         trainerRepositoryMock.create.mockImplementation(() => expectedTrainer)
 
         // WHEN
-        const trainer = await createTrainerUsecase.execute({name: expectedTrainer.name, gender: expectedTrainer.gender})
+        const trainer = await createTrainerUsecase.execute({
+            name: expectedTrainer.name,
+            gender: expectedTrainer.gender,
+            activeTeam: expectedTrainer.activeTeam
+        })
 
         // THEN
         expect(trainerRepositoryMock.create).toHaveBeenCalledOnce()
