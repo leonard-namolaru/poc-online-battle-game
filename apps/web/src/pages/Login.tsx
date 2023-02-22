@@ -63,7 +63,7 @@ const Login = () => {
                     }}
                 />
                 <br />
-                <input
+                <input type="password"
                     placeholder="mot de passe"
                     value={user.pwd}
                     onChange={(evt) => {
