@@ -14,7 +14,7 @@ export type ListeTrainerForme = {
     gender: string;
 };
 
-const Home = () => {
+const Trainer = () => {
     const [trainers, gettrainers] = useState<ListeTrainerForme[] | null>();
     useEffect(() => {
         const url = "http://localhost:3000/trainers";
@@ -79,5 +79,5 @@ const Home = () => {
     );
 };
 
-export default Home;
+export default Trainer;
 
