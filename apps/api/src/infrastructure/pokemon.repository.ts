@@ -3,24 +3,45 @@ import {Pokemon} from "../domain/entities";
 import {prisma} from "../../db";
 
 
+
 export class PokemonRepository implements IPokemonRepository {
-    async create(pokemon: {pokedex: number,  name: string, exp:number, level:number}): Promise<Pokemon> {
+    async create(pokemon: {pokedex: number, name: string, stats: {attack: number, hp: number}, item: {name: string, effect: number}, moves: {name: string, damage: number}[], exp: number, level: number}): Promise<Pokemon> {
+
         const newPokemon = await prisma.pokemon.create({
             data: {
                 pokedex: pokemon.pokedex,
                 name: pokemon.name,
+                stats: {
+                    create : {
+                        attack : pokemon.stats.attack,
+                        hp     : pokemon.stats.hp,
+                    },
+                },
+                item: {
+                    create : {
+                        name : pokemon.item.name,
+                        effect : pokemon.item.effect,
+                    }
+                },
+                moves: {
+                    create : pokemon.moves
+                },
                 exp: pokemon.exp,
                 level: pokemon.level
             },
+            include : {
+                item : true,
+                moves : true,
+                stats : true,
+            }
         });
 
         return newPokemon;
     }
 
 
-
     async findAll(): Promise<Pokemon[]> {
-        const pokemons: Pokemon[] = await prisma.pokemon.findMany();
+        const pokemons: Pokemon[] = await prisma.pokemon.findMany({ include : {item : true, moves : true, stats : true}});
 
         return pokemons;
     }
@@ -29,6 +50,11 @@ export class PokemonRepository implements IPokemonRepository {
         const pokemon = await prisma.pokemon.findUnique({
             where: {
                 id: pokemonId
+            },
+            include : {
+                item : true,
+                moves : true,
+                stats : true,
             }
         })
         if (pokemon === null){

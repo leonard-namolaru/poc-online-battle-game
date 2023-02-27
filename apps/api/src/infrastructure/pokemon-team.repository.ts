@@ -1,5 +1,5 @@
 import { IPokemonTeamRepository } from "../domain/interfaces";
-import { PokemonTeam } from "../domain/entities";
+import {PokemonTeam} from "../domain/entities";
 import { Pokemon } from "../domain/entities";
 import { prisma } from "../../db";
 
@@ -15,7 +15,8 @@ export class PokemonTeamRepository implements IPokemonTeamRepository {
         const trainer = await prisma.trainer.findFirst({
             where: {
                 id: trainerId
-            }
+            },
+            include: {activeTeam: true},
         });
         if (trainer === null) {
             return Promise.reject("Provided Trainer id does not exist !");
@@ -38,6 +39,11 @@ export class PokemonTeamRepository implements IPokemonTeamRepository {
                 const pkmn = await prisma.pokemon.findUnique({
                     where: {
                         id: pokemonOnPokemonTeams[index].pid
+                    },
+                    include : {
+                        item : true,
+                        moves : true,
+                        stats : true,
                     }
                 });
                 if (pkmn) { // Needed to ensure a valid pokemon object is used.
@@ -45,7 +51,9 @@ export class PokemonTeamRepository implements IPokemonTeamRepository {
                 }
             }
         }
-        return { teamId: teamId, trainerId : trainerId, trainer : trainer , pokemonList: pkmnList };
+
+
+        return { teamId: teamId, trainerId : trainerId, pokemonList: pkmnList };
     }
 
     async create(trainerId: number): Promise<PokemonTeam> {
@@ -96,7 +104,7 @@ export class PokemonTeamRepository implements IPokemonTeamRepository {
         if (add === null) {
             return Promise.reject("Error while adding pokemon in team");
         }
-        return await this.buildPokemonTeamEntity(pokemonTeam.teamId, pokemonTeam.trainer!.id);
+        return await this.buildPokemonTeamEntity(pokemonTeam.teamId, pokemonTeam.trainerId);
     }
 
     async removeFromTeam(pokemonTeam: PokemonTeam, pid: number): Promise<PokemonTeam> {
@@ -108,6 +116,6 @@ export class PokemonTeamRepository implements IPokemonTeamRepository {
         if (remove === null) {
             return Promise.reject("Error while removing pokemon in team");
         }
-        return await this.buildPokemonTeamEntity(pokemonTeam.teamId, pokemonTeam.trainer!.id);
+        return await this.buildPokemonTeamEntity(pokemonTeam.teamId, pokemonTeam.trainerId);
     }
 }

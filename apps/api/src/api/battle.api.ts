@@ -21,7 +21,7 @@ export const battleRoutes = (
 
   server.route<{ Body: { trainerId: string} }>({
     method: "POST",
-    url: "/CreatBattle", // http post request to (for example) : http://localhost:3000/CreatBattle
+    url: "/CreateBattle", // http post request to (for example) : http://localhost:3000/CreatBattle
     schema: {
       // The format of the request body (in JSON):  {"trainerId": "id"}
       body: {

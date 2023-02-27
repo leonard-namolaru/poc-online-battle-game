@@ -4,67 +4,64 @@ import {initTrainerContainer} from "../src/domain/trainer.container";
 import {initPokemonContainer} from "../src/domain/pokemon.container";
 import {initPokemonTeamContainer} from "../src/domain/pokemon-team.container";
 
-export async function generateRandomAttackerAndOpponentForTest() : Promise<{ attackingTrainerId: number; opposingTrainerId: number; attackerPokemonId: number; opponentPokemonId: number; winner: number; }> {
-    const trainerContainer = initTrainerContainer()
-    const trainers = await trainerContainer.getAllTrainersUsecase.execute();
+export async function generateAttackerAndOpponentForTest() : Promise<{ attackingTrainerId: number; opposingTrainerId: number; attackerPokemonId: number; opponentPokemonId: number; winner: number; }> {
+    const trainerContainer = initTrainerContainer();
 
     const pokemonTeamContainer = initPokemonTeamContainer();
-    const pokemonsTeams = await pokemonTeamContainer.getAllPokemonTeamsUsecase.execute();
-
     const pokemonContainer = initPokemonContainer();
-    const pokemons = await pokemonContainer.getAllPokemonsUsecase.execute();
 
-    if (trainers.length < 2) {
-        // The battle system cannot be tested if there are not at least 2 trainers in the database
-        await trainerContainer.createTrainerUsecase.execute({name: "test", gender: "m"})
-        return await generateRandomAttackerAndOpponentForTest();
-    }
+    const givenPikachu1 = {
+        pokedex: 25,
+        name: 'pikachu',
+        stats: { attack: 55, hp: 35 },
+        item: {name: 'test', effect: 3 },
+        moves: [
+            { name: 'mega-punch', damage: 80 },
+            { name: 'pay-day', damage: 40 }
+        ],
+        exp: 112,
+        level: 0
+    };
 
-    const attackingTrainerIndex = Math.floor(Math.random() * trainers.length);
-    let rivalTrainerIndex = -1;
-    do {
-        rivalTrainerIndex = Math.floor(Math.random() * trainers.length);
-    } while (rivalTrainerIndex == attackingTrainerIndex); // The attacker's opponent cannot be the attacker himself
+    const givenPikachu2 = {
+        pokedex: 25,
+        name: 'pikachu',
+        stats: { attack: 55, hp: 35 },
+        item: {name: 'test', effect: 3 },
+        moves: [
+            { name: 'mega-punch', damage: 80 },
+            { name: 'pay-day', damage: 40 }
+        ],
+        exp: 112,
+        level: 0
+    };
 
-    pokemonsTeams.forEach(element => {
-        if (element.trainerId == trainers[attackingTrainerIndex].id)
-            trainers[attackingTrainerIndex].activeTeam = element;
-        else if (element.trainerId == trainers[rivalTrainerIndex].id)
-            trainers[rivalTrainerIndex].activeTeam = element;
-    });
+    let attackingTrainer = await trainerContainer.createTrainerUsecase.execute({name: "testBattle1", gender: "m"});
+    let opposingTrainer = await trainerContainer.createTrainerUsecase.execute({name: "testBattle2", gender: "f"});
+    
+    const givenPokemon1 = await pokemonContainer.createPokemonUsecase.execute(givenPikachu1);
+    const givenAttackingUpdatedPokemonTeam = await pokemonTeamContainer.updatePokemonTeamUsecase.addPokemon(attackingTrainer.activeTeam.teamId, givenPokemon1.id);
+    attackingTrainer.activeTeam = givenAttackingUpdatedPokemonTeam;
 
-    if (!trainers[attackingTrainerIndex].activeTeam || !trainers[attackingTrainerIndex].activeTeam!.pokemonList)
-        trainers[attackingTrainerIndex].activeTeam = await pokemonTeamContainer.createPokemonTeamUsecase.create(trainers[attackingTrainerIndex].id)
+    const givenPokemon2 = await pokemonContainer.createPokemonUsecase.execute(givenPikachu2);
+    const givenOpposingUpdatedPokemonTeam = await pokemonTeamContainer.updatePokemonTeamUsecase.addPokemon(opposingTrainer.activeTeam.teamId, givenPokemon2.id);
+    opposingTrainer.activeTeam = givenOpposingUpdatedPokemonTeam;
+    
+    const attackerPokemonId = attackingTrainer.activeTeam.pokemonList[0].id;
+    const opponentPokemonId = opposingTrainer.activeTeam.pokemonList[0].id;
 
-    if (!trainers[rivalTrainerIndex].activeTeam || !trainers[rivalTrainerIndex].activeTeam!.pokemonList)
-        trainers[rivalTrainerIndex].activeTeam = await pokemonTeamContainer.createPokemonTeamUsecase.create(trainers[rivalTrainerIndex].id)
-
-    if (trainers[attackingTrainerIndex].activeTeam!.pokemonList!.length == 0) {
-        const pokemon = await pokemonContainer.createPokemonUsecase.execute({pokedex: 1, name: "bulbasaur", exp: 64, level: 0})
-        const updatedPokemonTeam = await pokemonTeamContainer.updatePokemonTeamUsecase.addPokemon(trainers[attackingTrainerIndex].activeTeam.teamId, pokemon.id);
-        trainers[attackingTrainerIndex].activeTeam = updatedPokemonTeam;
-    }
-
-    if (trainers[rivalTrainerIndex].activeTeam!.pokemonList!.length == 0) {
-        const pokemon = await pokemonContainer.createPokemonUsecase.execute({pokedex: 1, name: "bulbasaur", exp: 64, level: 0})
-        const updatedPokemonTeam = await pokemonTeamContainer.updatePokemonTeamUsecase.addPokemon(trainers[rivalTrainerIndex].activeTeam.teamId, pokemon.id);
-        trainers[rivalTrainerIndex].activeTeam = updatedPokemonTeam;
-    }
-
-    const attackerPokemonId = trainers[attackingTrainerIndex].activeTeam!.pokemonList![0].id;
-    const opponentPokemonId = trainers[rivalTrainerIndex].activeTeam!.pokemonList![0].id;
-
-    return {attackingTrainerId:  trainers[attackingTrainerIndex].id,
-            opposingTrainerId: trainers[rivalTrainerIndex].id,
+    return {attackingTrainerId:  attackingTrainer.id,
+            opposingTrainerId: opposingTrainer.id,
             attackerPokemonId: attackerPokemonId,
             opponentPokemonId: opponentPokemonId,
             winner: -1 };
-}
+};
+
 describe('Battle Repository - test', () => {
     const battleRepository = new BattleRepository()
 
     test('#create', async () => {
-        const {attackingTrainerId, opposingTrainerId, attackerPokemonId, opponentPokemonId, winner} = await generateRandomAttackerAndOpponentForTest();
+        const {attackingTrainerId, opposingTrainerId, attackerPokemonId, opponentPokemonId, winner} = await generateAttackerAndOpponentForTest();
 
         // WHEN
         const battle = await battleRepository.create({attackingTrainerId, opposingTrainerId, attackerPokemonId, opponentPokemonId, winner})
@@ -76,5 +73,5 @@ describe('Battle Repository - test', () => {
         expect(battle.attackerPokemonId).toEqual(attackerPokemonId);
         expect(battle.opponentPokemonId).toEqual(opponentPokemonId);
         expect(battle.winner).toEqual(winner);
-    })
-})
+    });
+});

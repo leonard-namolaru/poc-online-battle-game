@@ -10,6 +10,7 @@ import {initPokemonContainer} from "./domain/pokemon.container";
 import { initUserContainer } from "./domain/user.container";
 import {initPokemonTeamContainer} from "./domain/pokemon-team.container";
 import cors from "@fastify/cors";
+import {PokeApiRepository} from "./infrastructure/poke-api.repository";
 
 
 export let hpPointsPokemonsDuringBattle : {pokemonId : number, hp : number}[] = new Array();
@@ -37,8 +38,10 @@ const start = async () => {
         const userContainer = initUserContainer()
         const pokemonTeamContainer = initPokemonTeamContainer();
 
-        registerTrainerRoutes(server, trainerContainer, pokemonTeamContainer);
-        pokemonRoutes(server, pokemonContainer);
+        const pokeApiRepository = new PokeApiRepository();
+
+        registerTrainerRoutes(server, trainerContainer);
+        pokemonRoutes(server, pokemonContainer, pokeApiRepository);
         battleRoutes(server, trainerContainer, battleContainer, pokemonTeamContainer);
         registerUserRoutes(server,userContainer);
         registerPokemonTeamRoutes(server, pokemonTeamContainer);

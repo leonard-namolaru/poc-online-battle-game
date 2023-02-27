@@ -1,4 +1,4 @@
-import {afterEach, describe, expect, test, vi} from 'vitest'
+ import {afterEach, describe, expect, test, vi} from 'vitest'
 import {CreateTrainerUsecase} from "../src/domain/create-trainer.usecase";
 import {Trainer} from '../src/domain/entities';
 
@@ -19,7 +19,7 @@ describe('Create Trainer Usecase - test', () => {
 
     test('should create ', async () => {
         // GIVEN
-        const expectedTrainer: Trainer = {
+        const expectedTrainer = {
             id: 1,
             name: 'Toto',
             gender: 'f',
@@ -29,8 +29,7 @@ describe('Create Trainer Usecase - test', () => {
         // WHEN
         const trainer = await createTrainerUsecase.execute({
             name: expectedTrainer.name,
-            gender: expectedTrainer.gender,
-            activeTeam: expectedTrainer.activeTeam
+            gender: expectedTrainer.gender
         })
 
         // THEN

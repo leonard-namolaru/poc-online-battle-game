@@ -1,7 +1,7 @@
 import {afterEach, describe, expect, test, vi} from 'vitest'
 import {CreateBattleUsecase} from "../src/domain/create-battle.usecase";
 import {Battle, PokemonTeam} from '../src/domain/entities';
-import {generateRandomAttackerAndOpponentForTest} from "./battle.repository.test"
+import {generateAttackerAndOpponentForTest} from "./battle.repository.test"
 describe('Create Battle Usecase - test', () => {
     const battleRepositoryMock = {
         create: vi.fn(),
@@ -18,7 +18,7 @@ describe('Create Battle Usecase - test', () => {
     })
 
     test('should create ', async () => {
-        const {attackingTrainerId, opposingTrainerId, attackerPokemonId, opponentPokemonId, winner} = await generateRandomAttackerAndOpponentForTest();
+        const {attackingTrainerId, opposingTrainerId, attackerPokemonId, opponentPokemonId, winner} = await generateAttackerAndOpponentForTest();
 
         // GIVEN
         const expectedBattle: Battle = {

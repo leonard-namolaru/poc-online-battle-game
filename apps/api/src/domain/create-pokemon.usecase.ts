@@ -8,11 +8,14 @@ export class CreatePokemonUsecase {
         this.pokemonRepository = pokemonRepository;
     }
 
-    async execute(command: {pokedex: number,  name: string, exp:number, level:number}): Promise<Pokemon> {
+    async execute(command: {pokedex: number, name: string, stats: {attack: number, hp: number}, item: {name: string, effect: number}, moves: {name: string, damage: number}[], exp: number, level: number}): Promise<Pokemon> {
         // create a new pokemon in db
         const newPokemon = await this.pokemonRepository.create({
             pokedex: command.pokedex,
             name: command.name,
+            stats: command.stats,
+            item: command.item,
+            moves: command.moves,
             exp: command.exp,
             level: command.level
         });

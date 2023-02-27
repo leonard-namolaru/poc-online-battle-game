@@ -1,4 +1,4 @@
-import {PokemonTeam, Trainer} from "./entities";
+import {Trainer} from "./entities";
 import { ITrainerRepository } from "./interfaces";
 
 export class UpdateTrainerUsecase {
@@ -8,13 +8,12 @@ export class UpdateTrainerUsecase {
         this.trainerRepository = trainerRepository;
     }
 
-    async execute(command: { gender: string, name: string, id: number, activeTeam : PokemonTeam }): Promise<Trainer> {
+    async execute(command: { gender: string, name: string, id: number}): Promise<Trainer> {
         // update a trainer in db
         const newTrainer = await this.trainerRepository.update({
             id: command.id,
             name: command.name,
-            gender: command.gender,
-            activeTeam: command.activeTeam
+            gender: command.gender
         });
         return newTrainer;
     }
