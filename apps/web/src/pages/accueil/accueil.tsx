@@ -1,14 +1,37 @@
-import { AppBar, Toolbar, IconButton, Typography, Button, Menu, MenuItem, Hidden } from '@material-ui/core';
-import { Menu as MenuIcon, AccountCircle, ExitToApp, PersonAdd } from '@material-ui/icons';
 import React, { useState } from 'react';
-import ResponsiveMenu from './menu';
+import AppBarMenu from './AppBar';
 import Footer from './footer';
 import AdCarousel from './carousel';
+import ResponsiveMenu from '../menu/menu';
+import { Outlet} from "react-router-dom";
+import { AppBar, Toolbar, IconButton, Typography, Button, Menu, MenuItem, Hidden } from '@material-ui/core';
+import { Menu as MenuIcon, AccountCircle, ExitToApp, PersonAdd } from '@material-ui/icons';
 
 interface User {
   id: number;
   name: string;
   image: string;
+}
+function AppLayout() {
+  const menuItems = [
+      // { label: 'Accueil', path: '/' },
+      // { label: 'Création de pokemon', path: '/pokemon' },
+      // { label: 'Dresseurs', path: '/trainer' },
+      { label: 'Accueil', path: '/' , color : "#F7E7CE"},
+      { label: 'Services', path: '/services', color : "#8A6BBE" },
+      { label: 'Blog', path: '/blog', color : "#98C1D9" },
+      { label: 'Contact', path: '/contact', color : "#A7E9AF" },
+      
+    ];
+  return (
+     
+      <>
+          <ResponsiveMenu menuItems={menuItems} />
+          <Outlet />
+      </>
+
+          
+  )
 }
 const Homepage: React.FC = () => {
   const [isConnected, setIsConnected] = useState<boolean>(false);
@@ -17,10 +40,12 @@ const Homepage: React.FC = () => {
 
   const handleConnect = () => {
     // Code to handle user authentication and set isConnected and userInfo
+    // Cauthentication,  set isConnected and userInfo
   };
 
   const handleDisconnect = () => {
-    // Code to handle user logout and reset isConnected and userInfo
+  	// Code to handle user logout and reset isConnected and userInfo
+    // user logout, reset isConnected and userInfo
   };
 
   const Sign = () =>{
@@ -30,7 +55,10 @@ const Homepage: React.FC = () => {
   return (
     <div style={{display: "flex", flexDirection: "column",minHeight: "100vh",}}>
 
-       <header style={{ height: "60px" }} >{ <ResponsiveMenu  isConnected={isConnected} handleConnect={handleConnect} handleDisconnect={handleDisconnect} handleSign={Sign}/>} </header>
+       <header style={{ height: "60px" }} >
+        {<AppLayout />}
+        { <AppBarMenu  isConnected={isConnected} handleConnect={handleConnect} handleDisconnect={handleDisconnect} handleSign={Sign}/>}  
+      </header>
 
        <main style={{ flexGrow: 1 }}>
             {isConnected ? (
@@ -45,7 +73,7 @@ const Homepage: React.FC = () => {
             )}
         </main>
 
-        {<Footer Address='20 rue ismail' Email='ismail' Name='pokemos ' Phone='+25364216841265' 
+        {<Footer Address='5, rue Thomas Mann 75013 PARIS' Email='@pokemons' Name='pokemos ' Phone='+3310568971' 
            facebookUrl="https://facebook.com"
            twitterUrl="https://twitter.com"
            instagramUrl="https://instagram.com"
