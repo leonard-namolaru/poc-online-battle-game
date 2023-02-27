@@ -5,6 +5,13 @@
 body {
   font-family: Arial;
 }
+.divTitle{
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 50px;
+  margin-right: 50px;
+  margin-left: 50px;
+}
 .div1 {
   width: 50%;
   float: left;
@@ -35,6 +42,82 @@ body {
   margin-bottom: 20px;
 }
 .div2 > input {
+  width: 200px;
+  max-width: 200px;
+  height: 50px;
+  padding-left: 10px;
+  margin-top: 5px;
+  margin-bottom: 2px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: 500;
+  font-family: Montserrat, "sans-serif";
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.25);
+}
+.module-border-wrap {
+
+  margin: auto;
+  max-width: 270px;
+  float: right;
+  padding: 3px;
+  text-align: center;
+  background: linear-gradient(to right, red, black);
+
+}
+.module-border-wrap2 {
+  margin: auto;
+  max-width: 270px;
+  float: left;
+  padding: 3px;
+  text-align: center;
+  background: linear-gradient(to right, red, black);
+  
+
+}
+
+.gifacceuil {
+  background-image: url(./pages/images/Pokemon.gif);
+  margin: auto;
+  float: center;
+  text-align: center;
+  background-repeat: no-repeat;
+  width: 500px;
+  height: 300px;
+  
+
+  
+
+}
+
+
+.div3 {
+
+  text-align: center;
+
+  background: white;
+  padding: 2rem;
+
+}
+
+
+.div3  > button {
+  width: 200px;
+  max-width: 200px;
+  height: 60px;
+  font-weight: 700;
+  margin-top: 5px;
+  font-size: 28px;
+  background: white;
+  border: rgba(48, 48, 48, 0.5) solid 1px;
+  border-radius: 5px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  color: #303030;
+}
+.div3 > h1 {
+  margin-bottom: 20px;
+}
+.div3 > input {
   width: 200px;
   max-width: 200px;
   height: 50px;
