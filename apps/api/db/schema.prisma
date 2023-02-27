@@ -41,6 +41,34 @@ model Pokemon {
   battleOpposing  Battle[]                @relation("opposingPokemon")
   User            User?                   @relation(fields: [userId], references: [id])
   team            PokemonOnPokemonTeams[]
+
+  statsId Int    @unique
+  stats   Stats  @relation(fields: [statsId], references: [statsId])
+  itemId  Int    @unique
+  item    Item   @relation(fields: [itemId], references: [itemId])
+  moves   Move[] @relation("moves")
+}
+
+model Item {
+  itemId  Int      @id @default(autoincrement())
+  name    String
+  effect  Int
+  pokemon Pokemon?
+}
+
+model Move {
+  moveId    Int     @id @default(autoincrement())
+  name      String
+  damage    Int
+  pokemonId Int
+  pokemon   Pokemon @relation("moves", fields: [pokemonId], references: [id])
+}
+
+model Stats {
+  statsId Int      @id @default(autoincrement())
+  attack  Int
+  hp      Int
+  pokemon Pokemon?
 }
 
 model User {
