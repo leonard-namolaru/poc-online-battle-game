@@ -1,14 +1,16 @@
+export type Nullable<T> = T | null;
+
 export type User = {
     id: number;
     name: string;
     pwd: string;
     email: string;
     inscriptionDate: Date;
-    Itemlist?: Item[];
-    myTrainer?: number; //should probably be an array //id of trainer
-    AllMyPokemon?: Pokemon[];
     uniqueToken: string;
     isValid: boolean;
+    trainer: Nullable<Trainer>;
+    allMyPokemon: Pokemon[];
+    itemList: Item[];
 };
 
 export type Trainer = {

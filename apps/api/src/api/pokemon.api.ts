@@ -14,24 +14,28 @@ export const pokemonRoutes = (server: FastifyInstance, container: PokemonContain
     });
 
     server.route<{
-        Body: { name: string},
+        Body: { name: string, userId : number },
     }>({
         method: 'POST',
         url: '/pokemon', // http post request to : http://localhost:3000/pokemon
-        schema: { // The format of the request body (in JSON):  {"name":"Name"}
+        schema: { // The format of the request body (in JSON):  {"name":"Name", userId : 0}
             body: {
                 type: 'object',
                 properties: {
-                    name: { type: 'string' },
+                    name:   { type: 'string' },
+                    userId: { type: 'number' },
                 },
-                required: ['name']
+                required: ['name', 'userId']
             }
         },
         handler: async (_request, reply) => {
-            const {name} = _request.body;
+            const {name, userId} = _request.body;
 
             try {
-                const newPokemon = await container.createPokemonUsecase.execute(await pokeApiRepository.newPokemon(name));
+                const newPokemonFromApi : any = await pokeApiRepository.newPokemon(name);
+                newPokemonFromApi.userId = userId as unknown as {"userId" : number};
+
+                const newPokemon = await container.createPokemonUsecase.execute(newPokemonFromApi);
                 reply.status(200).send(newPokemon);
             } catch (error : any) {
                 reply.status(404).send(error);

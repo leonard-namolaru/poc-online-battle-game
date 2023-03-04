@@ -1,11 +1,21 @@
 import {describe, expect, expectTypeOf, test} from 'vitest'
 import {PokemonRepository} from "../src/infrastructure/pokemon.repository";
+import {initUserContainer} from "../src/domain/user.container";
 
-describe('Pokemon Repository - test', () => {
+describe('Pokemon Repository - test', async () => {
     const pokemonRepository = new PokemonRepository();
 
+    const userContainer = initUserContainer()
+    const newUserForPokemonRepositoryTest = await userContainer.createUserUsecase.execute({
+        email : "lennynam@gmail.com",
+        pwd   : "newUserForPokemonRepositoryTest",
+        name: "",
+        inscriptionDate: new Date,
+        AllMyPokemon: [],
+    });
+
     test('#create', async () => {
-        const expectedPokemon = {
+        const expectedPokemon : any = {
             pokedex: 25,
             name: 'pikachu',
             stats: { attack: 55, hp: 35 },
@@ -19,6 +29,7 @@ describe('Pokemon Repository - test', () => {
         }
 
         // WHEN
+        expectedPokemon.userId = newUserForPokemonRepositoryTest.id as unknown as {"userId" : number};
         const pokemon = await pokemonRepository.create(expectedPokemon);
 
         // THEN

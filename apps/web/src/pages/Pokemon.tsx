@@ -4,7 +4,9 @@ import "../index.scss";
 import {Pokemon} from  "../../../api/src/domain/entities";
 
 const Home = () => {
-    const [pokemon, setPokemon] = useState< {name: string}>({name: ""});
+    const [pokemon, setPokemon] = useState<string>("");
+    const [userId, setUserId] = useState<string>("");
+
     const [data, setData] = useState<Pokemon>({id: -1,
                                                         pokedex: -1,
                                                         name: "",
@@ -16,7 +18,7 @@ const Home = () => {
 
     const createPokemon = async () => {
         try {
-            const response = await apiClient.post("/pokemon", pokemon);
+            const response = await apiClient.post("/pokemon", {name: pokemon, userId : parseInt(userId)});
             setData({id: response.data.id,
                      pokedex: response.data.pokedex,
                      name: response.data.name,
@@ -36,9 +38,17 @@ const Home = () => {
                 <h1>Ajouter un nouveau pokemon : </h1>
                 <input
                     placeholder="name"
-                    value={pokemon.name}
+                    value={pokemon}
                     onChange={(evt) => {
-                        setPokemon({name : evt.target.value});
+                        setPokemon(evt.target.value);
+                    }}
+                />
+                <br />
+                <input
+                    placeholder="user id"
+                    value={userId}
+                    onChange={(evt) => {
+                        setUserId(evt.target.value);
                     }}
                 />
                 <br />

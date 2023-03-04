@@ -16,26 +16,30 @@ export const registerTrainerRoutes = (
   });
 
   server.route<{
-    Body: { name: string , gender: string };
+    Body: { name: string , gender: string, userId : number };
   }>({
     method: "POST",
     url: "/trainers", // http post request to : http://localhost:3000/trainers
     schema: {
-      // The format of the request body (in JSON):  { "name":"Name","gender":"f"}
+      // The format of the request body (in JSON):  { "name":"Name","gender":"f", "userId" : 5}
       body: {
         type: "object",
         properties: {
           name: { type: "string" },
-          gender: { type: "string" }
+          gender: { type: "string" },
+          userId: { type: "number" }
         },
-        required: ["name", "gender"],
+        required: ["name", "gender", "userId"],
       },
     },
     handler: async (request, reply) => {
-      const { name, gender } = request.body;
+      const { name, gender, userId } = request.body;
+
+
       const trainer = await container.createTrainerUsecase.execute({
         name: name,
-        gender: gender
+        gender: gender,
+        userId : userId
       });
 
       reply.status(200).send(trainer);

@@ -1,6 +1,7 @@
 import {afterEach, describe, expect, test, vi} from 'vitest'
 import {CreatePokemonUsecase} from "../src/domain/create-pokemon.usecase";
 import {Pokemon} from '../src/domain/entities';
+import {initUserContainer} from "../src/domain/user.container";
 
 describe('Create Pokemon Usecase - test', () => {
     const pokemonRepositoryMock = {
@@ -16,7 +17,17 @@ describe('Create Pokemon Usecase - test', () => {
     })
 
     test('should create ', async () => {
+
         // GIVEN
+        const userContainer = initUserContainer()
+        const newUserForPokemonUseCaseTest = await userContainer.createUserUsecase.execute({
+            email : "lennynam@gmail.com",
+            pwd   : "newUserForPokemonUseCaseTest",
+            name: "",
+            inscriptionDate: new Date,
+            AllMyPokemon: [],
+        });
+
         const expectedPokemon: Pokemon = {
             id : 1,
             pokedex: 25,
@@ -33,7 +44,7 @@ describe('Create Pokemon Usecase - test', () => {
         pokemonRepositoryMock.create.mockImplementation(() => expectedPokemon)
 
         // WHEN
-        const pokemon = await createPokemonUsecase.execute({pokedex: expectedPokemon.pokedex,  name: expectedPokemon.name, exp: expectedPokemon.exp, level: expectedPokemon.level, moves : expectedPokemon.moves, stats : expectedPokemon.stats, item : expectedPokemon.item})
+        const pokemon = await createPokemonUsecase.execute({pokedex: expectedPokemon.pokedex,  name: expectedPokemon.name, exp: expectedPokemon.exp, level: expectedPokemon.level, moves : expectedPokemon.moves, stats : expectedPokemon.stats, item : expectedPokemon.item, userId : newUserForPokemonUseCaseTest.id})
 
         // THEN
         expect(pokemonRepositoryMock.create).toHaveBeenCalledOnce()
@@ -44,7 +55,8 @@ describe('Create Pokemon Usecase - test', () => {
             item: expectedPokemon.item,
             moves: expectedPokemon.moves,
             exp: expectedPokemon.exp,
-            level: expectedPokemon.level
+            level: expectedPokemon.level,
+            userId : newUserForPokemonUseCaseTest.id
         })
         expect(expectedPokemon).toStrictEqual(expectedPokemon);
     })

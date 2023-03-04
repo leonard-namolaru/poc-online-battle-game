@@ -2,7 +2,7 @@ import {User, Trainer, Battle, Pokemon, PokemonTeam} from "./entities";
 
 export interface IUserRepository {
     create(User: {name: string, pwd: string, email: string,
-    inscriptionDate: Date, myTrainer: number, AllMyPokemon: Pokemon[], uniqueToken: string, isValid: boolean}): Promise<User>;
+    inscriptionDate: Date, AllMyPokemon: Pokemon[], uniqueToken: string, isValid: boolean}): Promise<User>;
     findAll(): Promise<User[]>
     find(UserId : number) : Promise<User>
     findMyUserwithLogin(email:string ,pwd:string): Promise<User>
@@ -11,7 +11,7 @@ export interface IUserRepository {
 }
 
 export interface ITrainerRepository {
-    create(trainer: { name: string, gender: string  }): Promise<Trainer>;
+    create(trainer: { name: string, gender: string, userId: number  }): Promise<Trainer>;
     findAll(): Promise<Trainer[]>
     find(trainerId : number) : Promise<Trainer>
     update(trainer: {id: number, name: string, gender: string }): Promise<Trainer>
@@ -19,7 +19,7 @@ export interface ITrainerRepository {
 }
 
 export interface IPokemonRepository {
-    create(pokemon: {pokedex: number, name: string, stats: {attack: number, hp: number}, item: {name: string, effect: number}, moves: {name: string, damage: number}[], exp: number, level: number}): Promise<Pokemon>;
+    create(pokemon: {pokedex: number, name: string, stats: {attack: number, hp: number}, item: {name: string, effect: number}, moves: {name: string, damage: number}[], exp: number, level: number, userId : number}): Promise<Pokemon>;
     findAll(): Promise<Pokemon[]>
     find(pokemonId : number) : Promise<Pokemon>
 }

@@ -6,6 +6,7 @@ const urlTrainerPost = "http://localhost:3000/trainers";
 type Trainer = {
     name: string;
     gender: string;
+    userId: string;
 };
 
 export type ListeTrainerForme = {
@@ -26,6 +27,7 @@ const Trainer = () => {
     const [trainer, setTrainer] = useState<Trainer>({
         name: "",
         gender: "",
+        userId: ""
     });
 
     const setNewValue = (id_: string, newValue: string) =>
@@ -33,7 +35,7 @@ const Trainer = () => {
 
     const createTrainer = async () => {
         try {
-            const response = await axios.post(urlTrainerPost, trainer);
+            const response = await axios.post(urlTrainerPost, {name : trainer.name, gender : trainer.gender, userId : parseInt(trainer.userId)});
             alert(`The reponse is: ${response.data.id}`);
         } catch (exception_) {
             alert(`There was an error `);
@@ -67,6 +69,15 @@ const Trainer = () => {
                     }}
                 />
                 <br />
+                <input
+                    placeholder="user id"
+                    value={trainer.userId}
+                    onChange={(evt) => {
+                        setNewValue("userId", evt.target.value);
+                    }}
+                />
+                <br />
+
                 <button
                     onClick={() => {
                         createTrainer();
