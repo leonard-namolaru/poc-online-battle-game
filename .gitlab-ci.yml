@@ -1,4 +1,4 @@
-services: 
+services:
   - postgres:15.1-alpine
 
 variables:
@@ -7,31 +7,44 @@ variables:
   POSTGRES_DB: poca-db
 
 stages:
+  - build-and-test
   - deploy
+
+build-api:
+  stage: build-and-test
+  image: node:latest
+  script:
+    # Build back-end
+    - cd apps/api
+    - yarn install
+    - rm .env # Needed for gitlab runner (see https://docs.gitlab.com/ee/ci/services/index.html#how-services-are-linked-to-the-job).
+    - mv .env_gitlab-ci .env # Same as above.
+    - yarn prisma generate
+    - yarn build
+    - yarn prisma db push --force-reset
+    - yarn test
+
+build-front:
+  stage: build-and-test
+  image: node:latest
+  script:
+    # Build web interface
+    - cd apps/web
+    - yarn install
+    - yarn build
 
 deploy-railway:
   stage: deploy
   image: node:latest
   only:
-    - pushes
     - main
   script:
-    # Build API
+    - wget https://github.com/railwayapp/cli/releases/download/v2.1.0/railway_2.1.0_linux_amd64.tar.gz
+    - tar -xzf railway_2.1.0_linux_amd64.tar.gz
+    - mv railway /usr/local/bin
+    # Deploy back-end to railway
     - cd apps/api
-    - rm .env # Needed for gitlab runner (see https://docs.gitlab.com/ee/ci/services/index.html#how-services-are-linked-to-the-job).
-    - mv .env_gitlab-ci .env # Same as above.
-    - apt-get update && apt-get install -y curl
-    - yarn install
-    #- yarn db:start
-    - yarn prisma generate
-    - yarn prisma db push --force-reset
-    - yarn build
-    - yarn test
-    # Build web interface
+    - RAILWAY_TOKEN=9d5ad1cb-b39d-4274-9790-6453cfeac5c8 railway up --service evasive-love
+    # Deploy front-end to railway
     - cd ../web
-    - yarn install
-    - yarn build
-    # Deploy app to railway
-    - cd ../api
-    - curl -fsSL https://railway.app/install.sh | sh
-    - RAILWAY_TOKEN=9d5ad1cb-b39d-4274-9790-6453cfeac5c8 railway up
+    - RAILWAY_TOKEN=9d5ad1cb-b39d-4274-9790-6453cfeac5c8 railway up --service astonishing-crow

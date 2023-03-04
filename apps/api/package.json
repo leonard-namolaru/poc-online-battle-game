@@ -31,6 +31,7 @@
     "build": "tsc -p ./tsconfig.json",
     "build-and-start": "yarn build && yarn start",
     "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
     "db:format": "prisma format",
     "db:start": "docker-compose up -d db",
     "dev": "yarn build -w & nodemon dist/src/index.js",
