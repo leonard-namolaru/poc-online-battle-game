@@ -3,14 +3,16 @@ import {BattleRepository} from "../src/infrastructure/battle.repository";
 import {initTrainerContainer} from "../src/domain/trainer.container";
 import {initPokemonContainer} from "../src/domain/pokemon.container";
 import {initPokemonTeamContainer} from "../src/domain/pokemon-team.container";
+import {initUserContainer} from "../src/domain/user.container";
 
 export async function generateAttackerAndOpponentForTest() : Promise<{ attackingTrainerId: number; opposingTrainerId: number; attackerPokemonId: number; opponentPokemonId: number; winner: number; }> {
     const trainerContainer = initTrainerContainer();
 
     const pokemonTeamContainer = initPokemonTeamContainer();
     const pokemonContainer = initPokemonContainer();
+    const userContainer = initUserContainer()
 
-    const givenPikachu1 = {
+    const givenPikachu1 : any = {
         pokedex: 25,
         name: 'pikachu',
         stats: { attack: 55, hp: 35 },
@@ -23,7 +25,7 @@ export async function generateAttackerAndOpponentForTest() : Promise<{ attacking
         level: 0
     };
 
-    const givenPikachu2 = {
+    const givenPikachu2 : any = {
         pokedex: 25,
         name: 'pikachu',
         stats: { attack: 55, hp: 35 },
@@ -36,13 +38,31 @@ export async function generateAttackerAndOpponentForTest() : Promise<{ attacking
         level: 0
     };
 
-    let attackingTrainer = await trainerContainer.createTrainerUsecase.execute({name: "testBattle1", gender: "m"});
-    let opposingTrainer = await trainerContainer.createTrainerUsecase.execute({name: "testBattle2", gender: "f"});
-    
+    const newUser1 = await userContainer.createUserUsecase.execute({
+        email : "lennynam@gmail.com",
+        pwd : "test1",
+        name: "",
+        inscriptionDate: new Date,
+        AllMyPokemon: [],
+    });
+
+    const newUser2 = await userContainer.createUserUsecase.execute({
+        email : "lennynam@gmail.com",
+        pwd : "test1",
+        name: "",
+        inscriptionDate: new Date,
+        AllMyPokemon: [],
+    });
+
+    let attackingTrainer = await trainerContainer.createTrainerUsecase.execute({name: "testBattle1", gender: "m", userId : newUser1.id});
+    let opposingTrainer = await trainerContainer.createTrainerUsecase.execute({name: "testBattle2", gender: "f", userId : newUser2.id});
+
+    givenPikachu1.userId = newUser1.id as unknown as {"userId" : number};
     const givenPokemon1 = await pokemonContainer.createPokemonUsecase.execute(givenPikachu1);
     const givenAttackingUpdatedPokemonTeam = await pokemonTeamContainer.updatePokemonTeamUsecase.addPokemon(attackingTrainer.activeTeam.teamId, givenPokemon1.id);
     attackingTrainer.activeTeam = givenAttackingUpdatedPokemonTeam;
 
+    givenPikachu2.userId = newUser2.id as unknown as {"userId" : number};
     const givenPokemon2 = await pokemonContainer.createPokemonUsecase.execute(givenPikachu2);
     const givenOpposingUpdatedPokemonTeam = await pokemonTeamContainer.updatePokemonTeamUsecase.addPokemon(opposingTrainer.activeTeam.teamId, givenPokemon2.id);
     opposingTrainer.activeTeam = givenOpposingUpdatedPokemonTeam;

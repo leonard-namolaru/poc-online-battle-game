@@ -1,11 +1,27 @@
 import {IUserRepository} from "../domain/interfaces";
-import {User} from "../domain/entities";
+import {Item, Pokemon, User} from "../domain/entities";
 import {prisma} from "../../db";
-
+import {TrainerRepository} from "./trainer.repository";
 
 export class UserRepository implements IUserRepository {
+
+    static async createUserObject(user: {id: number, name: string, pwd: string, email: string, inscriptionDate: Date, uniqueToken: string, isValid: boolean, trainer: {id: number, name: string, gender: string, activeTeam: {teamId: number, trainerId: number} | null} | null, allMyPokemon: Pokemon[], itemList : Item[]}) : Promise<User> {
+
+        return {id : user.id,
+                name : user.name,
+                pwd : user.pwd,
+                email : user.email,
+                inscriptionDate : user.inscriptionDate,
+                uniqueToken : user.uniqueToken,
+                isValid : user.isValid,
+                trainer : (user.trainer != null) ? await TrainerRepository.createTrainerObjectIfActiveTeamIsNotNull(user.trainer!) : null,
+                allMyPokemon : user.allMyPokemon,
+                itemList : user.itemList
+        };
+    }
+
     async create(user: {name: string, pwd: string, email: string,
-        inscriptionDate: Date, myTrainer: number, uniqueToken: string, isValid: boolean}): Promise<User> {
+        inscriptionDate: Date, uniqueToken: string, isValid: boolean}): Promise<User> {
         const newUser = await prisma.user.create({
             data: {
                 name: user.name,
@@ -13,14 +29,56 @@ export class UserRepository implements IUserRepository {
                 email: user.email,
                 inscriptionDate: user.inscriptionDate,
                 uniqueToken: user.uniqueToken,
-                isValid: user.isValid                
+                isValid: user.isValid
+            },
+            include : {
+                itemList : true,
+                allMyPokemon : {
+                    include : {
+                        item : true,
+                        moves : true,
+                        stats : true,
+                    },
+                },
+                trainer : {
+                    include : {
+                    activeTeam : true,
+                    },
+                },
             },
         });
-        return newUser;
+
+        return UserRepository.createUserObject(newUser);
     }
 
     async findAll(): Promise<User[]> {
-        const users: User[] = await prisma.user.findMany();
+        const tmpList = await prisma.user.findMany({
+            include : {
+                itemList : true,
+                allMyPokemon : {
+                    include : {
+                        item : true,
+                        moves : true,
+                        stats : true,
+                    },
+                },
+                trainer : {
+                    include : {
+                        activeTeam : true,
+                    },
+                },
+            },
+        });
+
+        let users : User[] = new Array();
+        for(let i = 0 ; i < tmpList.length ; i++) {
+            try {
+                const element = await UserRepository.createUserObject(tmpList[i]);
+                users.push(element);
+            } catch (error : any) {
+                return error;
+            }
+        }
 
         return users;
     }
@@ -29,35 +87,81 @@ export class UserRepository implements IUserRepository {
         const user = await prisma.user.findUnique({
             where: {
                 id: userId
-            }
+            },
+            include : {
+                itemList : true,
+                allMyPokemon : {
+                    include : {
+                        item : true,
+                        moves : true,
+                        stats : true,
+                    },
+                },
+                trainer : {
+                    include : {
+                        activeTeam : true,
+                    },
+                },
+            },
         })
         if (user === null){
             return Promise.reject("User not in DB.")
         }
-        return user
+        return UserRepository.createUserObject(user);
     }
     async findMyUserwithLogin(email: string, pwd: string): Promise<User> {
         const user = await prisma.user.findFirst({
             where: {
                 email,pwd
             },
+            include : {
+                itemList : true,
+                allMyPokemon : {
+                    include : {
+                        item : true,
+                        moves : true,
+                        stats : true,
+                    },
+                },
+                trainer : {
+                    include : {
+                        activeTeam : true,
+                    },
+                },
+            },
         })
         if (user === null){
             return Promise.reject("this user is not in DB.")
         }
-        return user
+        return UserRepository.createUserObject(user);
     }
 
     async findUserToken(uniqueToken: string): Promise<User>{
         const user = await prisma.user.findFirst({
             where:{
                 uniqueToken: uniqueToken
-            }
+            },
+            include : {
+                itemList : true,
+                allMyPokemon : {
+                    include : {
+                        item : true,
+                        moves : true,
+                        stats : true,
+                    },
+                },
+                trainer : {
+                    include : {
+                        activeTeam : true,
+                    },
+                },
+            },
         })
+
         if (user === null){
             return Promise.reject("this user is not in DB.")
         }
-        return user
+        return UserRepository.createUserObject(user);
     }
     async update(user: User): Promise<User>{
         const ret = await prisma.user.update({
@@ -66,8 +170,24 @@ export class UserRepository implements IUserRepository {
             },
             data: {
                 isValid:user.isValid
-            }
+            },
+            include : {
+                itemList : true,
+                allMyPokemon : {
+                    include : {
+                        item : true,
+                        moves : true,
+                        stats : true,
+                    },
+                },
+                trainer : {
+                    include : {
+                        activeTeam : true,
+                    },
+                },
+            },
         });
-        return ret;
+
+        return UserRepository.createUserObject(ret);
     }
 }

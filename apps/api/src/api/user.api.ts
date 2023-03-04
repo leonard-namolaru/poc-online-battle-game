@@ -59,7 +59,6 @@ export const registerUserRoutes = (server: FastifyInstance, container: UserConta
                 pwd,
                 name: "",
                 inscriptionDate: new Date,
-                myTrainer: 0,
                 AllMyPokemon: [],
             });
 

@@ -7,6 +7,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id              Int         @id @default(autoincrement())
+  name            String
+  pwd             String
+  email           String
+  inscriptionDate DateTime    @default(now())
+  isValid         Boolean
+  uniqueToken     String
+
+  trainer         Trainer?
+  allMyPokemon    Pokemon[]   @relation("pokemon-user")
+
+  itemList        Item[]        @relation("user-items")
+  @@unique([email, pwd], name: "emailpwd")
+}
+
 model Trainer {
   id              Int          @id @default(autoincrement())
   name            String
@@ -14,46 +30,53 @@ model Trainer {
   battleAttacking Battle[]     @relation("attacking")
   battleOpposing  Battle[]     @relation("opposing")
   activeTeam      PokemonTeam?
-  User            User[]
+
+  userId          Int          @unique
+  User            User         @relation(fields: [userId], references: [id])
+}
+
+model Pokemon {
+  id              Int          @id @default(autoincrement())
+  pokedex         Int
+  name            String
+  exp             Int
+  level           Int
+  statsId Int                  @unique
+  stats   Stats                @relation(fields: [statsId], references: [statsId])
+  itemId  Int                  @unique
+  item    Item                 @relation(fields: [itemId], references: [itemId])
+  moves   Move[]               @relation("moves")
+
+  battleAttacking Battle[]     @relation("attackingPokemon")
+  battleOpposing  Battle[]     @relation("opposingPokemon")
+
+  userId          Int
+  user            User         @relation("pokemon-user", fields: [userId], references: [id])
+
+  team          PokemonOnPokemonTeams[]
 }
 
 model Battle {
-  id                 Int     @id @default(autoincrement())
+  id                 Int        @id @default(autoincrement())
   attackingTrainerId Int
   opposingTrainerId  Int
   attackerPokemonId  Int
   opponentPokemonId  Int
   winner             Int
-  attackingPokemon   Pokemon @relation("attackingPokemon", fields: [attackerPokemonId], references: [id])
-  attackingTrainer   Trainer @relation("attacking", fields: [attackingTrainerId], references: [id])
-  opposingPokemon    Pokemon @relation("opposingPokemon", fields: [opponentPokemonId], references: [id])
-  opposingTrainer    Trainer @relation("opposing", fields: [opposingTrainerId], references: [id])
-}
 
-model Pokemon {
-  id              Int                     @id @default(autoincrement())
-  pokedex         Int
-  name            String
-  exp             Int
-  level           Int
-  userId          Int?
-  battleAttacking Battle[]                @relation("attackingPokemon")
-  battleOpposing  Battle[]                @relation("opposingPokemon")
-  User            User?                   @relation(fields: [userId], references: [id])
-  team            PokemonOnPokemonTeams[]
-
-  statsId Int    @unique
-  stats   Stats  @relation(fields: [statsId], references: [statsId])
-  itemId  Int    @unique
-  item    Item   @relation(fields: [itemId], references: [itemId])
-  moves   Move[] @relation("moves")
+  attackingPokemon   Pokemon    @relation("attackingPokemon", fields: [attackerPokemonId], references: [id])
+  attackingTrainer   Trainer    @relation("attacking", fields: [attackingTrainerId], references: [id])
+  opposingPokemon    Pokemon    @relation("opposingPokemon", fields: [opponentPokemonId], references: [id])
+  opposingTrainer    Trainer    @relation("opposing", fields: [opposingTrainerId], references: [id])
 }
 
 model Item {
-  itemId  Int      @id @default(autoincrement())
+  itemId  Int                   @id @default(autoincrement())
   name    String
   effect  Int
   pokemon Pokemon?
+  userId Int
+  user   User                   @relation("user-items", fields: [userId], references: [id])
 }
 
 model Move {
@@ -71,21 +94,6 @@ model Stats {
   pokemon Pokemon?
 }
 
-model User {
-  id              Int       @id @default(autoincrement())
-  name            String
-  pwd             String
-  email           String
-  inscriptionDate DateTime  @default(now())
-  itemlist        Int?
-  trainerId       Int?
-  isValid         Boolean
-  uniqueToken     String
-  Pokemon         Pokemon[]
-  Trainer         Trainer?  @relation(fields: [trainerId], references: [id])
-
-  @@unique([email, pwd], name: "emailpwd")
-}
 
 model PokemonOnPokemonTeams {
   pid           Int

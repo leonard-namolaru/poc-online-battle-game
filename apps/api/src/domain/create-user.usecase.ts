@@ -11,7 +11,7 @@ export class CreateUserUsecase {
     }
 
     async execute(command: {name: string, pwd: string, email: string,
-        inscriptionDate: Date, myTrainer: number , AllMyPokemon: Pokemon[]}): Promise<User> {
+        inscriptionDate: Date , AllMyPokemon: Pokemon[]}): Promise<User> {
         //hash password
         const salt = await bcrypt.genSalt(10);
         let pwdhash = await bcrypt.hash(command.pwd, salt);
@@ -21,20 +21,19 @@ export class CreateUserUsecase {
             const ch = Math.floor((Math.random()*10)+1)
             randToken +=ch
         }
-        console.log("rand token",randToken)
+        //console.log("rand token",randToken)
          // create a new trainer in db
         const newUser = await this.userRepository.create({
             name: command.name,
             pwd: pwdhash,
             email: command.email,
             inscriptionDate: command.inscriptionDate,
-            myTrainer: command.myTrainer,
             AllMyPokemon: [],
             uniqueToken: randToken,
             isValid: false
         
         });
-        console.log("rand token",randToken)
+        //console.log("rand token",randToken)
         
         const transporter = nodemailer.createTransport({
             service: 'gmail',
@@ -51,7 +50,7 @@ export class CreateUserUsecase {
         };
         transporter.sendMail(mailOptions, function(error, info){
         if (error) {
-        console.log(error);
+            console.log("sendMail() error : " + error);
         } else {
             console.log('Email sent: ' + info.response);
         }

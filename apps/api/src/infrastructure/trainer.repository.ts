@@ -14,14 +14,15 @@ export class TrainerRepository implements ITrainerRepository {
 
         return {id : trainer.id, name : trainer.name, gender : trainer.gender, activeTeam : await pokemonTeamRepository.buildPokemonTeamEntity(trainer.activeTeam!.teamId, trainer.id)};
     }
-    async create(trainer: { name: string, gender: string }): Promise<Trainer> {
+    async create(trainer: { name: string, gender: string, userId: number }): Promise<Trainer> {
         const newTrainer = await prisma.trainer.create({
             data: {
                 name: trainer.name,
                 gender: trainer.gender,
                 activeTeam: {
                     create : {}
-                }
+                },
+                userId : trainer.userId,
             },
             include: {activeTeam: true},
         });
