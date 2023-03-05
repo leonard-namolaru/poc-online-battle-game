@@ -1,6 +1,6 @@
 import {afterEach, describe, expect, test, vi} from 'vitest'
-import {CreateBattleUsecase} from "../src/domain/create-battle.usecase";
-import {Battle, PokemonTeam} from '../src/domain/entities';
+import {CreateBattleUsecase} from "../../src/domain/create-battle.usecase";
+import {Battle, PokemonTeam} from '../../src/domain/entities';
 import {generateAttackerAndOpponentForTest} from "./battle.repository.test"
 describe('Create Battle Usecase - test', () => {
     const battleRepositoryMock = {
