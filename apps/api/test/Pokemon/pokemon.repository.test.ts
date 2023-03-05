@@ -1,6 +1,6 @@
 import {describe, expect, expectTypeOf, test} from 'vitest'
-import {PokemonRepository} from "../src/infrastructure/pokemon.repository";
-import {initUserContainer} from "../src/domain/user.container";
+import {PokemonRepository} from "../../src/infrastructure/pokemon.repository";
+import {initUserContainer} from "../../src/domain/user.container";
 
 describe('Pokemon Repository - test', async () => {
     const pokemonRepository = new PokemonRepository();

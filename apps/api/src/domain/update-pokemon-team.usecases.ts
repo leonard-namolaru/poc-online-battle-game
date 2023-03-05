@@ -19,7 +19,9 @@ export class UpdatePokemonTeamUsecase {
             return Promise.reject("This team is full. Maximum 6 pokemons per team are allowed.");
         }
         const pokemon: Pokemon = await this.pokemonRepository.find(pokemonIdToAdd);
-
+        if (pokemon == undefined){
+            return Promise.reject("Pokemon not found in DB");
+        }
         // Check if the pokemon is already added to this team.
         // For loop because indexOf and include does not work.
         let index = -1;
@@ -41,8 +43,10 @@ export class UpdatePokemonTeamUsecase {
 
     async removePokemon(teamId: number, pokemonIdToRemove: number): Promise<PokemonTeam> {
         const pokemonTeam: PokemonTeam = await this.pokemonTeamRepository.find(teamId);
-        const pokemon: Pokemon = await this.pokemonRepository.find(pokemonIdToRemove)
-        .catch((error) => {return Promise.reject(error)});
+        const pokemon: Pokemon = await this.pokemonRepository.find(pokemonIdToRemove);
+        if (pokemon == undefined){
+            return Promise.reject("Pokemon not found in DB");
+        }
         
         // For loop because indexOf and include does not work.
         let index = -1;
