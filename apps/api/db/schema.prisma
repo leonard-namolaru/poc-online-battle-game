@@ -55,7 +55,7 @@ model Pokemon {
 
   team          PokemonOnPokemonTeams[]
 
-  type          Type[]        @relation("types")
+  types          Type[]        @relation("types")
 }
 
 model Battle {

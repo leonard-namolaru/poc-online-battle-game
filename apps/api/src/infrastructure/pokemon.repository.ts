@@ -4,6 +4,7 @@ import {prisma} from "../../db";
 
 
 
+
 export class PokemonRepository implements IPokemonRepository {
     async create(pokemon: {pokedex: number, name: string, stats: {attack: number, hp: number}, item: {name: string, effect: number}, moves: {name: string, damage: number}[], exp: number, level: number, userId : number,types: {name: string}[]}): Promise<Pokemon> {
 
@@ -34,7 +35,7 @@ export class PokemonRepository implements IPokemonRepository {
                 user : {
                     connect: { id: pokemon.userId },
                 },
-                type : {
+                types : {
                     create : pokemon.types
                 },
             },

@@ -19,7 +19,7 @@ export interface ITrainerRepository {
 }
 
 export interface IPokemonRepository {
-    create(pokemon: {pokedex: number, name: string, stats: {attack: number, hp: number}, item: {name: string, effect: number}, moves: {name: string, damage: number}[], exp: number, level: number, userId : number,types: {name: string}[]}): Promise<Pokemon>;
+    create(pokemon: {pokedex: number, name: string, stats: {attack: number, hp: number}, item: {name: string, effect: number}, moves: {name: string, damage: number}[], exp: number, level: number, userId : number,types:{name: string}[]}): Promise<Pokemon>;
     findAll(): Promise<Pokemon[]>
     find(pokemonId : number) : Promise<Pokemon>
 }
@@ -45,5 +45,5 @@ export interface IPokemonTeamRepository{
 }
 
 export interface IPokeApiRepository{
-    newPokemon(pokemonNameInEnglish : string) : Promise<{pokedex: number, name: string, stats: {attack: number, hp: number}, item: {name: string, effect: number}, moves: {name: string, damage: number}[], exp: number, level: number}>;
+    newPokemon(pokemonNameInEnglish : string) : Promise<{pokedex: number, name: string, stats: {attack: number, hp: number}, item: {name: string, effect: number}, moves: {name: string, damage: number}[], exp: number, level: number, types:{name:string}[]}>;
 }
