@@ -44,6 +44,7 @@ export type Pokemon = {
     moves: Move[];
     exp:number;
     level:number;
+    types:Type[];
 };
 
 export type Item = {
@@ -61,3 +62,7 @@ export type Stats = {
     attack: number;
     hp: number;
 };
+
+export type Type ={
+    name: string;
+}

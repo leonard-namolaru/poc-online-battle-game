@@ -24,6 +24,9 @@ describe('Pokemon Repository - test', async () => {
                 { name: 'mega-punch', damage: 80 },
                 { name: 'pay-day', damage: 40 }
             ],
+            types : [
+                {name: 'electrik'}
+            ],
             exp: 112,
             level: 0
         }
@@ -38,5 +41,6 @@ describe('Pokemon Repository - test', async () => {
         expect(pokemon.pokedex).toEqual(expectedPokemon.pokedex);
         expect(pokemon.exp).toEqual(expectedPokemon.exp);
         expect(pokemon.level).toEqual(expectedPokemon.level);
+        expect(pokemon.types).toEqual(expectedPokemon.types);
     })
 })
