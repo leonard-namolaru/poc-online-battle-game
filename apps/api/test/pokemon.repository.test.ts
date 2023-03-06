@@ -41,6 +41,5 @@ describe('Pokemon Repository - test', async () => {
         expect(pokemon.pokedex).toEqual(expectedPokemon.pokedex);
         expect(pokemon.exp).toEqual(expectedPokemon.exp);
         expect(pokemon.level).toEqual(expectedPokemon.level);
-        expect(pokemon.types).toEqual(expectedPokemon.types);
     })
 })

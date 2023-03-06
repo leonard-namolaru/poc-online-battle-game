@@ -65,4 +65,16 @@ export type Stats = {
 
 export type Type ={
     name: string;
+
+    /*
+    -idea 1
+    tableau resist
+    tableau weakness
+    ->battle 
+        -> function check weakness/resist in both tab of foe pokemon
+        -> apply final damage
+    -idea 2
+    big func with if/elseif/else check weakness/resist
+    */
+       
 }
