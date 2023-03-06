@@ -1,9 +1,9 @@
 import {describe, expect, expectTypeOf, test, it } from 'vitest';
-import {BattleRepository} from "../../src/infrastructure/battle.repository";
-import {initTrainerContainer} from "../../src/domain/trainer.container";
-import {initPokemonContainer} from "../../src/domain/pokemon.container";
-import {initPokemonTeamContainer} from "../../src/domain/pokemon-team.container";
-import {initUserContainer} from "../../src/domain/user.container";
+import {BattleRepository} from "../src/infrastructure/battle.repository";
+import {initTrainerContainer} from "../src/domain/trainer.container";
+import {initPokemonContainer} from "../src/domain/pokemon.container";
+import {initPokemonTeamContainer} from "../src/domain/pokemon-team.container";
+import {initUserContainer} from "../src/domain/user.container";
 
 export async function generateAttackerAndOpponentForTest() : Promise<{ attackingTrainerId: number; opposingTrainerId: number; attackerPokemonId: number; opponentPokemonId: number; winner: number; }> {
     const trainerContainer = initTrainerContainer();

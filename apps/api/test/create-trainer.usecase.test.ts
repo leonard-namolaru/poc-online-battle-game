@@ -1,7 +1,7 @@
-import {afterEach, describe, expect, test, vi} from 'vitest'
-import {CreateTrainerUsecase} from "../../src/domain/create-trainer.usecase";
-import {Trainer} from '../../src/domain/entities';
-import {initUserContainer} from "../../src/domain/user.container";
+ import {afterEach, describe, expect, test, vi} from 'vitest'
+import {CreateTrainerUsecase} from "../src/domain/create-trainer.usecase";
+import {Trainer} from '../src/domain/entities';
+ import {initUserContainer} from "../src/domain/user.container";
 
 describe('Create Trainer Usecase - test', () => {
     const trainerRepositoryMock = {
