@@ -43,6 +43,7 @@ export class PokemonRepository implements IPokemonRepository {
                 item : true,
                 moves : true,
                 stats : true,
+                types : true,
             }
         });
 
@@ -51,7 +52,7 @@ export class PokemonRepository implements IPokemonRepository {
 
 
     async findAll(): Promise<Pokemon[]> {
-        const pokemons: Pokemon[] = await prisma.pokemon.findMany({ include : {item : true, moves : true, stats : true}});
+        const pokemons: Pokemon[] = await prisma.pokemon.findMany({ include : {item : true, moves : true, stats : true, types : true}});
 
         return pokemons;
     }
@@ -65,6 +66,7 @@ export class PokemonRepository implements IPokemonRepository {
                 item : true,
                 moves : true,
                 stats : true,
+                types: true,
             }
         })
         if (pokemon === null){

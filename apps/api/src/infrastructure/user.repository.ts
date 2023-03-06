@@ -38,6 +38,7 @@ export class UserRepository implements IUserRepository {
                         item : true,
                         moves : true,
                         stats : true,
+                        types : true,
                     },
                 },
                 trainer : {
@@ -60,6 +61,7 @@ export class UserRepository implements IUserRepository {
                         item : true,
                         moves : true,
                         stats : true,
+                        types : true,
                     },
                 },
                 trainer : {
@@ -95,6 +97,7 @@ export class UserRepository implements IUserRepository {
                         item : true,
                         moves : true,
                         stats : true,
+                        types: true,
                     },
                 },
                 trainer : {
@@ -121,6 +124,7 @@ export class UserRepository implements IUserRepository {
                         item : true,
                         moves : true,
                         stats : true,
+                        types : true,
                     },
                 },
                 trainer : {
@@ -148,6 +152,7 @@ export class UserRepository implements IUserRepository {
                         item : true,
                         moves : true,
                         stats : true,
+                        types : true,
                     },
                 },
                 trainer : {
@@ -178,6 +183,7 @@ export class UserRepository implements IUserRepository {
                         item : true,
                         moves : true,
                         stats : true,
+                        types : true,
                     },
                 },
                 trainer : {
