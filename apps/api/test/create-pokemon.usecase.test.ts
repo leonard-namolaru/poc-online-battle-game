@@ -1,7 +1,7 @@
 import {afterEach, describe, expect, test, vi} from 'vitest'
-import {initUserContainer} from "../../src/domain/user.container";
-import {CreatePokemonUsecase} from "../../src/domain/create-pokemon.usecase";
-import {Pokemon} from '../../src/domain/entities';
+import {CreatePokemonUsecase} from "../src/domain/create-pokemon.usecase";
+import {Pokemon} from '../src/domain/entities';
+import {initUserContainer} from "../src/domain/user.container";
 
 describe('Create Pokemon Usecase - test', () => {
     const pokemonRepositoryMock = {

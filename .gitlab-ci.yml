@@ -1,5 +1,3 @@
-image: node:lts
-
 services:
   - postgres:15.1-alpine
 
@@ -14,6 +12,7 @@ stages:
 
 build-api:
   stage: build-and-test
+  image: node:latest
   script:
     # Build back-end
     - cd apps/api
@@ -27,6 +26,7 @@ build-api:
 
 build-front:
   stage: build-and-test
+  image: node:latest
   script:
     # Build web interface
     - cd apps/web
@@ -35,6 +35,7 @@ build-front:
 
 deploy-railway:
   stage: deploy
+  image: node:latest
   only:
     - main
   script:

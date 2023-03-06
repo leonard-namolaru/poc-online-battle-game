@@ -1,7 +1,7 @@
 import {describe, expect, expectTypeOf, test} from 'vitest'
-import {TrainerRepository} from "../../src/infrastructure/trainer.repository";
-import {initUserContainer} from "../../src/domain/user.container";
-describe('Trainer Repository - test', () => {
+import {TrainerRepository} from "../src/infrastructure/trainer.repository";
+import {initUserContainer} from "../src/domain/user.container";
+describe('Train Repository - test', () => {
     const trainerRepository = new TrainerRepository()
     const userContainer = initUserContainer()
 
