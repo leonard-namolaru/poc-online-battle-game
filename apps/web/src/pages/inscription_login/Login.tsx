@@ -1,11 +1,13 @@
 import React, {StrictMode, useEffect, useState} from "react";
 import ReactDOM from "react-dom"
-import {BrowserRouter, Routes , Route, Outlet, Link} from "react-router-dom"
-import "../index.scss";
+import {BrowserRouter, Routes , Route, Outlet, Link, useNavigate} from "react-router-dom"
+import "../../index.scss";
 import axios from "axios";
 import styled from 'styled-components';
-import Footer from './accueil/footer';
+import Footer from '../accueil/footer';
 
+import { Navigate } from "react-router-dom";
+// const navigate = useNavigate();
 const urlLoginPost = "http://localhost:3000/login";
 type User = {
     // name: string;
@@ -49,6 +51,7 @@ text-shadow:
 
 const Login = () => {
     const [users, getusers] = useState<ListeUserForme[] | null>();
+    const navigate = useNavigate();
     useEffect(() => {
         const url = "http://localhost:3000/seealllog";
         axios.get(url).then((response) => {
@@ -60,9 +63,16 @@ const Login = () => {
         email: "",
         pwd:"",
     });
+    const [userLogin, setUserLogin] = useState<User>({
+        email: "",
+        pwd:"",
+    });
 
     const setNewValue = (id_: string, newValue: string) =>
         setUser((prevState) => ({ ...prevState, [id_]: newValue }));
+    
+    const setNewValueLogin = (id_: string, newValue: string) =>
+        setUserLogin((prevState) => ({ ...prevState, [id_]: newValue }));
 
     const createUser = async () => {
         try {
@@ -74,10 +84,13 @@ const Login = () => {
     };
     const log = async () => {
         try {
-            const response = await axios.post(urlLoginPost, user);
+           
+            const response = await axios.post("http://localhost:3000/log", user);
             alert(`The reponse is: ${response.data.id}`);
+            navigate(`/user/${response.data.id}`);
+          
         } catch (exception_) {
-            alert(`There was an error `);
+            alert(`There was an error here`);
         }
     };
     return (
@@ -125,17 +138,17 @@ const Login = () => {
                 <h1>Se connecter  : </h1>
                 <input
                     placeholder="email"
-                    value={user.email}
+                    value={userLogin.email}
                     onChange={(evt) => {
-                        setNewValue("email", evt.target.value);
+                        setNewValueLogin("email", evt.target.value);
                     }}
                 />
                 <br />
                 <input type="password"
                     placeholder="mot de passe"
-                    value={user.pwd}
+                    value={userLogin.pwd}
                     onChange={(evt) => {
-                        setNewValue("pwd", evt.target.value);
+                        setNewValueLogin("pwd", evt.target.value);
                     }}
                 />
                 <br />
