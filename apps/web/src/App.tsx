@@ -7,7 +7,7 @@ import Login from "./pages/inscription_login/Login";
 import UserPage from "./pages/user/userPage"
 import Homepage from "./pages/accueil/accueil"
 import Battle from "./pages/battle/battle"
-
+import BattlePage from "./pages/battle/BattlePage"
 
 
 const App = () => {
@@ -21,6 +21,7 @@ const App = () => {
                 <Route path="/login" element={<Login />} />
                 <Route path="/user/:userID" element={<UserPage />} />
                 <Route path="/user/:userID/battle" element={<Battle />} />
+                <Route path="/battle/:userID" element={<BattlePage />} />
             </Route>
         </Routes>
     );
