@@ -43,7 +43,7 @@ export class BattleUsecase {
         if(attackedTrainer.id === battle.opposingTrainerId){
             attackedPokemonId = battle.opponentPokemonId;
             attackingPokemonId = battle.attackerPokemonId;
-            attackingTrainerId=battle.attackingTrainerId;
+            attackingTrainerId = battle.attackingTrainerId;
         }else{
             attackedPokemonId = battle.attackerPokemonId;
             attackingPokemonId = battle.opponentPokemonId;
@@ -89,6 +89,7 @@ export class BattleUsecase {
                                 }
                                 appliedDamage = await this.weakness(attackedTrainerTeam[i].types[attackedType],attackingTrainerTeam[attacking].types[attackingType],appliedDamage);
                                 appliedDamage = await this.resistance(attackedTrainerTeam[i].types[attackedType],attackingTrainerTeam[attacking].types[attackingType],appliedDamage);
+                                console.log(appliedDamage);
                             }
                         }
                     }
@@ -131,93 +132,93 @@ export class BattleUsecase {
     }
 
     async weakness(TypeAttacked : Type,TypeAttacking : Type, damage : number) {
-        if(TypeAttacked.name==="Acier"){
-            if(TypeAttacking.name==="Feu" || TypeAttacking.name==="Combat" || TypeAttacking.name==="Sol"  ){
+        if(TypeAttacked.name.toLowerCase()==="acier"){
+            if(TypeAttacking.name.toLowerCase()==="feu" || TypeAttacking.name.toLowerCase()==="combat" || TypeAttacking.name.toLowerCase()==="sol"  ){
                 return damage*2;
             }
         }
-        if(TypeAttacked.name==="Combat"){
-            if(TypeAttacking.name==="Psy" || TypeAttacking.name==="Vol" || TypeAttacking.name==="Fee"  ){
+        if(TypeAttacked.name.toLowerCase()==="dragon"){
+            if(TypeAttacking.name.toLowerCase()==="psy" || TypeAttacking.name.toLowerCase().toLowerCase()==="vol" || TypeAttacking.name.toLowerCase()==="fee"  ){
                 return damage*2;
             }
         }
-        if(TypeAttacked.name==="Dragon"){
-            if(TypeAttacking.name==="Dragon" || TypeAttacking.name==="Fee" || TypeAttacking.name==="Glace"  ){
+        if(TypeAttacked.name.toLowerCase()==="dragon"){
+            if(TypeAttacking.name.toLowerCase()==="dragon" || TypeAttacking.name.toLowerCase()==="fee" || TypeAttacking.name.toLowerCase()==="glace"  ){
                 return damage*2;
             }
         }
-        if(TypeAttacked.name==="Eau"){
-            if(TypeAttacking.name==="Electrik" || TypeAttacking.name==="Plante"  ){
+        if(TypeAttacked.name.toLowerCase()==="eau"){
+            if(TypeAttacking.name.toLowerCase()==="electrik" || TypeAttacking.name.toLowerCase()==="plante"  ){
                 return damage*2;
             }
         }
-        if(TypeAttacked.name==="Electrik"){
-            if(TypeAttacking.name==="Sol"){
+        if(TypeAttacked.name.toLowerCase()==="electrik"){
+            if(TypeAttacking.name.toLowerCase()==="sol"){
                 return damage*2;
             }
         }
-        if(TypeAttacked.name==="Fee"){
-            if(TypeAttacking.name==="Acier" || TypeAttacking.name==="Poison" ){
+        if(TypeAttacked.name.toLowerCase()==="fee"){
+            if(TypeAttacking.name.toLowerCase()==="acier" || TypeAttacking.name.toLowerCase()==="poison" ){
                 return damage*2;
             }
         }
-        if(TypeAttacked.name==="Feu"){
-            if(TypeAttacking.name==="Eau" || TypeAttacking.name==="Roche" || TypeAttacking.name==="Sol"  ){
+        if(TypeAttacked.name.toLowerCase()==="feu"){
+            if(TypeAttacking.name.toLowerCase()==="eau" || TypeAttacking.name.toLowerCase()==="roche" || TypeAttacking.name.toLowerCase()==="sol"  ){
                 return damage*2;
             }
         }
-        if(TypeAttacked.name==="Glace"){
-            if(TypeAttacking.name==="Combat" || TypeAttacking.name==="Roche" || TypeAttacking.name==="Acier" || TypeAttacking.name==="Feu" ){
+        if(TypeAttacked.name.toLowerCase()==="glace"){
+            if(TypeAttacking.name.toLowerCase()==="combat" || TypeAttacking.name.toLowerCase()==="roche" || TypeAttacking.name.toLowerCase()==="acier" || TypeAttacking.name.toLowerCase()==="feu" ){
                 return damage*2;
             }
         }
-        if(TypeAttacked.name==="Insecte"){
-            if(TypeAttacking.name==="Feu" || TypeAttacking.name==="Roche" || TypeAttacking.name==="Vol"){
+        if(TypeAttacked.name.toLowerCase()==="insecte"){
+            if(TypeAttacking.name.toLowerCase()==="feu" || TypeAttacking.name.toLowerCase()==="roche" || TypeAttacking.name.toLowerCase()==="vol"){
                 return damage*2;
             }
         }
-        if(TypeAttacked.name==="Normal"){
-            if(TypeAttacking.name==="Combat"){
+        if(TypeAttacked.name.toLowerCase()==="normal"){
+            if(TypeAttacking.name.toLowerCase()==="combat"){
                 return damage*2;
             }
         }
-        if(TypeAttacked.name==="Plante"){
-            if(TypeAttacking.name==="Glace" || TypeAttacking.name==="Feu" || TypeAttacking.name==="Vol" || TypeAttacking.name==="Insecte"  || TypeAttacking.name==="Poison"){
+        if(TypeAttacked.name.toLowerCase()==="plante"){
+            if(TypeAttacking.name.toLowerCase()==="glace" || TypeAttacking.name.toLowerCase()==="feu" || TypeAttacking.name.toLowerCase()==="vol" || TypeAttacking.name.toLowerCase()==="insecte"  || TypeAttacking.name.toLowerCase()==="poison"){
                 return damage*2;
             }
         }
-        if(TypeAttacked.name==="Poison"){
-            if(TypeAttacking.name==="Psy" || TypeAttacking.name==="Sol"){
+        if(TypeAttacked.name.toLowerCase()==="poison"){
+            if(TypeAttacking.name.toLowerCase()==="psy" || TypeAttacking.name.toLowerCase()==="sol"){
                 return damage*2;
             }
         }
-        if(TypeAttacked.name==="Psy"){
-            if(TypeAttacking.name==="Tenebre" || TypeAttacking.name==="Spectre"){
+        if(TypeAttacked.name.toLowerCase()==="psy"){
+            if(TypeAttacking.name.toLowerCase()==="tenebre" || TypeAttacking.name.toLowerCase()==="spectre"){
                 return damage*2;
             }
         }
-        if(TypeAttacked.name==="Roche"){
-            if(TypeAttacking.name==="Combat" || TypeAttacking.name==="Eau" || TypeAttacking.name==="Plante" || TypeAttacking.name==="Sol" || TypeAttacking.name==="Acier"){
+        if(TypeAttacked.name.toLowerCase()==="roche"){
+            if(TypeAttacking.name.toLowerCase()==="combat" || TypeAttacking.name.toLowerCase()==="eau" || TypeAttacking.name.toLowerCase()==="plante" || TypeAttacking.name.toLowerCase()==="sol" || TypeAttacking.name.toLowerCase()==="acier"){
                 return damage*2;
             }
         }
-        if(TypeAttacked.name==="Sol"){
-            if(TypeAttacking.name==="Eau" || TypeAttacking.name==="Plante" || TypeAttacking.name==="Glace"){
+        if(TypeAttacked.name.toLowerCase()==="sol"){
+            if(TypeAttacking.name.toLowerCase()==="eau" || TypeAttacking.name.toLowerCase()==="plante" || TypeAttacking.name.toLowerCase()==="glace"){
                 return damage*2;
             }
         }
-        if(TypeAttacked.name==="Spectre"){
-            if(TypeAttacking.name==="Spectre" || TypeAttacking.name==="Tenebre"){
+        if(TypeAttacked.name.toLowerCase()==="spectre"){
+            if(TypeAttacking.name.toLowerCase()==="spectre" || TypeAttacking.name.toLowerCase()==="tenebre"){
                 return damage*2;
             }
         }
-        if(TypeAttacked.name==="Tenebre"){
-            if(TypeAttacking.name==="Fee" || TypeAttacking.name==="Insecte" || TypeAttacking.name==="Combat" ){
+        if(TypeAttacked.name.toLowerCase()==="tenebre"){
+            if(TypeAttacking.name.toLowerCase()==="fee" || TypeAttacking.name.toLowerCase()==="insecte" || TypeAttacking.name.toLowerCase()==="combat" ){
                 return damage*2;
             }
         }
-        if(TypeAttacked.name==="Vol"){
-            if(TypeAttacking.name==="Glace" || TypeAttacking.name==="Roche" || TypeAttacking.name==="Electrik" ){
+        if(TypeAttacked.name.toLowerCase()==="vol"){
+            if(TypeAttacking.name.toLowerCase()==="glace" || TypeAttacking.name.toLowerCase()==="roche" || TypeAttacking.name.toLowerCase()==="electrik" ){
                 return damage*2;
             }
         }
@@ -225,101 +226,101 @@ export class BattleUsecase {
     }
 
     async resistance(TypeAttacked : Type,TypeAttacking : Type, damage : number) {
-        if(TypeAttacked.name==="Acier"){
-            if(TypeAttacking.name==="Electrik" || TypeAttacking.name==="Acier" || TypeAttacking.name==="Roche" || TypeAttacking.name==="Plante"|| TypeAttacking.name==="Glace" || TypeAttacking.name==="Dragon" || TypeAttacking.name==="Psy"|| TypeAttacking.name==="Vol" || TypeAttacking.name==="Fee"){
+        if(TypeAttacked.name.toLowerCase()==="acier"){
+            if(TypeAttacking.name.toLowerCase()==="electrik" || TypeAttacking.name.toLowerCase()==="acier" || TypeAttacking.name.toLowerCase()==="roche" || TypeAttacking.name.toLowerCase()==="plante"|| TypeAttacking.name.toLowerCase()==="glace" || TypeAttacking.name.toLowerCase()==="dragon" || TypeAttacking.name.toLowerCase()==="psy"|| TypeAttacking.name.toLowerCase()==="vol" || TypeAttacking.name.toLowerCase()==="fee"){
                 return damage/2;
             }
         }
-        if(TypeAttacked.name==="Combat"){
-            if(TypeAttacking.name==="Tenebre" || TypeAttacking.name==="Insecte" || TypeAttacking.name==="Roche"  ){
+        if(TypeAttacked.name.toLowerCase()==="combat"){
+            if(TypeAttacking.name.toLowerCase()==="tenebre" || TypeAttacking.name.toLowerCase()==="insecte" || TypeAttacking.name.toLowerCase()==="roche"  ){
                 return damage/2;
             }
         }
-        if(TypeAttacked.name==="Dragon"){
-            if(TypeAttacking.name==="Eau" || TypeAttacking.name==="Feu" || TypeAttacking.name==="Electrik" || TypeAttacking.name==="Plante"  ){
-                return damage*2;
-            }
-        }
-        if(TypeAttacked.name==="Eau"){
-            if(TypeAttacking.name==="Eau" || TypeAttacking.name==="Glace" || TypeAttacking.name==="Acier" || TypeAttacking.name==="Feu"  ){
+        if(TypeAttacked.name.toLowerCase()==="dragon"){
+            if(TypeAttacking.name.toLowerCase()==="eau" || TypeAttacking.name.toLowerCase()==="feu" || TypeAttacking.name.toLowerCase()==="electrik" || TypeAttacking.name.toLowerCase()==="plante"  ){
                 return damage/2;
             }
         }
-        if(TypeAttacked.name==="Electrik"){
-            if(TypeAttacking.name==="Electrik" || TypeAttacking.name==="Acier" || TypeAttacking.name==="Vol"){
+        if(TypeAttacked.name.toLowerCase()==="eau"){
+            if(TypeAttacking.name.toLowerCase()==="eau" || TypeAttacking.name.toLowerCase()==="glace" || TypeAttacking.name.toLowerCase()==="acier" || TypeAttacking.name.toLowerCase()==="feu"  ){
                 return damage/2;
             }
         }
-        if(TypeAttacked.name==="Fee"){
-            if(TypeAttacking.name==="Combat" || TypeAttacking.name==="Insecte" || TypeAttacking.name==="Tenebre"){
+        if(TypeAttacked.name.toLowerCase()==="electrik"){
+            if(TypeAttacking.name.toLowerCase()==="electrik" || TypeAttacking.name.toLowerCase()==="acier" || TypeAttacking.name.toLowerCase()==="vol"){
                 return damage/2;
             }
         }
-        if(TypeAttacked.name==="Feu"){
-            if(TypeAttacking.name==="Feu" || TypeAttacking.name==="Eau" || TypeAttacking.name==="Glace" || TypeAttacking.name==="Acier" || TypeAttacking.name==="Fee" || TypeAttacking.name==="Insecte" ){
+        if(TypeAttacked.name.toLowerCase()==="fee"){
+            if(TypeAttacking.name.toLowerCase()==="combat" || TypeAttacking.name.toLowerCase()==="insecte" || TypeAttacking.name.toLowerCase()==="tenebre"){
                 return damage/2;
             }
         }
-        if(TypeAttacked.name==="Glace"){
-            if(TypeAttacking.name==="Glace"){
+        if(TypeAttacked.name.toLowerCase()==="feu"){
+            if(TypeAttacking.name.toLowerCase()==="feu" || TypeAttacking.name.toLowerCase()==="eau" || TypeAttacking.name.toLowerCase()==="glace" || TypeAttacking.name.toLowerCase()==="acier" || TypeAttacking.name.toLowerCase()==="fee" || TypeAttacking.name.toLowerCase()==="insecte" ){
                 return damage/2;
             }
         }
-        if(TypeAttacked.name==="Insecte"){
-            if(TypeAttacking.name==="Combat" || TypeAttacking.name==="Plante" || TypeAttacking.name==="Sol"){
+        if(TypeAttacked.name.toLowerCase()==="glace"){
+            if(TypeAttacking.name.toLowerCase()==="glace"){
                 return damage/2;
             }
         }
-        if(TypeAttacked.name==="Normal"){
-            if(TypeAttacking.name==="Spectre"){
+        if(TypeAttacked.name.toLowerCase()==="insecte"){
+            if(TypeAttacking.name.toLowerCase()==="combat" || TypeAttacking.name.toLowerCase()==="plante" || TypeAttacking.name.toLowerCase()==="sol"){
+                return damage/2;
+            }
+        }
+        if(TypeAttacked.name.toLowerCase()==="normal"){
+            if(TypeAttacking.name.toLowerCase()==="spectre"){
                 return damage*0;
             }
         }
-        if(TypeAttacked.name==="Plante"){
-            if(TypeAttacking.name==="Eau" || TypeAttacking.name==="Electrik" || TypeAttacking.name==="Plante" || TypeAttacking.name==="Sol"){
+        if(TypeAttacked.name.toLowerCase()==="plante"){
+            if(TypeAttacking.name.toLowerCase()==="eau" || TypeAttacking.name.toLowerCase()==="electrik" || TypeAttacking.name.toLowerCase()==="plante" || TypeAttacking.name.toLowerCase()==="sol"){
                 return damage/2;
             }
         }
-        if(TypeAttacked.name==="Poison"){
-            if(TypeAttacking.name==="Poison" || TypeAttacking.name==="Fee" || TypeAttacking.name==="Insecte" || TypeAttacking.name==="Combat" || TypeAttacking.name==="Plante"){
+        if(TypeAttacked.name.toLowerCase()==="poison"){
+            if(TypeAttacking.name.toLowerCase()==="poison" || TypeAttacking.name.toLowerCase()==="fee" || TypeAttacking.name.toLowerCase()==="insecte" || TypeAttacking.name.toLowerCase()==="combat" || TypeAttacking.name.toLowerCase()==="plante"){
                 return damage/2;
             }
         }
-        if(TypeAttacked.name==="Psy"){
-            if(TypeAttacking.name==="Psy" || TypeAttacking.name==="Combat"){
+        if(TypeAttacked.name.toLowerCase()==="psy"){
+            if(TypeAttacking.name.toLowerCase()==="psy" || TypeAttacking.name.toLowerCase()==="combat"){
                 return damage/2;
             }
         }
-        if(TypeAttacked.name==="Roche"){
-            if(TypeAttacking.name==="Combat" || TypeAttacking.name==="Eau" || TypeAttacking.name==="Plante" || TypeAttacking.name==="Sol" || TypeAttacking.name==="Acier"){
+        if(TypeAttacked.name.toLowerCase()==="roche"){
+            if(TypeAttacking.name.toLowerCase()==="combat" || TypeAttacking.name.toLowerCase()==="eau" || TypeAttacking.name.toLowerCase()==="plante" || TypeAttacking.name.toLowerCase()==="sol" || TypeAttacking.name.toLowerCase()==="acier"){
                 return damage/2;
             }
         }
-        if(TypeAttacked.name==="Sol"){
-            if(TypeAttacking.name==="Feu" || TypeAttacking.name==="Normal" || TypeAttacking.name==="Poison"){
+        if(TypeAttacked.name.toLowerCase()==="sol"){
+            if(TypeAttacking.name.toLowerCase()==="feu" || TypeAttacking.name.toLowerCase()==="normal" || TypeAttacking.name.toLowerCase()==="poison"){
                 return damage/2;
             }
         }
-        if(TypeAttacked.name==="Spectre"){
-            if(TypeAttacking.name==="Insecte" || TypeAttacking.name==="Poison"){
+        if(TypeAttacked.name.toLowerCase()==="spectre"){
+            if(TypeAttacking.name.toLowerCase()==="insecte" || TypeAttacking.name.toLowerCase()==="poison"){
                 return damage/2;
             }
-            if(TypeAttacking.name==="Normal" || TypeAttacking.name==="Combat"){
+            if(TypeAttacking.name.toLowerCase()==="normal" || TypeAttacking.name.toLowerCase()==="combat"){
                 return 0;
             }
         }
-        if(TypeAttacked.name==="Tenebre"){
-            if(TypeAttacking.name==="Tenebre" || TypeAttacking.name==="Spectre"){
+        if(TypeAttacked.name.toLowerCase()==="tenebre"){
+            if(TypeAttacking.name.toLowerCase()==="tenebre" || TypeAttacking.name.toLowerCase()==="spectre"){
                 return damage/2;
             }
-            if(TypeAttacking.name==="Psy"){
+            if(TypeAttacking.name.toLowerCase()==="psy"){
                 return 0;
             }
         }
-        if(TypeAttacked.name==="Vol"){
-            if(TypeAttacking.name==="Insecte" || TypeAttacking.name==="Plante"){
+        if(TypeAttacked.name.toLowerCase()==="vol"){
+            if(TypeAttacking.name.toLowerCase()==="insecte" || TypeAttacking.name.toLowerCase()==="plante"){
                 return damage*2;
-            }if(TypeAttacking.name==="Sol"){
+            }if(TypeAttacking.name.toLowerCase()==="sol"){
                 return 0;
             }
         }
