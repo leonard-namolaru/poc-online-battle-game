@@ -273,7 +273,7 @@ export class BattleUsecase {
         }
         if(TypeAttacked.name.toLowerCase()==="normal"){
             if(TypeAttacking.name.toLowerCase()==="ghost"){
-                return damage*0;
+                return 0;
             }
         }
         if(TypeAttacked.name.toLowerCase()==="grass"){
@@ -319,7 +319,7 @@ export class BattleUsecase {
         }
         if(TypeAttacked.name.toLowerCase()==="flying"){
             if(TypeAttacking.name.toLowerCase()==="bug" || TypeAttacking.name.toLowerCase()==="grass"){
-                return damage*2;
+                return damage/2;
             }if(TypeAttacking.name.toLowerCase()==="ground"){
                 return 0;
             }
