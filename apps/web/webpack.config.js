@@ -1,10 +1,12 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
+const Dotenv = require('dotenv-webpack');
+require('dotenv').config();
 
 const deps = require("./package.json").dependencies;
 module.exports = {
   output: {
-    publicPath: "http://localhost:9000/",
+    publicPath: process.env.REACT_APP_HOST+":"+process.env.REACT_APP_PORT+"/",
   },
 
   resolve: {
@@ -12,7 +14,7 @@ module.exports = {
   },
 
   devServer: {
-    port: 9000,
+    port: process.env.REACT_APP_DEV_PORT,
     historyApiFallback: true,
   },
 
@@ -60,5 +62,7 @@ module.exports = {
     new HtmlWebPackPlugin({
       template: "./src/index.html",
     }),
+    new Dotenv(),
   ],
 };
+console.log("ENV : " + process.env.REACT_APP_HOST+":"+process.env.REACT_APP_PORT);

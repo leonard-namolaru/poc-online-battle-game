@@ -1,6 +1,6 @@
 import React, { useState, useEffect , useRef} from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import axios from "../../api";
 import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
 import { Container, Grid, Typography } from '@material-ui/core';
@@ -487,7 +487,7 @@ const userPage = () => {
     
      useEffect(()=> {
         if(userID){
-            const url = "http://localhost:3000/searchUser/"+userID;
+            const url = "/searchUser/"+userID;
            
             axios.get(url).then((response) =>{
                 if(response.status === 200){
