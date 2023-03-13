@@ -2,13 +2,13 @@ import React, {StrictMode, useEffect, useState} from "react";
 import ReactDOM from "react-dom"
 import {BrowserRouter, Routes , Route, Outlet, Link, useNavigate} from "react-router-dom"
 import "../../index.scss";
-import axios from "axios";
+import axios from "../../api";
 import styled from 'styled-components';
 import Footer from '../accueil/footer';
 
 import { Navigate } from "react-router-dom";
 // const navigate = useNavigate();
-const urlLoginPost = "http://localhost:3000/login";
+const urlLoginPost = "/login";
 type User = {
     // name: string;
     email: string;
@@ -53,7 +53,7 @@ const Login = () => {
     const [users, getusers] = useState<ListeUserForme[] | null>();
     const navigate = useNavigate();
     useEffect(() => {
-        const url = "http://localhost:3000/seealllog";
+        const url = "/seealllog";
         axios.get(url).then((response) => {
             getusers(response.data);
         });
@@ -85,7 +85,7 @@ const Login = () => {
     const log = async () => {
         try {
            
-            const response = await axios.post("http://localhost:3000/log", user);
+            const response = await axios.post("/log", user);
             alert(`The reponse is: ${response.data.id}`);
             navigate(`/user/${response.data.id}`);
           

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axios from "../api";
 import "../index.scss";
 
-const urlTrainerPost = "http://localhost:3000/trainers";
+const urlTrainerPost = "/trainers";
 type Trainer = {
     name: string;
     gender: string;
@@ -18,7 +18,7 @@ export type ListeTrainerForme = {
 const Trainer = () => {
     const [trainers, gettrainers] = useState<ListeTrainerForme[] | null>();
     useEffect(() => {
-        const url = "http://localhost:3000/trainers";
+        const url = "/trainers";
         axios.get(url).then((response) => {
             gettrainers(response.data);
         });
