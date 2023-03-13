@@ -4,8 +4,9 @@ import {prisma} from "../../db";
 
 
 
+
 export class PokemonRepository implements IPokemonRepository {
-    async create(pokemon: {pokedex: number, name: string, stats: {attack: number, hp: number}, item: {name: string, effect: number}, moves: {name: string, damage: number}[], exp: number, level: number, userId : number}): Promise<Pokemon> {
+    async create(pokemon: {pokedex: number, name: string, stats: {attack: number, hp: number}, item: {name: string, effect: number}, moves: {name: string, damage: number}[], exp: number, level: number, userId : number,types: {name: string}[]}): Promise<Pokemon> {
 
         const newPokemon = await prisma.pokemon.create({
             data: {
@@ -34,11 +35,15 @@ export class PokemonRepository implements IPokemonRepository {
                 user : {
                     connect: { id: pokemon.userId },
                 },
+                types : {
+                    create : pokemon.types
+                },
             },
             include : {
                 item : true,
                 moves : true,
                 stats : true,
+                types : true,
             }
         });
 
@@ -47,7 +52,7 @@ export class PokemonRepository implements IPokemonRepository {
 
 
     async findAll(): Promise<Pokemon[]> {
-        const pokemons: Pokemon[] = await prisma.pokemon.findMany({ include : {item : true, moves : true, stats : true}});
+        const pokemons: Pokemon[] = await prisma.pokemon.findMany({ include : {item : true, moves : true, stats : true, types : true}});
 
         return pokemons;
     }
@@ -61,6 +66,7 @@ export class PokemonRepository implements IPokemonRepository {
                 item : true,
                 moves : true,
                 stats : true,
+                types: true,
             }
         })
         if (pokemon === null){

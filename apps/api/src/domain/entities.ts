@@ -44,6 +44,7 @@ export type Pokemon = {
     moves: Move[];
     exp:number;
     level:number;
+    types:Type[];
 };
 
 export type Item = {
@@ -61,3 +62,19 @@ export type Stats = {
     attack: number;
     hp: number;
 };
+
+export type Type ={
+    name: string;
+
+    /*
+    -idea 1
+    tableau resist
+    tableau weakness
+    ->battle 
+        -> function check weakness/resist in both tab of foe pokemon
+        -> apply final damage
+    -idea 2
+    big func with if/elseif/else check weakness/resist
+    */
+       
+}

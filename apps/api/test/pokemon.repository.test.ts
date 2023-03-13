@@ -24,6 +24,9 @@ describe('Pokemon Repository - test', async () => {
                 { name: 'mega-punch', damage: 80 },
                 { name: 'pay-day', damage: 40 }
             ],
+            types : [
+                {name: 'electric'}
+            ],
             exp: 112,
             level: 0
         }
