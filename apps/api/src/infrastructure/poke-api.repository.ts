@@ -12,13 +12,13 @@ export class PokeApiRepository implements IPokeApiRepository {
 
 
 
-    async newPokemon(pokemonNameInEnglish : string) : Promise<{pokedex: number, name: string, stats: {attack: number, hp: number}, item: {name: string, effect: number}, moves: {name: string, damage: number}[], exp: number, level: number}> {
+    async newPokemon(pokemonNameInEnglish : string) : Promise<{pokedex: number, name: string, stats: {attack: number, hp: number}, item: {name: string, effect: number}, moves: {name: string, damage: number}[], exp: number, level: number,types:{name:string}[]}> {
         let attackValue = 0;
         let hpValue = 0;
 
         try {
             const pokemonFromApi = await this.pokemonClient.getPokemonByName(pokemonNameInEnglish.toLowerCase());
-
+            
             pokemonFromApi.stats.forEach(element => {
                 if (element.stat.name == "attack")
                     attackValue = element.base_stat;
@@ -39,6 +39,13 @@ export class PokeApiRepository implements IPokeApiRepository {
                 const newMove: {name: string, damage: number} = {name: moveName, damage: moveDamage};
                 movesList.push(newMove)
             }
+            let typeList : {name: string}[] = new Array();
+
+            for(let i = 0; i<pokemonFromApi.types.length;i++){
+                const typeName = pokemonFromApi.types[i].type.name
+                const typeToPush: {name:string} = {name: typeName}
+                typeList.push(typeToPush)
+            }
 
             return  {pokedex : pokemonFromApi.id,
                      name    : pokemonNameInEnglish.toLowerCase(),
@@ -46,7 +53,8 @@ export class PokeApiRepository implements IPokeApiRepository {
                      item    : {name: "test", effect: 3},
                      exp     : pokemonFromApi.base_experience,
                      moves   : movesList,
-                     level   : 0
+                     level   : 0,
+                     types   : typeList
             };
         } catch (error : any) {
             return Promise.reject("No data was found for the Pokemon name or there was a problem communicating with the PokeAPI : " + error);

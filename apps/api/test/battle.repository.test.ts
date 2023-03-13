@@ -21,6 +21,7 @@ export async function generateAttackerAndOpponentForTest() : Promise<{ attacking
             { name: 'mega-punch', damage: 80 },
             { name: 'pay-day', damage: 40 }
         ],
+        types:[{name:'electric'}],
         exp: 112,
         level: 0
     };
@@ -34,6 +35,7 @@ export async function generateAttackerAndOpponentForTest() : Promise<{ attacking
             { name: 'mega-punch', damage: 80 },
             { name: 'pay-day', damage: 40 }
         ],
+        types:[{name:'electric'}],
         exp: 112,
         level: 0
     };

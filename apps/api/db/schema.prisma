@@ -54,6 +54,8 @@ model Pokemon {
   user            User         @relation("pokemon-user", fields: [userId], references: [id])
 
   team          PokemonOnPokemonTeams[]
+
+  types          Type[]        @relation("types")
 }
 
 model Battle {
@@ -109,4 +111,12 @@ model PokemonTeam {
   trainerId   Int                     @unique
   pokemonList PokemonOnPokemonTeams[]
   trainer     Trainer                 @relation(fields: [trainerId], references: [id])
+}
+
+
+model Type{
+    typeId  Int   @id @default(autoincrement())
+    name  String  
+    pokemonId Int
+    pokemon   Pokemon @relation("types", fields: [pokemonId], references: [id])
 }

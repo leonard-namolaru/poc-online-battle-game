@@ -44,6 +44,7 @@ export class PokemonTeamRepository implements IPokemonTeamRepository {
                         item : true,
                         moves : true,
                         stats : true,
+                        types: true,
                     }
                 });
                 if (pkmn) { // Needed to ensure a valid pokemon object is used.

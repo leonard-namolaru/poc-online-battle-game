@@ -38,13 +38,16 @@ describe('Create Pokemon Usecase - test', () => {
                 { name: 'mega-punch', damage: 80 },
                 { name: 'pay-day', damage: 40 }
             ],
+            types : [
+                {name : 'electric'}
+            ],
             exp: 112,
             level: 0
         }
         pokemonRepositoryMock.create.mockImplementation(() => expectedPokemon)
 
         // WHEN
-        const pokemon = await createPokemonUsecase.execute({pokedex: expectedPokemon.pokedex,  name: expectedPokemon.name, exp: expectedPokemon.exp, level: expectedPokemon.level, moves : expectedPokemon.moves, stats : expectedPokemon.stats, item : expectedPokemon.item, userId : newUserForPokemonUseCaseTest.id})
+        const pokemon = await createPokemonUsecase.execute({pokedex: expectedPokemon.pokedex,  name: expectedPokemon.name, exp: expectedPokemon.exp, level: expectedPokemon.level, moves : expectedPokemon.moves, stats : expectedPokemon.stats, item : expectedPokemon.item, userId : newUserForPokemonUseCaseTest.id, types : expectedPokemon.types})
 
         // THEN
         expect(pokemonRepositoryMock.create).toHaveBeenCalledOnce()
@@ -56,7 +59,8 @@ describe('Create Pokemon Usecase - test', () => {
             moves: expectedPokemon.moves,
             exp: expectedPokemon.exp,
             level: expectedPokemon.level,
-            userId : newUserForPokemonUseCaseTest.id
+            userId : newUserForPokemonUseCaseTest.id,
+            types: expectedPokemon.types
         })
         expect(expectedPokemon).toStrictEqual(expectedPokemon);
     })
