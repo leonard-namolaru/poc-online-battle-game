@@ -85,7 +85,7 @@ const Login = () => {
     const log = async () => {
         try {
            
-            const response = await axios.post("/log", user);
+            const response = await axios.post("/login", user);
             alert(`The reponse is: ${response.data.id}`);
             navigate(`/user/${response.data.id}`);
           
