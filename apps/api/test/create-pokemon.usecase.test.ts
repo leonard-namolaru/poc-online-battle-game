@@ -39,7 +39,7 @@ describe('Create Pokemon Usecase - test', () => {
                 { name: 'pay-day', damage: 40 }
             ],
             types : [
-                {name : 'electrik'}
+                {name : 'electric'}
             ],
             exp: 112,
             level: 0
