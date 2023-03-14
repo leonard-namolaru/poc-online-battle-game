@@ -4,7 +4,6 @@ import {BrowserRouter, Routes , Route, Outlet, Link, useNavigate} from "react-ro
 import "../../index.scss";
 import axios from "../../api";
 import styled from 'styled-components';
-import Footer from '../accueil/footer';
 
 import { Navigate } from "react-router-dom";
 // const navigate = useNavigate();
@@ -166,13 +165,6 @@ const Login = () => {
             </div>
         </div>
           </main>
-  
-          {<Footer Address='20 rue ismail' Email='ismail' Name='pokemos ' Phone='+25364216841265' 
-             facebookUrl="https://facebook.com/"
-             twitterUrl="https://twitter.com/"
-             instagramUrl="https://instagram.com/"
-             linkedInUrl="https://linked.com/"
-          />}
     </div>
         
     );

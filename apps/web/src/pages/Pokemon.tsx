@@ -2,8 +2,10 @@ import apiClient from "../api";
 import React, {useState} from "react";
 import "../index.scss";
 import {Pokemon} from  "../../../api/src/domain/entities";
+import { useParams } from "react-router-dom";
 
 const Home = () => {
+    let {userID} = useParams();
     const [pokemon, setPokemon] = useState<string>("");
     const [userId, setUserId] = useState<string>("");
 
@@ -18,7 +20,7 @@ const Home = () => {
 
     const createPokemon = async () => {
         try {
-            const response = await apiClient.post("/pokemon", {name: pokemon, userId : parseInt(userId)});
+            const response = await apiClient.post("/pokemon", {name: pokemon, userId : userID});
             setData({id: response.data.id,
                      pokedex: response.data.pokedex,
                      name: response.data.name,
@@ -41,14 +43,6 @@ const Home = () => {
                     value={pokemon}
                     onChange={(evt) => {
                         setPokemon(evt.target.value);
-                    }}
-                />
-                <br />
-                <input
-                    placeholder="user id"
-                    value={userId}
-                    onChange={(evt) => {
-                        setUserId(evt.target.value);
                     }}
                 />
                 <br />

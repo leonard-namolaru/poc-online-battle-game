@@ -4,11 +4,21 @@ import {PokeApiRepository} from "../infrastructure/poke-api.repository";
 
 export const pokemonRoutes = (server: FastifyInstance, container: PokemonContainer, pokeApiRepository : PokeApiRepository) => {
 
-    server.route({
-        method: 'GET',
+    server.route<{Body: { userId : number }}>({
+        method: 'POST',
         url: '/pokemons', // http get request to : http://localhost:3000/pokemons
+        schema:{// The format of the request body (in JSON):  {"userId" : 0}
+            body: {
+                type: 'object',
+                properties: {
+                    userId: { type: 'number' },
+                },
+                required: ['userId']
+            }
+        },
         handler: async (_request, reply) => {
-            const pokemons = await container.getAllPokemonsUsecase.execute();
+            const {userId} = _request.body;
+            const pokemons = await container.getAllPokemonsUsecase.execute(userId);
             reply.status(200).send(pokemons);
         }
     });
