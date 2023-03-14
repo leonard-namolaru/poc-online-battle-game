@@ -24,4 +24,3 @@ export class CreatePokemonUsecase {
         return newPokemon;
     }
 }
-

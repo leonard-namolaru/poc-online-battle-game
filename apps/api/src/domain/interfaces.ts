@@ -20,7 +20,7 @@ export interface ITrainerRepository {
 
 export interface IPokemonRepository {
     create(pokemon: {pokedex: number, name: string, stats: {attack: number, hp: number}, item: {name: string, effect: number}, moves: {name: string, damage: number}[], exp: number, level: number, userId : number,types:{name: string}[]}): Promise<Pokemon>;
-    findAll(): Promise<Pokemon[]>
+    findAll(userId: number): Promise<Pokemon[]>
     find(pokemonId : number) : Promise<Pokemon>
 }
 

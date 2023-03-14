@@ -80,7 +80,7 @@ const AppBarMenu: React.FC<Menu>= ({isConnected,handleConnect,handleDisconnect,h
   };
     return(
       <div>
-        <Hidden smUp>
+        <Hidden mdUp>
             <AppBar position="static" className="classes.appBar">
                 <Toolbar className={classes.toolbar}>
                     <IconButton edge="start" color="inherit" aria-label="menu" onClick={handleMenu} className={classes.menuButton}>
@@ -130,7 +130,7 @@ const AppBarMenu: React.FC<Menu>= ({isConnected,handleConnect,handleDisconnect,h
                 </Toolbar>
                 </AppBar>
             </Hidden>
-            <Hidden xsDown>
+            <Hidden mdDown>
                 <AppBar position="static">
                 <Toolbar>
                     <Typography variant="h6" style={{ flexGrow: 1 }}>
@@ -138,6 +138,7 @@ const AppBarMenu: React.FC<Menu>= ({isConnected,handleConnect,handleDisconnect,h
                     </Typography>
                     {isConnected ? (
                     <>
+                       {<AppLayout classes={classes}></AppLayout>}
                         <Button color="inherit" startIcon={<ExitToApp />} onClick={handleDisconnect}>
                         Déconnecter
                         </Button>
@@ -147,6 +148,7 @@ const AppBarMenu: React.FC<Menu>= ({isConnected,handleConnect,handleDisconnect,h
                     </>
                     ) : (
                     <>
+                        {<AppLayout classes={classes}></AppLayout>}
                         <Button color="inherit" startIcon={<AccountCircle />}  onClick={handleConnect} component={Link} to={"/login"}>
                         Connexion
                         </Button>

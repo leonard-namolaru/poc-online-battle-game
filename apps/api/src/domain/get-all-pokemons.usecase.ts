@@ -8,9 +8,9 @@ export class GetAllPokemonsUsecase {
         this.pokemonRepository = pokemonRepository;
     }
 
-    async execute(): Promise<Pokemon[]> {
+    async execute(userId: number): Promise<Pokemon[]> {
         // return all pokemons in db
-        const pokemons = await this.pokemonRepository.findAll();
+        const pokemons = await this.pokemonRepository.findAll(userId);
         return pokemons;
     }
 }

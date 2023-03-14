@@ -5,13 +5,13 @@ import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
 import { Container, Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { List, ListItemText, ListItemAvatar, Avatar } from '@material-ui/core';
+import { Avatar } from '@material-ui/core';
+import ApiServeur from "../../api";
 
+
+import { useNavigate } from 'react-router-dom'
 
 import "./user.scss"
-
-
-
 
 interface Trainer {
     id: number;
@@ -164,8 +164,12 @@ interface GereLaListe {
   itemsTrainers?: Trainer[] | null;
   setitemsPokemon?: (itemsPokemon: Pokemon[] | null) => void;
   setitemsTrainers?: (itemsTrainers: Trainer[] | null ) => void;
+  Type : string;
+  userId: number;
 }
-const ItemList: React.FC<GereLaListe> = ({items, setItems, itemsPokemon, itemsTrainers, setitemsPokemon,setitemsTrainers}) => {
+const ItemList: React.FC<GereLaListe> = ({items, setItems, itemsPokemon, itemsTrainers, setitemsPokemon,setitemsTrainers,Type,userId}) => {
+
+  const navigate = useNavigate();
  
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
   const [background, setBacground] = useState<string>("");
@@ -197,6 +201,16 @@ const ItemList: React.FC<GereLaListe> = ({items, setItems, itemsPokemon, itemsTr
     setBacground(concat);
   };
 
+  const redirection = () =>{
+
+    if( Type === "Pokémons"){
+      navigate('/pokemon/'+userId);
+    }else
+    {
+      navigate('/trainer/'+userId);
+    }
+    
+  }
   const removeSelected = () => {
     //setItems(items.filter((item) => !item.selected));
     
@@ -257,18 +271,24 @@ const ItemList: React.FC<GereLaListe> = ({items, setItems, itemsPokemon, itemsTr
         </React.Fragment>
       </CSSTransition>
       <ul style={{ listStyle: 'none', padding: 0, margin: 0, height: '100px', overflow: 'auto'  }}>
-      
+      {(items?.length === 0 || items === null )&& <p style={ { backgroundColor: 'red'}}>Vous n'avez pas des {Type} , Veuillez cliquer sur le lien ci-dessous afin d'ajouter des {Type} .</p>}
         {items.map((item, index) => (
           <ListItem key={item.id} item={item} index={index} toggleSelection={toggleSelection} />
         ))}
       
       </ul>
       
-        {/* <button onClick={removeSelected}>Prendre</button> */}
+      
+      {(items?.length !== 0  ) ?
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '10vh' }}>
                 
                 <ColorfulButton backgroundPosition={backgroundPosition} opacity={1} backgroundSize='contain' background= {background} text="Ajouter Dans votre liste" backgroundColor="#0c130c" textColor="#0c130c" onClick={removeSelected} />
         </div>
+        :
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '10vh' }}>  
+        <ColorfulButton backgroundPosition={backgroundPosition} opacity={1} backgroundSize='contain' background= {background} text={"Veuillez Ajouter des "+Type+" "} backgroundColor="#0c130c" textColor="#0c130c" onClick={redirection} />
+        </div>
+       }
     </React.Fragment>
   );
 };
@@ -297,26 +317,29 @@ const ListItem: React.FC<ListItemProps> = ({ item, toggleSelection, index }) => 
   );
 };
 
-const SelectedItem: React.FC<{ item: Item }> = ({ item }) => {
-  const SelectedItemContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 20px;
+const SelectedItemContainer = styled.div`
+display: flex;
+flex-direction: column;
+align-items: center;
+margin-top: 20px;
 
-  img {
-    width: 200px;
-    height: 200px;
-  }
+img {
+  width: 200px;
+  height: 200px;
+}
 
-  p {
-    font-size: 18px;
-    margin-top: 10px;
-  }
+p {
+  font-size: 18px;
+  margin-top: 10px;
+}
 `;
 
+const SelectedItem: React.FC<{ item: Item }> = ({ item }) => {
+
   return (
+   
     <SelectedItemContainer>
+      {console.log("image urlisis "+item.image)}
       <img src={item.image} alt={item.value} />
       <p>{item.description}</p>
     </SelectedItemContainer>
@@ -351,7 +374,7 @@ const ColorfulButton: React.FC<Props> = ({backgroundPosition, opacity, backgroun
   return (
     <button
       style={{
-        backgroundPosition,
+       // backgroundPosition,
         opacity,
         fontFamily,
         animation,
@@ -387,28 +410,188 @@ const ColorfulButton: React.FC<Props> = ({backgroundPosition, opacity, backgroun
 //fin de bouto 
 
 type User = {
-    id: number,
-    name: string,
-    pwd: string,
-    email: string,
+  userId : string,
+}
+
+
+
+interface IPokemon {
+  id: number;
+  pokedex: number;
+  name: string;
+  exp: number;
+  level: number;
+  statsId: number;
+  itemId: number;
+  userId: number;
+  item: {
+    itemId: number;
+    name: string;
+    effect: number;
+    userId: number;
+  };
+  moves: {
+    moveId: number;
+    name: string;
+    damage: number;
+    pokemonId: number;
+  }[];
+  stats: {
+    statsId: number;
+    attack: number;
+    hp: number;
+  };
 }
 
 const userPage = () => {
      let {userID} = useParams();
-     const [user, getUser] = useState<User | null | String>();
+     const [user, getUser] = useState<User>({userId : userID});
+     const [AllPOkemons, setAllPOkemons] = useState<IPokemon[] | null>([]);
+     const [pokemons, setPokemons] = useState<Item[]>([ ]);
+     
+     useEffect(() => {      
+          ApiServeur.post("/pokemons",user).then((response) => {
+            const data = response.data;
+            const allpokemons = data.map((pok: any) => {
+              return {
+                id: pok.id,
+                pokedex: pok.pokedex,
+                name: pok.name,
+                exp: pok.exp,
+                level: pok.level,
+                statsId: pok.statsId,
+                itemId: pok.itemId,
+                userId: pok.userId,
+                item: {
+                  itemId: pok.item.itemId,
+                  name: pok.item.name,
+                  effect: pok.item.effect,
+                  userId: pok.item.userId,
+                },
+                moves: pok.moves.map((move: any) => ({
+                  moveId: move.moveId,
+                  name: move.name,
+                  damage: move.damage,
+                  pokemonId: move.pokemonId,
+                })),
+                stats: {
+                  statsId: pok.stats.statsId,
+                  attack: pok.stats.attack,
+                  hp: pok.stats.hp,
+                },
+              };
+            });
+            setAllPOkemons(allpokemons);   
+            // const pokshoe = data.map((pok: any) => {
 
-     //bouton 
-     const [counter, setCounter] = useState(0);
+            //     let  spriteUrl ="spriteUrlNotFind";
+            //     axios
+            //     .get("https://pokeapi.co/api/v2/pokemon/"+pok.name)
+            //     .then(response => {
+            //        spriteUrl = response.data.sprites.front_default;
+            //     })
+            //     return {
+            //       id: pok.id,
+            //       value: pok.name,
+            //       selected: false,
+            //       image: spriteUrl,
+            //       description: "Level: "+pok.level +" Item Name : "+ pok.item.name+ " Item Effect "+pok.item.effect +" attack : "+pok.stats.attack+" hp : "+pok.stats.hp+" ",
+            //     }
+            // }); 
+            const fetchData = async () => {
+              const promises = data.map(async (pok: any) => {
+                try {
+                  const response = await axios.get("https://pokeapi.co/api/v2/pokemon/" + pok.name);
+                  const spriteUrl = response.data.sprites.front_default;
+                  const description = "Level: " + pok.level + " Item Name : " + pok.item.name + " Item Effect " + pok.item.effect + " attack : " + pok.stats.attack + " hp : " + pok.stats.hp + " ";
+                  return {
+                    id: pok.id,
+                    value: pok.name,
+                    selected: false,
+                    image: spriteUrl,
+                    description: description,
+                  }
+                } catch (error) {
+                  console.error(error);
+                  return null;
+                }
+              });
+              const results = await Promise.all(promises);
+              const filteredResults = results.filter((result) => result !== null);
+              setPokemons(filteredResults);
+            }
+            
+            //useEffect(() => {
+              fetchData();
+           // }, []);
+            
+            
+            //setPokemons(pokshoe);
+        }).catch(error => {
+          console.log("Aucun donner n'a ete charger"+error);
+        });
+      }, []);
+    //  //bouton 
+
+    // useEffect(() => {
+    //   const fetchImages = async () => {
+    //     const promises = pokemons.map((pok) =>
+    //       axios
+    //         .get(`https://pokeapi.co/api/v2/pokemon/${pok.name}`)
+    //         .then((response) => response.data.sprites.front_default)
+    //         .catch(() => "")
+    //     );
+    
+    //     const spriteUrls = await Promise.all(promises);
+    
+    //     const updatedPokemons = pokemons.map((pok, index) => ({
+    //       ...pok,
+    //       image: spriteUrls[index],
+    //     }));
+    
+    //     setPokemons(updatedPokemons);
+    //   };
+    
+    //   fetchImages();
+    // }, []);
+   
+
+    // useEffect(() => {
+    //   const fetchImages = () => {
+    //     pokemons.forEach(pok => {
+    //       axios
+    //         .get("https://pokeapi.co/api/v2/pokemon/"+pok.value)
+    //         .then(response => {
+    //           const spriteUrl = response.data.sprites.front_default;
+    //           console.log("image sprite url "+spriteUrl);
+    //           setPokemons(prevState => {
+    //             const updatedPokemons = [...prevState];
+    //             const index = updatedPokemons.findIndex(p => p.value === pok.value);
+    //             updatedPokemons[index].image = spriteUrl;
+    //             return updatedPokemons;
+    //           });
+    //         })
+    //         .catch(() => {
+    //           console.log("image not find ");
+    //           setPokemons(prevState => {
+    //             const updatedPokemons = [...prevState];
+    //             const index = updatedPokemons.findIndex(p => p.value === pok.value);
+    //             updatedPokemons[index].image = "";
+    //             return updatedPokemons;
+    //           });
+    //         });
+    //     });
+    //   };
+    
+    //   fetchImages();
+    // }, []);
+    
+
      const handleClick = () => {
-       setCounter(prevCounter => prevCounter + 1);
+      
      };
 
-  const [pokemons, setPokemons] = useState<Item[]>([
-    { id: 1, value: 'Pikachu  ', selected: false, image: 'https://imagespocauniversitepariscite.s3.eu-central-1.amazonaws.com/pikachu-3865521_960_720.png', description: 'Pikachu de ' },
-    { id: 2, value: 'Rattatac  ', selected: false, image: 'https://imagespocauniversitepariscite.s3.eu-central-1.amazonaws.com/Rattatac.png', description: 'Rattatac de ' },
-    { id: 3, value: 'Pulpizarre  ', selected: false, image: 'https://imagespocauniversitepariscite.s3.eu-central-1.amazonaws.com/pulpizarre.png', description: 'Pulpizarre de ' },
-    { id: 4, value: 'Salmeche  ', selected: false, image: 'https://imagespocauniversitepariscite.s3.eu-central-1.amazonaws.com/salmeche.png', description: 'Salmeche de ' },
-  ]);
+ 
   const [Trainer, setTrainer] = useState<Item[]>([
     { id: 1, value: 'Ismail  ', selected: false, image: 'https://imagespocauniversitepariscite.s3.eu-central-1.amazonaws.com/ali.jpg', description: '15 ans expérience' },
     { id: 2, value: 'Ali  ', selected: false, image: 'https://imagespocauniversitepariscite.s3.eu-central-1.amazonaws.com/atteyeh.png', description: '14 ans expérience ' },
@@ -505,7 +688,7 @@ const userPage = () => {
     
      console.log("valeur user "+user);
     return (
-        <Container maxWidth="70%" style={styles.page}>
+        <Container maxWidth="lg" style={styles.page}>
             <Typography variant="h1" style={styles.h1}>
               Bonjour , Merci de créez votre équipe en fonction de vos préférences.
             </Typography>
@@ -515,7 +698,7 @@ const userPage = () => {
                   <Typography variant="h3" style={styles.h3}>
                     Sélectionner un Dresseur
                   </Typography>
-                  <ItemList items={Trainer} setItems={setTrainer} itemsTrainers={TrainerChoisied} setitemsTrainers={setTrainerChoised}/>
+                  <ItemList items={Trainer} setItems={setTrainer} itemsTrainers={TrainerChoisied} setitemsTrainers={setTrainerChoised} Type="Dresseurs" userId={parseInt(user.userId, 10)}/>
                 </div>
               </Grid>
               <Grid item xs={12} md={4}>
@@ -523,12 +706,12 @@ const userPage = () => {
                   <Typography variant="h3" style={styles.h3}>
                     Choisir des pokémons
                   </Typography>
-                  <ItemList items={pokemons} setItems={setPokemons} itemsPokemon={pokemonsChoised} setitemsPokemon={setPokemonsChoised}/>
+                  <ItemList items={pokemons} setItems={setPokemons} itemsPokemon={pokemonsChoised} setitemsPokemon={setPokemonsChoised} Type="Pokémons" userId={parseInt(user.userId, 10)}/>
                 </div>
               </Grid>
               <Grid item xs={12} md={4}>
                 <div style={styles.box}>
-                  <Typography variant="h3" style={styles.h3}>
+                  <Typography variant="h3" style={styles.h3}> 
                     Votre Équipe
                     { <TrainerAndPokemon trainer={TrainerChoisied} pokemons={pokemonsChoised} setPokemons={setPokemonsChoised} setTrainer={setTrainerChoised} /> }
                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '10vh' }}>
