@@ -1,7 +1,7 @@
 import React, {StrictMode,useState} from "react";
 import ReactDOM from "react-dom"
 import {BrowserRouter , Routes , Route} from "react-router-dom"
-import Trainer from "./pages/Home";
+import Trainer from "./pages/Trainer";
 import Pokemon from "./pages/Pokemon";
 import Login from "./pages/inscription_login/Login";
 import UserPage from "./pages/user/userPage"
@@ -39,7 +39,7 @@ const App = () => {
                         {/* <Route index element={<Login />} /> */}
                         <Route index element={<Homepage />} />
                         <Route path="/pokemon/:userID" element={<Pokemon />} />
-                        <Route path="/trainer" element={<Trainer />} />
+                        <Route path="/trainer/:userID" element={<Trainer />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/user/:userID" element={<UserPage />} />
                         <Route path="/user/:userID/battle" element={<Battle />} />

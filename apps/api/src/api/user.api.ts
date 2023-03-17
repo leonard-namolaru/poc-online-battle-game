@@ -7,18 +7,18 @@ export const registerUserRoutes = (server: FastifyInstance, container: UserConta
         method: 'GET',
         url: '/seealllog', // http get request to : http://localhost:3000/login
         handler: async (_request, reply) => {
-            console.log("jrjrrjrrj")
-            //page ou on doit pouvoir donner son email + pwd et bam recherche dans la bd 
+
             const users = await container.getAllUsersUsecase.execute();
             reply.status(200).send(users);
         }
     });
+
     server.get('/verify/:uniqueToken', async function (req, repl){   
-       var tokenlist= Object.values(req.params as object)
+        var tokenlist= Object.values(req.params as object)
         var token = tokenlist.at(0)
 
        if (typeof token == "string"){
-            var user =await container.userUsecase.getToken(token)
+            var user = await container.userUsecase.getToken(token)
             if(user){
                 user.isValid = true
                 await container.userUsecase.updateToken(user)
@@ -53,7 +53,30 @@ export const registerUserRoutes = (server: FastifyInstance, container: UserConta
         },
         handler: async (request, reply) => {
             const {email, pwd} = request.body
-            // const user = await container.userUsecase.getLogin(email,pwd)
+
+            const user = await container.userUsecase.getLogin(email,pwd)
+            reply.status(200).send(user);
+        }
+    });
+
+    server.route<{
+        Body: { email: string, pwd: string },
+    }>({
+        method: 'POST',
+        url: '/createUser', // http post request to : http://localhost:3000/createUser
+        schema: { // The format of the request body (in JSON):  {"email":"Email","pwd":"Pwd"}
+            body: {
+                type: 'object',
+                properties: {
+                    email: { type: 'string' },
+                    pwd: { type: 'string' },
+                },
+                required: ['email', 'pwd']
+            }
+        },
+        handler: async (request, reply) => {
+            const {email, pwd} = request.body
+
             const user = await container.createUserUsecase.execute({
                 email,
                 pwd,
@@ -65,4 +88,5 @@ export const registerUserRoutes = (server: FastifyInstance, container: UserConta
             reply.status(200).send(user);
         }
     });
+
 }

@@ -2,6 +2,7 @@ import {IUserRepository} from "../domain/interfaces";
 import {Item, Pokemon, User} from "../domain/entities";
 import {prisma} from "../../db";
 import {TrainerRepository} from "./trainer.repository";
+import bcrypt from "bcrypt";
 
 export class UserRepository implements IUserRepository {
 
@@ -113,9 +114,10 @@ export class UserRepository implements IUserRepository {
         return UserRepository.createUserObject(user);
     }
     async findMyUserwithLogin(email: string, pwd: string): Promise<User> {
+
         const user = await prisma.user.findFirst({
             where: {
-                email,pwd
+                email
             },
             include : {
                 itemList : true,
@@ -134,9 +136,11 @@ export class UserRepository implements IUserRepository {
                 },
             },
         })
-        if (user === null){
-            return Promise.reject("this user is not in DB.")
+
+        if (user === null || !(await bcrypt.compare(pwd, user.pwd))){
+            return Promise.reject("Login error");
         }
+
         return UserRepository.createUserObject(user);
     }
 

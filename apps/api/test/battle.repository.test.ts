@@ -41,7 +41,7 @@ export async function generateAttackerAndOpponentForTest() : Promise<{ attacking
     };
 
     const newUser1 = await userContainer.createUserUsecase.execute({
-        email : "lennynam@gmail.com",
+        email : "test1_" + (new Date()).getMilliseconds() + "@test.test",
         pwd : "test1",
         name: "",
         inscriptionDate: new Date,
@@ -49,7 +49,7 @@ export async function generateAttackerAndOpponentForTest() : Promise<{ attacking
     });
 
     const newUser2 = await userContainer.createUserUsecase.execute({
-        email : "lennynam@gmail.com",
+        email : "test2_" + (new Date()).getMilliseconds() + "@test.test",
         pwd : "test1",
         name: "",
         inscriptionDate: new Date,

@@ -11,7 +11,7 @@ describe('Train Repository - test', () => {
         const gender = 'f';
 
         const newUser = await userContainer.createUserUsecase.execute({
-            email : "test@test.com",
+            email : "test6_" + (new Date()).getMilliseconds() + "@test.test",
             pwd : "test",
             name: "",
             inscriptionDate: new Date,

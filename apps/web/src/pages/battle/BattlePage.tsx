@@ -29,7 +29,8 @@ const BattleField: React.FC<{ battle: Battle, currentTrainer: Trainer, opposingT
                         </div>
                         <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
                             <Avatar className={pageStyles.image} style={{ marginRight: '10px' }}>
-                                <img src="https://imagespocauniversitepariscite.s3.eu-central-1.amazonaws.com/salmeche.png" alt={pokemon.name} />
+                                {(() => {( apiClient.get("https://pokeapi.co/api/v2/pokemon/" + pokemon.name)).then((response)=>{ document.getElementById(pokemon.name + "-" + pokemon.id + "-battle")?.setAttribute("src", response.data.sprites.front_default)})})() }
+                                <img src="" alt={pokemon.name} id={pokemon.name + "-" + pokemon.id + "-battle"} />
                             </Avatar>
                         </div>
                     </li> ))}
@@ -47,7 +48,8 @@ const BattleField: React.FC<{ battle: Battle, currentTrainer: Trainer, opposingT
                             </div>
                             <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
                                 <Avatar className={pageStyles.image} style={{ marginRight: '10px' }}>
-                                    <img src="https://imagespocauniversitepariscite.s3.eu-central-1.amazonaws.com/salmeche.png" alt={pokemon.name} />
+                                    {(() => {( apiClient.get("https://pokeapi.co/api/v2/pokemon/" + pokemon.name)).then((response)=>{ document.getElementById(pokemon.name + "-" + pokemon.id + "-battle")?.setAttribute("src", response.data.sprites.front_default)})})() }
+                                    <img src="" alt={pokemon.name} id={pokemon.name + "-" + pokemon.id + "-battle"} />
                                 </Avatar>
                             </div>
                         </li> ))}
@@ -83,7 +85,8 @@ const TrainerPokemonList: React.FC<{ battle: Battle, trainer: Trainer, isTheAtta
                         </div>
                         <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
                             <Avatar className={pageStyles.image} style={{ marginRight: '10px' }}>
-                                <img src="https://imagespocauniversitepariscite.s3.eu-central-1.amazonaws.com/salmeche.png" alt={pokemon.name} />
+                                {(() => {( apiClient.get("https://pokeapi.co/api/v2/pokemon/" + pokemon.name)).then((response)=>{ document.getElementById(pokemon.name + "-" + pokemon.id)?.setAttribute("src", response.data.sprites.front_default)})})() }
+                                <img src="" alt={pokemon.name} id={pokemon.name + "-" + pokemon.id} />
                             </Avatar>
                         </div>
                     </li> ))}

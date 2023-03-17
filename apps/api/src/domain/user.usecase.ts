@@ -9,7 +9,6 @@ export class UserUsecase {
     }
 
     async getLogin( email: string, pwd: string ): Promise<User> {
-  
         return this.userRepository.findMyUserwithLogin(email,pwd);
     }
 
