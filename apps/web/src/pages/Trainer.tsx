@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "../api";
 import "../index.scss";
+import {useNavigate, useParams} from "react-router-dom";
 
 const urlTrainerPost = "/trainers";
 type Trainer = {
@@ -16,7 +17,11 @@ export type ListeTrainerForme = {
 };
 
 const Trainer = () => {
+    let {userID} = useParams()
+    const navigate = useNavigate();
+
     const [trainers, gettrainers] = useState<ListeTrainerForme[] | null>();
+
     useEffect(() => {
         const url = "/trainers";
         axios.get(url).then((response) => {
@@ -27,7 +32,7 @@ const Trainer = () => {
     const [trainer, setTrainer] = useState<Trainer>({
         name: "",
         gender: "",
-        userId: ""
+        userId: (typeof userID == "undefined") ? "-1" : userID
     });
 
     const setNewValue = (id_: string, newValue: string) =>
@@ -37,6 +42,8 @@ const Trainer = () => {
         try {
             const response = await axios.post(urlTrainerPost, {name : trainer.name, gender : trainer.gender, userId : parseInt(trainer.userId)});
             alert(`The reponse is: ${response.data.id}`);
+            navigate(`/user/${userID}`);
+
         } catch (exception_) {
             alert(`There was an error `);
         }
@@ -66,14 +73,6 @@ const Trainer = () => {
                     value={trainer.gender}
                     onChange={(evt) => {
                         setNewValue("gender", evt.target.value);
-                    }}
-                />
-                <br />
-                <input
-                    placeholder="user id"
-                    value={trainer.userId}
-                    onChange={(evt) => {
-                        setNewValue("userId", evt.target.value);
                     }}
                 />
                 <br />

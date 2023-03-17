@@ -22,7 +22,7 @@ describe('Create Trainer Usecase - test', () => {
         // GIVEN
         const userContainer = initUserContainer()
         const newUserForCreateTrainerUseCaseTest = await userContainer.createUserUsecase.execute({
-            email : "lennynam@gmail.com",
+            email : "test4_" + (new Date()).getMilliseconds() + "@test.test",
             pwd   : "newUserForCreateTrainerUseCaseTest",
             name: "",
             inscriptionDate: new Date,

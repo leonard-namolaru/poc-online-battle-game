@@ -11,7 +11,7 @@ model User {
   id              Int         @id @default(autoincrement())
   name            String
   pwd             String
-  email           String
+  email           String      @unique
   inscriptionDate DateTime    @default(now())
   isValid         Boolean
   uniqueToken     String

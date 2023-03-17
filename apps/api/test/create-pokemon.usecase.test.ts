@@ -21,7 +21,7 @@ describe('Create Pokemon Usecase - test', () => {
         // GIVEN
         const userContainer = initUserContainer()
         const newUserForPokemonUseCaseTest = await userContainer.createUserUsecase.execute({
-            email : "lennynam@gmail.com",
+            email : "test3_" + (new Date()).getMilliseconds() + "@test.test",
             pwd   : "newUserForPokemonUseCaseTest",
             name: "",
             inscriptionDate: new Date,

@@ -7,7 +7,7 @@ describe('Pokemon Repository - test', async () => {
 
     const userContainer = initUserContainer()
     const newUserForPokemonRepositoryTest = await userContainer.createUserUsecase.execute({
-        email : "lennynam@gmail.com",
+        email : "test5_" + (new Date()).getMilliseconds() + "@test.test",
         pwd   : "newUserForPokemonRepositoryTest",
         name: "",
         inscriptionDate: new Date,

@@ -1,13 +1,9 @@
-import React, {StrictMode, useEffect, useState} from "react";
-import ReactDOM from "react-dom"
-import {BrowserRouter, Routes , Route, Outlet, Link, useNavigate} from "react-router-dom"
+import React, {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom"
 import "../../index.scss";
 import axios from "../../api";
 import styled from 'styled-components';
 
-import { Navigate } from "react-router-dom";
-// const navigate = useNavigate();
-const urlLoginPost = "/login";
 type User = {
     // name: string;
     email: string;
@@ -19,8 +15,6 @@ export type ListeUserForme = {
     email: string;
 
 };
-
-
 
 
 const Title = styled.h1`
@@ -75,19 +69,22 @@ const Login = () => {
 
     const createUser = async () => {
         try {
-            const response = await axios.post(urlLoginPost, user);
-            alert(`The reponse is: ${response.data.id}`);
-        } catch (exception_) {
-            alert(`There was an error `);
+            const response = await axios.post("/createUser", user);
+            alert(`L'utilisateur dont le numéro est ${response.data.id} a été créé avec succès. Vous pouvez vous connecter maintenant.`);
+        } catch (error : any) {
+            alert("L'utilisateur n'a pas pu être créé. Un tel dysfonctionnement peut arriver si vous avez choisi un mail qui existe déjà ou s'il y a un problème de connexion au serveur.");
         }
     };
     const log = async () => {
         try {
-           
-            const response = await axios.post("/login", user);
-            alert(`The reponse is: ${response.data.id}`);
-            navigate(`/user/${response.data.id}`);
-          
+            const response = await axios.post("/login", userLogin);
+
+            if (response.data.trainer == null) {
+                navigate(`/trainer/${response.data.id}`);
+            } else {
+                navigate(`/user/${response.data.id}`);
+            }
+
         } catch (exception_) {
             alert(`There was an error here`);
         }
