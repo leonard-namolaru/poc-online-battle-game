@@ -41,9 +41,10 @@ deploy-railway:
   only:
     - main
   script:
-    - wget https://github.com/railwayapp/cli/releases/download/v2.1.0/railway_2.1.0_linux_amd64.tar.gz
-    - tar -xzf railway_2.1.0_linux_amd64.tar.gz
-    - mv railway /usr/local/bin
+    #- wget https://github.com/railwayapp/cli/releases/download/v2.1.0/railway_2.1.0_linux_amd64.tar.gz
+    #- tar -xzf railway_2.1.0_linux_amd64.tar.gz
+    #- mv railway /usr/local/bin
+    - bash <(curl -fsSL cli.new)
     # Deploy back-end to railway
     - cd apps/api
     - RAILWAY_TOKEN=9d5ad1cb-b39d-4274-9790-6453cfeac5c8 railway up --service evasive-love
