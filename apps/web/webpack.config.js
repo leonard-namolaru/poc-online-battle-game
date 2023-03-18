@@ -5,18 +5,18 @@ require('dotenv').config();
 
 const deps = require("./package.json").dependencies;
 module.exports = {
-  output: {
-    publicPath: process.env.REACT_APP_HOST+":"+process.env.REACT_APP_PORT+"/",
-  },
+  // output: {
+  //   publicPath: process.env.REACT_APP_HOST+":"+process.env.REACT_APP_PORT+"/",
+  // },
 
   resolve: {
     extensions: [".tsx", ".ts", ".jsx", ".js", ".json"],
   },
 
-  devServer: {
-    port: process.env.REACT_APP_DEV_PORT,
-    historyApiFallback: true,
-  },
+  // devServer: {
+  //   port: process.env.REACT_APP_DEV_PORT,
+  //   historyApiFallback: true,
+  // },
 
   module: {
     rules: [
@@ -39,6 +39,12 @@ module.exports = {
         },
       },
     ],
+  },
+  
+  optimization: {
+    splitChunks: {
+       chunks: 'all',
+     },
   },
 
   plugins: [
@@ -65,4 +71,3 @@ module.exports = {
     new Dotenv(),
   ],
 };
-console.log("ENV : " + process.env.REACT_APP_HOST+":"+process.env.REACT_APP_PORT);
