@@ -8,16 +8,16 @@ datasource db {
 }
 
 model User {
-  id              Int         @id @default(autoincrement())
+  id              Int           @id @default(autoincrement())
   name            String
   pwd             String
-  email           String      @unique
-  inscriptionDate DateTime    @default(now())
+  email           String        @unique
+  inscriptionDate DateTime      @default(now())
   isValid         Boolean
   uniqueToken     String
 
   trainer         Trainer?
-  allMyPokemon    Pokemon[]   @relation("pokemon-user")
+  allMyPokemon    Pokemon[]     @relation("pokemon-user")
 
   itemList        Item[]        @relation("user-items")
   @@unique([email, pwd], name: "emailpwd")
@@ -32,30 +32,30 @@ model Trainer {
   activeTeam      PokemonTeam?
 
   userId          Int          @unique
-  User            User         @relation(fields: [userId], references: [id])
+  User            User         @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Pokemon {
-  id              Int          @id @default(autoincrement())
+  id              Int                  @id @default(autoincrement())
   pokedex         Int
   name            String
   exp             Int
   level           Int
-  statsId Int                  @unique
-  stats   Stats                @relation(fields: [statsId], references: [statsId])
-  itemId  Int                  @unique
-  item    Item                 @relation(fields: [itemId], references: [itemId])
-  moves   Move[]               @relation("moves")
+  statsId         Int                  @unique
+  stats           Stats                @relation(fields: [statsId], references: [statsId])
+  itemId          Int                  @unique
+  item            Item                 @relation(fields: [itemId], references: [itemId])
+  moves           Move[]               @relation("moves")
 
-  battleAttacking Battle[]     @relation("attackingPokemon")
-  battleOpposing  Battle[]     @relation("opposingPokemon")
+  battleAttacking Battle[]             @relation("attackingPokemon")
+  battleOpposing  Battle[]             @relation("opposingPokemon")
 
   userId          Int
-  user            User         @relation("pokemon-user", fields: [userId], references: [id])
+  user            User                 @relation("pokemon-user", fields: [userId], references: [id], onDelete: Cascade)
 
-  team          PokemonOnPokemonTeams[]
+  team            PokemonOnPokemonTeams[]
 
-  types          Type[]        @relation("types")
+  types           Type[]               @relation("types")
 }
 
 model Battle {
@@ -73,12 +73,12 @@ model Battle {
 }
 
 model Item {
-  itemId  Int                   @id @default(autoincrement())
+  itemId  Int       @id @default(autoincrement())
   name    String
   effect  Int
-  pokemon Pokemon?
-  userId Int
-  user   User                   @relation("user-items", fields: [userId], references: [id])
+  pokemon Pokemon?              
+  userId  Int
+  user    User      @relation("user-items", fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Move {
@@ -86,7 +86,7 @@ model Move {
   name      String
   damage    Int
   pokemonId Int
-  pokemon   Pokemon @relation("moves", fields: [pokemonId], references: [id])
+  pokemon   Pokemon @relation("moves", fields: [pokemonId], references: [id], onDelete: Cascade)
 }
 
 model Stats {
@@ -100,8 +100,8 @@ model Stats {
 model PokemonOnPokemonTeams {
   pid           Int
   pokemonTeamId Int
-  pokemon       Pokemon     @relation(fields: [pid], references: [id])
-  pokemonTeam   PokemonTeam @relation(fields: [pokemonTeamId], references: [teamId])
+  pokemon       Pokemon     @relation(fields: [pid], references: [id], onDelete: Cascade)
+  pokemonTeam   PokemonTeam @relation(fields: [pokemonTeamId], references: [teamId], onDelete: Cascade)
 
   @@id([pid, pokemonTeamId])
 }
@@ -110,13 +110,13 @@ model PokemonTeam {
   teamId      Int                     @id @default(autoincrement())
   trainerId   Int                     @unique
   pokemonList PokemonOnPokemonTeams[]
-  trainer     Trainer                 @relation(fields: [trainerId], references: [id])
+  trainer     Trainer                 @relation(fields: [trainerId], references: [id], onDelete: Cascade)
 }
 
 
 model Type{
-    typeId  Int   @id @default(autoincrement())
-    name  String  
+    typeId    Int     @id @default(autoincrement())
+    name      String  
     pokemonId Int
-    pokemon   Pokemon @relation("types", fields: [pokemonId], references: [id])
+    pokemon   Pokemon @relation("types", fields: [pokemonId], references: [id], onDelete: Cascade)
 }

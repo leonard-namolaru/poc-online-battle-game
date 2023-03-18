@@ -1,5 +1,5 @@
 import {FastifyInstance} from "fastify";
-import {PokemonTeamContainer} from "../domain/pokemon-team.container";
+import {PokemonTeamContainer} from "../domain/PokemonTeam/pokemon-team.container";
 
 export const registerPokemonTeamRoutes = (server: FastifyInstance, container: PokemonTeamContainer) => {
 

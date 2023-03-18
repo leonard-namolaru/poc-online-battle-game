@@ -200,4 +200,17 @@ export class UserRepository implements IUserRepository {
 
         return UserRepository.createUserObject(ret);
     }
+
+    async delete(userId: number): Promise<boolean> {
+        const ret = await prisma.user.delete({
+            where: {
+                id: userId
+            }
+        });
+        if(ret === null){
+            return false;
+        }else{
+            return true;
+        }
+    }
 }

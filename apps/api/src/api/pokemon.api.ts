@@ -1,5 +1,5 @@
 import {FastifyInstance} from "fastify";
-import {PokemonContainer} from "../domain/pokemon.container";
+import {PokemonContainer} from "../domain/Pokemon/pokemon.container";
 import {PokeApiRepository} from "../infrastructure/poke-api.repository";
 
 export const pokemonRoutes = (server: FastifyInstance, container: PokemonContainer, pokeApiRepository : PokeApiRepository) => {

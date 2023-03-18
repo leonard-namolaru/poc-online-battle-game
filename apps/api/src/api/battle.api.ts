@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify";
-import { BattleContainer } from "../domain/battle.container";
-import { TrainerContainer } from "../domain/trainer.container";
-import {PokemonTeamContainer} from "../domain/pokemon-team.container";
+import { BattleContainer } from "../domain/Battle/battle.container";
+import { TrainerContainer } from "../domain/Trainer/trainer.container";
+import {PokemonTeamContainer} from "../domain/PokemonTeam/pokemon-team.container";
 import {hpPointsPokemonsDuringBattle} from "../server"
 
 export const battleRoutes = (
