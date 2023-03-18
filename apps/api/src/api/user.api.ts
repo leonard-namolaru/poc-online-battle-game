@@ -1,5 +1,5 @@
 import {FastifyInstance} from "fastify";
-import {UserContainer} from "../domain/user.container";
+import {UserContainer} from "../domain/User/user.container";
 
 export const registerUserRoutes = (server: FastifyInstance, container: UserContainer) => {
     //stupid
@@ -86,6 +86,34 @@ export const registerUserRoutes = (server: FastifyInstance, container: UserConta
             });
 
             reply.status(200).send(user);
+        }
+    });
+
+    server.route<{
+        Body: { userId: number },
+    }>({
+        method: 'DELETE',
+        url: '/deleteUser', // http post request to : http://localhost:3000/deleteUser
+        schema: { // The format of the request body (in JSON):  {"userId":"-1"}
+            body: {
+                type: 'object',
+                properties: {
+                    userId: { type: 'number' },
+                },
+                required: ['userId']
+            }
+        },
+        handler: async (request, reply) => {
+            const {userId} = request.body
+
+            const user = await container.deleteUserUsecase.execute({
+                userId
+            });
+            if(user){
+                reply.status(200);
+            }else{
+                reply.status(500);
+            }
         }
     });
 

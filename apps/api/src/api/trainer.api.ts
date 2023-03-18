@@ -1,5 +1,5 @@
 import { FastifyInstance } from "fastify";
-import { TrainerContainer } from "../domain/trainer.container";
+import { TrainerContainer } from "../domain/Trainer/trainer.container";
 
 export const registerTrainerRoutes = (
   server: FastifyInstance,

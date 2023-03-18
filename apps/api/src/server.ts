@@ -4,11 +4,11 @@ import {battleRoutes} from "./api/battle.api";
 import {pokemonRoutes} from "./api/pokemon.api";
 import {registerUserRoutes} from "./api/user.api";
 import {registerPokemonTeamRoutes} from "./api/pokemon-team.api";
-import {initTrainerContainer} from "./domain/trainer.container";
-import {initBattleContainer} from "./domain/battle.container";
-import {initPokemonContainer} from "./domain/pokemon.container";
-import { initUserContainer } from "./domain/user.container";
-import {initPokemonTeamContainer} from "./domain/pokemon-team.container";
+import {initTrainerContainer} from "./domain/Trainer/trainer.container";
+import {initBattleContainer} from "./domain/Battle/battle.container";
+import {initPokemonContainer} from "./domain/Pokemon/pokemon.container";
+import { initUserContainer } from "./domain/User/user.container";
+import {initPokemonTeamContainer} from "./domain/PokemonTeam/pokemon-team.container";
 import cors from "@fastify/cors";
 import {PokeApiRepository} from "./infrastructure/poke-api.repository";
 

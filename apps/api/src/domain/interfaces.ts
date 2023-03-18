@@ -8,6 +8,7 @@ export interface IUserRepository {
     findMyUserwithLogin(email:string ,pwd:string): Promise<User>
     findUserToken(uniqueToken: string): User | PromiseLike<User>
     update(user: User): User | PromiseLike<User>;
+    delete(userId: number): Promise<boolean>;
 }
 
 export interface ITrainerRepository {
