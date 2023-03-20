@@ -66,10 +66,10 @@ model Battle {
   opponentPokemonId  Int
   winner             Int
 
-  attackingPokemon   Pokemon    @relation("attackingPokemon", fields: [attackerPokemonId], references: [id])
-  attackingTrainer   Trainer    @relation("attacking", fields: [attackingTrainerId], references: [id])
-  opposingPokemon    Pokemon    @relation("opposingPokemon", fields: [opponentPokemonId], references: [id])
-  opposingTrainer    Trainer    @relation("opposing", fields: [opposingTrainerId], references: [id])
+  attackingPokemon   Pokemon    @relation("attackingPokemon", fields: [attackerPokemonId], references: [id], onDelete: Cascade)
+  attackingTrainer   Trainer    @relation("attacking", fields: [attackingTrainerId], references: [id], onDelete: Cascade)
+  opposingPokemon    Pokemon    @relation("opposingPokemon", fields: [opponentPokemonId], references: [id], onDelete: Cascade)
+  opposingTrainer    Trainer    @relation("opposing", fields: [opposingTrainerId], references: [id], onDelete: Cascade)
 }
 
 model Item {
