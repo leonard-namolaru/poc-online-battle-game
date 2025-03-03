@@ -1,38 +1,43 @@
-# POCA 2023
+### PoC d'un jeu de combat en ligne
 
-## Group
+![battle-game.png](battle-game.png)
+> :school: **Lieu de formation :** Université Paris Cité, Campus Grands Moulins (ex-Paris Diderot)
+>
+> :pushpin: **Année scolaire :** M2
+> 
+> :calendar: **Dates :** Janvier - Mars 2023 
 
-- Pocamon
-- YYY
-- ZZZ
+#### Description
+Un jeu multijoueur en ligne qui permet à chaque joueur de créer une équipe de Pokémon et de se battre contre les équipes des autres joueurs. 
+L'application s'interface avec la PokéAPI pour construire le profil de chaque Pokémon de l'équipe.
+Le PoC contenait un pipeline de CI/CD, ainsi que des tests unitaires.
 
-## Prerequisite
+#### Technologies
+- TypeScript
+- React
+- Prisma
+- GitLab CI/CD
 
-- Install Node.js
-- Install Yarn
-- Install Docker
+#### Prérequis
+- Node.js
+- Yarn
+- Docker
 
-## API Installation
+#### Installation de l'API
+- `cd apps/api` 
+- `yarn install` 
+- `yarn db:start`
+- `yarn db:migrate` 
+- `yarn dev` 
 
-- clone this repo locally
-- run `cd apps/api` to go to API folder
-- run `yarn install` to install all dependencies
-- run `yarn db:start` to start postgres DB
-- run `yarn db:migrate` to set up DB
-- run `yarn dev` to start developing
+#### Tests unitaires
+- `yarn test`
 
-## API Testing
+#### Déploiement de l'API
+- `yarn build`
+- Tous les fichiers compilés se trouvent sous `/dist`. 
+- Après avoir déployé `/dist` : `yarn start`
 
-To run tests, you simply need to run `yarn test`
+#### Installation des paquets
 
-## API Deployment
-
-To prepare a build for deployment, you need to run `yarn build`.
-All compilation assets are located in `/dist`.
-
-After deploying `/dist`, you simply need to run `yarn start`
-
-
-## Installation of packages
-
-- `yarn add pokenode-ts` : Integrate the app with the PokéAPI (Source : https://github.com/Gabb-c/pokenode-ts)
+- `yarn add pokenode-ts` : Pour intégrer l'application avec la PokéAPI (Source : https://github.com/Gabb-c/pokenode-ts)
