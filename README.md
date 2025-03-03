@@ -10,7 +10,7 @@
 #### Description
 Un jeu multijoueur en ligne qui permet à chaque joueur de créer une équipe de Pokémon et de se battre contre les équipes des autres joueurs. 
 L'application s'interface avec la PokéAPI pour construire le profil de chaque Pokémon de l'équipe.
-Le PoC contenait un pipeline de CI/CD, ainsi que des tests unitaires.
+Le PoC comprenait un pipeline CI/CD, ainsi que des tests unitaires.
 
 #### Technologies
 - TypeScript
