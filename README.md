@@ -1,6 +1,6 @@
-### PoC d'un jeu de combat en ligne
+![readme-header.png](readme-header.png)
 
-![battle-game.png](battle-game.png)
+### PoC d'un jeu de combat en ligne
 > :school: **Lieu de formation :** Université Paris Cité, Campus Grands Moulins (ex-Paris Diderot)
 >
 > :pushpin: **Année scolaire :** M2
